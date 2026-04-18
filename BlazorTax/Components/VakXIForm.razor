@@ -1,0 +1,66 @@
+<EditForm Model="Data" class="vak4-form">
+
+    <div class="vak2-title">Vak XI &ndash; BEDRAGEN DIE IN AANMERKING KOMEN VOOR DE GEWESTELIJKE BELASTINGKREDIETEN VOOR WINWINLENINGEN EN VRIENDENAANDELEN</div>
+
+    <div class="vak4-header-row">
+        <div></div>
+        <div class="vak4-col-head">Belastingplichtige</div>
+        <div class="vak4-col-head">Partner</div>
+    </div>
+
+    <!-- 1. Jaarlijks belastingkrediet -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">1. Jaarlijks belastingkrediet</div>
+
+        <!-- Winwinleningen -->
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent"><strong>Winwinleningen</strong> — uitstaand saldo op 1 januari 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3377-18</span><InputNumber @bind-Value="Data.Code3377" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4377-85</span><InputNumber @bind-Value="Data.Code4377" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent"><strong>Winwinleningen</strong> — uitstaand saldo op 31 december 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3378-17</span><InputNumber @bind-Value="Data.Code3378" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4378-84</span><InputNumber @bind-Value="Data.Code4378" class="vak4-amount" /></div>
+            </div>
+        </div>
+
+        <!-- Vriendenaandelen -->
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent"><strong>Vriendenaandelen</strong> — volgestort bedrag van de aandelen waarvoor u het belastingkrediet vraagt:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3376-19</span><InputNumber @bind-Value="Data.Code3376" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4376-86</span><InputNumber @bind-Value="Data.Code4376" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Eenmalig belastingkrediet -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">2. Eenmalig belastingkrediet — definitief verloren hoofdsom in 2025</div>
+
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">Winwinleningen toegekend in 2020 of 2021:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3368-27</span><InputNumber @bind-Value="Data.Code3368" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4368-94</span><InputNumber @bind-Value="Data.Code4368" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">Winwinleningen toegekend vóór 2020 of na 2021:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3379-16</span><InputNumber @bind-Value="Data.Code3379" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4379-83</span><InputNumber @bind-Value="Data.Code4379" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakXIData Data { get; set; } = new();
+}
+

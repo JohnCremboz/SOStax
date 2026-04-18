@@ -1,0 +1,226 @@
+namespace BlazorTax.Belastingen.Berekening;
+
+/// <summary>
+/// Orchestrator voor de gemeenschappelijke aanslag (twee-kolomsberekening).
+/// Berekent elke partner APART door alle belastingschijven, en combineert
+/// daarna voor gemeentebelasting en BBSZ.
+/// </summary>
+public class GezamenlijkeBerekeningCalculator
+{
+    /// <summary>
+    /// Voert de volledige twee-kolomsberekening uit.
+    /// Werkt ook correct voor alleenstaanden (dan is partner leeg).
+    /// </summary>
+    public GezamenlijkResultaat Bereken(BerekeningInput input)
+    {
+        bool isGehuwd = input.VakII.BurgerlijkeStaat == "1002"
+                     || input.VakII.BurgerlijkeStaat == "1010";
+
+        // ── 1. Inkomen extraheren per partner ───────────────────────────
+        var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(input.VakIV, input.VakV, input.VakX);
+        var inkomen2 = isGehuwd
+            ? PartnerInkomen.ExtractPartner(input.VakIV, input.VakV, input.VakX)
+            : new PartnerInkomen { Label = "Partner" };
+
+        // ── 2. Fase 1: bruto → netto per partner ───────────────────────
+        var r1 = PartnerBelastingCalculator.Bereken(inkomen1, 0, input.TypeBeroep, input.Gewest);
+        var r2 = isGehuwd && inkomen2.HeeftInkomen
+            ? PartnerBelastingCalculator.Bereken(inkomen2, 0, input.TypeBeroep, input.Gewest)
+            : new PartnerResultaat { Label = "Partner" };
+
+        // ── 3. Huwelijksquotiënt ────────────────────────────────────────
+        decimal hqBedrag = 0;
+        if (isGehuwd)
+        {
+            hqBedrag = HuwelijksquotientCalculator.Bereken(
+                r1.NettoBelastbaarInkomen, r2.NettoBelastbaarInkomen, true);
+
+            if (hqBedrag > 0)
+            {
+                // Bepaal wie afstaat en wie ontvangt
+                if (r1.NettoBelastbaarInkomen >= r2.NettoBelastbaarInkomen)
+                {
+                    r1.HuwelijksquotientAfgestaan = hqBedrag;
+                    r1.NettoBelastbaarNaHQ = r1.NettoBelastbaarInkomen - hqBedrag;
+                    r2.HuwelijksquotientOntvangen = hqBedrag;
+                    r2.NettoBelastbaarNaHQ = r2.NettoBelastbaarInkomen + hqBedrag;
+                }
+                else
+                {
+                    r2.HuwelijksquotientAfgestaan = hqBedrag;
+                    r2.NettoBelastbaarNaHQ = r2.NettoBelastbaarInkomen - hqBedrag;
+                    r1.HuwelijksquotientOntvangen = hqBedrag;
+                    r1.NettoBelastbaarNaHQ = r1.NettoBelastbaarInkomen + hqBedrag;
+                }
+            }
+        }
+
+        // ── 4. Kinderallocatie ──────────────────────────────────────────
+        // Kinderen worden toegewezen aan de hoogstverdienende partner
+        // (maximaal fiscaal voordeel). Bij alleenstaanden: altijd partner 1.
+        bool kinderenBijPartner1 = !isGehuwd || r1.NettoBelastbaarNaHQ >= r2.NettoBelastbaarNaHQ;
+
+        decimal vrijeSom1 = isGehuwd
+            ? BelastingvrijeSomCalculator.BerekenPartner(input.VakII, true, kinderenBijPartner1)
+            : BelastingvrijeSomCalculator.Bereken(input.VakII);
+
+        decimal vrijeSom2 = isGehuwd
+            ? BelastingvrijeSomCalculator.BerekenPartner(input.VakII, false, !kinderenBijPartner1)
+            : 0;
+
+        // ── 5. Fase 2: belasting berekenen per partner ──────────────────
+        PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest);
+
+        if (isGehuwd && inkomen2.HeeftInkomen)
+            PartnerBelastingCalculator.BerekenBelasting(r2, inkomen2, vrijeSom2, input.Gewest);
+
+        // ── 6. Gecombineerde resultaten ─────────────────────────────────
+        var resultaat = new GezamenlijkResultaat
+        {
+            IsGezamenlijk = isGehuwd && inkomen2.HeeftInkomen,
+            Belastingplichtige = r1,
+            Partner = r2,
+        };
+
+        // Gecombineerd federaal en gewestelijk
+        resultaat.TotaalSaldoFederaal = r1.SaldoFederaal + r2.SaldoFederaal;
+        resultaat.TotaalSaldoGewestelijk = r1.SaldoGewestelijk + r2.SaldoGewestelijk;
+
+        // Gemeentebelasting op gecombineerd (federaal + gewestelijk)
+        resultaat.GemeentebelastingPercentage = input.GemeentebelastingPercentage;
+        resultaat.BasisGemeentebelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk;
+        resultaat.Gemeentebelasting = resultaat.BasisGemeentebelasting * input.GemeentebelastingPercentage / 100m;
+
+        // BBSZ (vereenvoudigd: verschil ingehouden vs verschuldigd)
+        decimal bbszIngehouden = inkomen1.BijzondereBijdrageSZ + inkomen2.BijzondereBijdrageSZ;
+        decimal gecombineerdNetto = r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen;
+        decimal bbszVerschuldigd = BerekenBBSZ(gecombineerdNetto);
+
+        resultaat.BBSZGezamenlijkInkomen = gecombineerdNetto;
+        resultaat.BBSZVerschuldigd = bbszVerschuldigd;
+        resultaat.BBSZIngehouden = bbszIngehouden;
+        resultaat.BBSZSaldo = bbszVerschuldigd - bbszIngehouden;
+
+        // Voorheffingen
+        decimal totaalBV = r1.Bedrijfsvoorheffing + r2.Bedrijfsvoorheffing;
+        decimal totaalWerkbonus = r1.BelastingkredietWerkbonus + r2.BelastingkredietWerkbonus;
+
+        // Totale belasting
+        decimal totaleBelasting = resultaat.TotaalSaldoFederaal
+                                + resultaat.TotaalSaldoGewestelijk
+                                + resultaat.Gemeentebelasting
+                                + Math.Max(resultaat.BBSZSaldo, 0);
+
+        // Aftrekken
+        decimal totaalAftrek = totaalBV + totaalWerkbonus;
+
+        resultaat.Eindresultaat = totaleBelasting - totaalAftrek;
+
+        // ── 7. Detailregels opbouwen ────────────────────────────────────
+        BouwDetailRegels(resultaat, r1, r2, inkomen1, inkomen2, input, hqBedrag,
+            kinderenBijPartner1, vrijeSom1, vrijeSom2, totaalBV, totaalWerkbonus);
+
+        return resultaat;
+    }
+
+    /// <summary>
+    /// Berekent de BBSZ op basis van het gezamenlijk netto belastbaar inkomen.
+    /// Vereenvoudigd barema (AJ2026).
+    /// </summary>
+    private static decimal BerekenBBSZ(decimal gecombineerdNetto)
+    {
+        // BBSZ-barema (bron: RSZ, geïndexeerd AJ2026)
+        // Dit is een benadering - exacte bedragen kunnen licht afwijken
+        if (gecombineerdNetto <= 18_592.02m) return 0;
+        if (gecombineerdNetto <= 21_070.96m)
+            return (gecombineerdNetto - 18_592.02m) * 0.09m; // 9% op schijf
+        if (gecombineerdNetto <= 60_161.85m)
+        {
+            decimal basis = (21_070.96m - 18_592.02m) * 0.09m; // ~223.10
+            return basis + (gecombineerdNetto - 21_070.96m) * 0.013m; // 1.3% op schijf
+        }
+        // Maximum BBSZ
+        decimal maxBasis = (21_070.96m - 18_592.02m) * 0.09m;
+        decimal maxSchijf2 = (60_161.85m - 21_070.96m) * 0.013m;
+        return maxBasis + maxSchijf2; // ~731.28
+    }
+
+    private static void BouwDetailRegels(
+        GezamenlijkResultaat resultaat,
+        PartnerResultaat r1, PartnerResultaat r2,
+        PartnerInkomen ink1, PartnerInkomen ink2,
+        BerekeningInput input,
+        decimal hqBedrag,
+        bool kinderenBijPartner1,
+        decimal vrijeSom1, decimal vrijeSom2,
+        decimal totaalBV, decimal totaalWerkbonus)
+    {
+        var regels = resultaat.DetailRegels;
+
+        if (resultaat.IsGezamenlijk)
+        {
+            regels.Add(new("═══ BELASTINGPLICHTIGE ═══", 0, true));
+            regels.Add(new("Bruto inkomen", r1.BrutoTotaal));
+            regels.Add(new("Beroepskosten", -r1.Beroepskosten));
+            regels.Add(new("Netto belastbaar", r1.NettoBelastbaarInkomen, true));
+
+            if (hqBedrag > 0 && r1.HuwelijksquotientAfgestaan > 0)
+                regels.Add(new("HQ afgestaan", -r1.HuwelijksquotientAfgestaan));
+            if (hqBedrag > 0 && r1.HuwelijksquotientOntvangen > 0)
+                regels.Add(new("HQ ontvangen", r1.HuwelijksquotientOntvangen));
+
+            regels.Add(new("Basisbelasting", r1.Basisbelasting));
+            regels.Add(new($"Belastingvrije som ({vrijeSom1:N0})", -r1.VerminderingBelastingvrijeSom));
+            regels.Add(new("Om te slane", r1.OmTeSlane, true));
+            if (r1.VerminderingVervangingsinkomen > 0)
+                regels.Add(new("Verm. vervangingsinkomen", -r1.VerminderingVervangingsinkomen));
+            regels.Add(new("Federaal", r1.SaldoFederaal));
+            regels.Add(new("Gewestelijk", r1.SaldoGewestelijk));
+
+            regels.Add(new("═══ PARTNER ═══", 0, true));
+            regels.Add(new("Bruto inkomen", r2.BrutoTotaal));
+            regels.Add(new("Beroepskosten", -r2.Beroepskosten));
+            regels.Add(new("Netto belastbaar", r2.NettoBelastbaarInkomen, true));
+
+            if (hqBedrag > 0 && r2.HuwelijksquotientAfgestaan > 0)
+                regels.Add(new("HQ afgestaan", -r2.HuwelijksquotientAfgestaan));
+            if (hqBedrag > 0 && r2.HuwelijksquotientOntvangen > 0)
+                regels.Add(new("HQ ontvangen", r2.HuwelijksquotientOntvangen));
+
+            regels.Add(new("Basisbelasting", r2.Basisbelasting));
+            regels.Add(new($"Belastingvrije som ({vrijeSom2:N0})", -r2.VerminderingBelastingvrijeSom));
+            regels.Add(new("Om te slane", r2.OmTeSlane, true));
+            if (r2.VerminderingVervangingsinkomen > 0)
+                regels.Add(new("Verm. vervangingsinkomen", -r2.VerminderingVervangingsinkomen));
+            regels.Add(new("Federaal", r2.SaldoFederaal));
+            regels.Add(new("Gewestelijk", r2.SaldoGewestelijk));
+
+            regels.Add(new("═══ GECOMBINEERD ═══", 0, true));
+        }
+        else
+        {
+            // Alleenstaande: toon alle detailregels van partner 1
+            regels.AddRange(r1.DetailRegels);
+        }
+
+        regels.Add(new("Totaal federaal", resultaat.TotaalSaldoFederaal));
+        regels.Add(new("Totaal gewestelijk", resultaat.TotaalSaldoGewestelijk));
+        regels.Add(new($"Gemeentebelasting ({input.GemeentebelastingPercentage}%)", resultaat.Gemeentebelasting));
+
+        if (resultaat.BBSZSaldo > 0)
+            regels.Add(new("BBSZ saldo", resultaat.BBSZSaldo));
+
+        decimal totaleBelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk
+                                + resultaat.Gemeentebelasting + Math.Max(resultaat.BBSZSaldo, 0);
+        regels.Add(new("Totale belasting", totaleBelasting, true));
+
+        if (totaalBV > 0)
+            regels.Add(new("Bedrijfsvoorheffing", -totaalBV));
+        if (totaalWerkbonus > 0)
+            regels.Add(new("Belastingkrediet werkbonus", -totaalWerkbonus));
+
+        regels.Add(new(
+            resultaat.Eindresultaat >= 0 ? "Te betalen" : "Terug te krijgen",
+            resultaat.Eindresultaat, true));
+    }
+}

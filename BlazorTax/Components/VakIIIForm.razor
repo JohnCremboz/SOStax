@@ -1,0 +1,260 @@
+<EditForm Model="Data" class="vak3-form">
+
+    <div class="vak2-title">Vak III &ndash; INKOMSTEN VAN ONROERENDE GOEDEREN</div>
+
+    <div class="vak3-alert">
+        &#9650; <strong>Opgelet:</strong> vrijgestelde inkomsten van onroerende goederen, zoals het inkomen van uw 'eigen woning' (zie toelichting), moet u <strong>niet</strong> in vak III vermelden!
+    </div>
+
+    <!-- ── A. BELGISCHE EN BUITENLANDSE INKOMSTEN ── -->
+    <div class="vak2-section-header">
+        A. INKOMSTEN VAN BELGISCHE EN BUITENLANDSE OORSPRONG
+        <span class="vak3-niet-geindexeerd">NIET GEÏNDEXEERD</span>
+    </div>
+
+    <!-- Kolomhoofden -->
+    <div class="vak3-grid-header">
+        <div></div>
+        <div class="vak3-col-label">Belastingplichtige</div>
+        <div class="vak3-col-label">Partner</div>
+    </div>
+
+    <!-- 1. Beroep -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">1. Onroerende goederen die u voor uw beroep gebruikt:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1105-59</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1105" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2105-29</span>
+                <InputNumber @bind-Value="Data.Code2105" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Gebouwen -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">
+            2. Gebouwen die u:
+            <ul class="vak3-ul">
+                <li>niet verhuurt</li>
+                <li>verhuurt aan natuurlijke personen die ze niet voor hun beroep gebruiken</li>
+                <li>verhuurt aan rechtspersonen die geen vennootschap zijn, aan een gewestelijke huisvestingsmaatschappij of aan erkende maatschappijen voor sociale huisvesting, om ze ter beschikking te laten stellen van natuurlijke personen die ze uitsluitend als woning gebruiken:</li>
+            </ul>
+        </div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1106-58</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1106" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2106-28</span>
+                <InputNumber @bind-Value="Data.Code2106" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Gronden/materieel -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">3. Gronden, materieel en outillering die u niet verhuurt of die u verhuurt aan natuurlijke personen die ze niet voor hun beroep gebruiken:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1107-57</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1107" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2107-27</span>
+                <InputNumber @bind-Value="Data.Code2107" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Pacht -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">4. Onroerende goederen die u volgens de pachtwetgeving (of een vergelijkbaar buitenlands recht dat de pachtprijzen beperkt) verhuurt voor land- of tuinbouwdoeleinden:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1108-56</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1108" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2108-26</span>
+                <InputNumber @bind-Value="Data.Code2108" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Andere omstandigheden -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">5. Onroerende goederen die u verhuurt in andere omstandigheden dan in de nrs. 2 tot 4 hierboven:</div>
+        <div class="vak3-col-duo"></div>
+    </div>
+
+    <!-- 5a. Gebouwen -->
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent">a) gebouwen:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1109-55</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1109" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2109-25</span>
+                <InputNumber @bind-Value="Data.Code2109" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent vak3-label-brutohuur">Brutohuur</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1110-54</span>
+                <InputNumber @bind-Value="Data.Code1110" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2110-24</span>
+                <InputNumber @bind-Value="Data.Code2110" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 5b. Gronden -->
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent">b) gronden:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1112-52</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1112" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2112-22</span>
+                <InputNumber @bind-Value="Data.Code2112" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent vak3-label-brutohuur">Brutohuur</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1113-51</span>
+                <InputNumber @bind-Value="Data.Code1113" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2113-21</span>
+                <InputNumber @bind-Value="Data.Code2113" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 5c. Materieel/outillering -->
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent">c) materieel en outillering:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1115-49</span>
+                <span class="vak3-ki-label">KI</span>
+                <InputNumber @bind-Value="Data.Code1115" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2115-19</span>
+                <InputNumber @bind-Value="Data.Code2115" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+    <div class="vak3-subrow">
+        <div class="vak3-q-text vak3-indent vak3-label-brutohuur">Brutohuur</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1116-48</span>
+                <InputNumber @bind-Value="Data.Code1116" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2116-18</span>
+                <InputNumber @bind-Value="Data.Code2116" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Erfpacht/opstal -->
+    <div class="vak3-question">
+        <div class="vak3-q-text">6. Bedragen verkregen bij de vestiging of overdracht van een recht van erfpacht of opstal, of van een gelijkaardige onroerende recht:</div>
+        <div class="vak3-col-duo">
+            <div class="vak3-input-cell">
+                <span class="vak2-code">1114-50</span>
+                <InputNumber @bind-Value="Data.Code1114" class="vak3-amount-input" />
+            </div>
+            <div class="vak3-input-cell">
+                <span class="vak2-code">2114-20</span>
+                <InputNumber @bind-Value="Data.Code2114" class="vak3-amount-input" />
+            </div>
+        </div>
+    </div>
+
+    <!-- ── B. BUITENLANDSE OORSPRONG ── -->
+    <div class="vak2-section-header" style="margin-top:1rem">
+        B. INKOMSTEN VAN BUITENLANDSE OORSPRONG
+    </div>
+    <div class="vak3-buitenland-hint">
+        Vermeld het land, de code waarnaast ze zijn ingevuld (bv. 1106-58) en het bedrag van uw in rubriek A hiervoor vermelde inkomsten van buitenlandse oorsprong waarvoor u aanspraak maakt op:
+    </div>
+
+    <!-- B1 Vrijstelling -->
+    <div class="vak3-buitenland-section">
+        <div class="vak3-buitenland-title">1. vrijstelling met progressievoorbehoud.</div>
+        @foreach (var rij in Data.Vrijstelling)
+        {
+            <div class="vak3-buitenland-row">
+                <div class="vak3-buitenland-cell">
+                    <label>Land:</label>
+                    <InputText @bind-Value="rij.Land" class="vak3-text-input" />
+                </div>
+                <div class="vak3-buitenland-cell">
+                    <label>Code:</label>
+                    <InputText @bind-Value="rij.Code" class="vak3-text-input vak3-code-input" />
+                </div>
+                <div class="vak3-buitenland-cell">
+                    <label>Bedrag:</label>
+                    <InputNumber @bind-Value="rij.Bedrag" class="vak3-amount-input" />
+                </div>
+            </div>
+        }
+        <button type="button" class="vak3-add-btn" @onclick="() => Data.Vrijstelling.Add(new())">+ rij</button>
+    </div>
+
+    <!-- B2 Vermindering -->
+    <div class="vak3-buitenland-section">
+        <div class="vak3-buitenland-title">2. vermindering van de belasting tot de helft.</div>
+        @foreach (var rij in Data.Vermindering)
+        {
+            <div class="vak3-buitenland-row">
+                <div class="vak3-buitenland-cell">
+                    <label>Land:</label>
+                    <InputText @bind-Value="rij.Land" class="vak3-text-input" />
+                </div>
+                <div class="vak3-buitenland-cell">
+                    <label>Code:</label>
+                    <InputText @bind-Value="rij.Code" class="vak3-text-input vak3-code-input" />
+                </div>
+                <div class="vak3-buitenland-cell">
+                    <label>Bedrag:</label>
+                    <InputNumber @bind-Value="rij.Bedrag" class="vak3-amount-input" />
+                </div>
+            </div>
+        }
+        <button type="button" class="vak3-add-btn" @onclick="() => Data.Vermindering.Add(new())">+ rij</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakIIIData Data { get; set; } = new();
+}
+

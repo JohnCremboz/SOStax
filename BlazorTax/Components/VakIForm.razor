@@ -1,0 +1,78 @@
+<EditForm Model="Data" class="vak4-form">
+
+    <div class="vak2-title">Vak I &ndash; BANKREKENING EN TELEFOONNUMMER(S)</div>
+
+    <!-- ══ 1. BANKREKENING ══ -->
+    <div class="vak2-section-header">1. BANKREKENING</div>
+
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            <p>
+                In vak I van uw aangifte is uw bankrekeningnummer (IBAN) afgedrukt dat de belastingdienst momenteel kent.
+                Als u dat rekeningnummer verder wil laten gebruiken, mag u hieronder niets invullen.
+            </p>
+            <p>
+                Als er geen rekeningnummer afgedrukt is, als het niet (meer) correct is of als u een andere rekening wil gebruiken,
+                vul dan hieronder het <strong>nieuwe IBAN-rekeningnummer</strong> in (en, als het een buitenlandse rekening betreft, ook de BIC-code).
+            </p>
+            <div class="vak9-alert">
+                &#9650; <strong>Opgelet:</strong> u mag alleen een rekening op <strong>uw eigen naam</strong> (of op naam van uzelf én uw partner) vermelden.
+                Vermeld <em>nooit</em> een rekening op naam van een derde!
+            </div>
+        </div>
+    </div>
+
+    <div class="vak4-subrow">
+        <div class="vak4-q-text vak4-indent">Nieuw IBAN-rekeningnummer:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell" style="flex:2">
+                <InputText @bind-Value="Data.Iban" class="vak3-text-input" placeholder="BExx xxxx xxxx xxxx" maxlength="34" />
+            </div>
+            <div class="vak4-input-cell"></div>
+        </div>
+    </div>
+
+    <div class="vak4-subrow">
+        <div class="vak4-q-text vak4-indent">BIC-code <em>(alleen verplicht bij een buitenlandse rekening)</em>:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell" style="flex:2">
+                <InputText @bind-Value="Data.Bic" class="vak3-text-input" placeholder="bijv. GEBABEBB" maxlength="11" />
+            </div>
+            <div class="vak4-input-cell"></div>
+        </div>
+    </div>
+
+    <!-- ══ 2. TELEFOONNUMMER(S) ══ -->
+    <div class="vak2-section-header">2. TELEFOONNUMMER(S)</div>
+
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            Hier kunt u het (de) telefoonnummer(s) vermelden waarop het belastingkantoor u en/of uw partner tijdens de kantooruren kan bereiken.
+        </div>
+    </div>
+
+    <div class="vak4-header-row">
+        <div></div>
+        <div class="vak4-col-head">Belastingplichtige</div>
+        <div class="vak4-col-head">Partner</div>
+    </div>
+
+    <div class="vak4-subrow">
+        <div class="vak4-q-text vak4-indent">Telefoonnummer:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell">
+                <InputText @bind-Value="Data.TelefoonBelastingplichtige" class="vak3-text-input" placeholder="+32 ..." maxlength="20" />
+            </div>
+            <div class="vak4-input-cell">
+                <InputText @bind-Value="Data.TelefoonPartner" class="vak3-text-input" placeholder="+32 ..." maxlength="20" />
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakIData Data { get; set; } = new();
+}
+
+

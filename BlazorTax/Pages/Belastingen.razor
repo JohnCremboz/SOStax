@@ -1,0 +1,300 @@
+﻿@page "/belastingen"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@using BlazorTax.Belastingen.Berekening
+
+<PageTitle>Belastingen</PageTitle>
+
+<h1>Personenbelasting AJ 2026</h1>
+<p class="text-muted">Structuur met tabs per vak uit <code>structuur.md</code>.</p>
+
+@if (!string.IsNullOrWhiteSpace(_errorMessage))
+{
+    <div class="alert alert-danger" role="alert">@_errorMessage</div>
+}
+else if (_vakSections.Count == 0)
+{
+    <p>Structuur laden...</p>
+}
+else
+{
+    <ul class="nav nav-tabs vak-tabs" role="tablist">
+        @for (var i = 0; i < _vakSections.Count; i++)
+        {
+            var vak = _vakSections[i];
+            var isActive = i == _activeTabIndex;
+            var tabHref = Navigation.GetUriWithQueryParameter("vak", vak.Code);
+            var tabIndex = i;
+
+            <li class="nav-item" role="presentation">
+                <a href="@tabHref"
+                   class="nav-link @(isActive ? "active" : null)"
+                   role="tab"
+                   aria-selected="@isActive"
+                   data-tab-index="@tabIndex"
+                   @onclick:preventDefault
+                   @onclick="() => SelectTab(tabIndex)">
+                    @vak.Code
+                </a>
+            </li>
+        }
+    </ul>
+
+    var activeSection = _vakSections[_activeTabIndex];
+
+    <section class="vak-panel">
+        <h2>@activeSection.Title</h2>
+
+        @if (string.Equals(activeSection.Code, "VAK I", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakIForm Data="_state.VakI" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK II", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakIIForm Data="_state.VakII" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK III", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakIIIForm Data="_state.VakIII" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK IV", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakIVForm Data="_state.VakIV" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK V", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakVForm Data="_state.VakV" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK VI", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakVIForm Data="_state.VakVI" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK VII", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakVIIForm Data="_state.VakVII" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK VIII", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakVIIIForm Data="_state.VakVIII" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK IX", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakIXForm Data="_state.VakIX" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK X", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakXForm Data="_state.VakX" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK XI", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakXIForm Data="_state.VakXI" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK XII", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakXIIForm Data="_state.VakXII" />
+        }
+        else if (string.Equals(activeSection.Code, "VAK XIII", StringComparison.OrdinalIgnoreCase))
+        {
+            <VakXIIIForm Data="_state.VakXIII" />
+        }
+        else
+        {
+            <pre class="vak-markdown">@activeSection.Content</pre>
+        }
+
+        <div class="vak-nav-footer">
+            @{
+                var prevIndex = _activeTabIndex - 1;
+                var nextIndex = _activeTabIndex + 1;
+                var prevHref = prevIndex >= 0 ? Navigation.GetUriWithQueryParameter("vak", _vakSections[prevIndex].Code) : "#";
+                var nextHref = nextIndex < _vakSections.Count ? Navigation.GetUriWithQueryParameter("vak", _vakSections[nextIndex].Code) : "#";
+            }
+            <a href="@prevHref"
+               class="btn btn-outline-secondary @(_activeTabIndex == 0 ? "disabled" : null)"
+               aria-disabled="@(_activeTabIndex == 0)"
+               @onclick:preventDefault
+               @onclick="async () => { if (_activeTabIndex > 0) await SelectTab(prevIndex); }">
+                &#8592; @(prevIndex >= 0 ? _vakSections[prevIndex].Code : "")
+            </a>
+            <span class="vak-nav-counter">@(_activeTabIndex + 1) / @_vakSections.Count</span>
+            <a href="@nextHref"
+               class="btn btn-outline-primary @(_activeTabIndex == _vakSections.Count - 1 ? "disabled" : null)"
+               aria-disabled="@(_activeTabIndex == _vakSections.Count - 1)"
+               @onclick:preventDefault
+               @onclick="async () => { if (_activeTabIndex < _vakSections.Count - 1) await SelectTab(nextIndex); }">
+                @(nextIndex < _vakSections.Count ? _vakSections[nextIndex].Code : "") &#8594;
+            </a>
+        </div>
+    </section>
+
+    <!-- Berekeningsinstellingen -->
+    <section class="berekening-settings mt-4 p-3 border rounded">
+        <h3>⚙️ Berekeningsinstellingen</h3>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Gewest</label>
+                <select class="form-select" @bind="_state.Gewest">
+                    <option value="@Gewest.Vlaanderen">Vlaanderen</option>
+                    <option value="@Gewest.Wallonie">Wallonië</option>
+                    <option value="@Gewest.Brussel">Brussel</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Gemeentebelasting (%)</label>
+                <input type="number" class="form-control" step="0.01" min="0" max="15"
+                       @bind="_state.GemeentebelastingPercentage" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Type beroep</label>
+                <select class="form-select" @bind="_state.TypeBeroep">
+                    <option value="@TypeBeroep.Werknemer">Werknemer</option>
+                    <option value="@TypeBeroep.Baten">Baten</option>
+                    <option value="@TypeBeroep.Bedrijfsleider">Bedrijfsleider</option>
+                    <option value="@TypeBeroep.MeewerkendeEchtgenoot">Meewerkende echtgenoot</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Netto inkomen partner</label>
+                <input type="number" class="form-control" step="0.01" min="0"
+                       @bind="_state.NettoInkomenPartner" />
+            </div>
+        </div>
+        <div class="mt-3">
+            <button type="button" class="btn btn-primary btn-lg" @onclick="Bereken">
+                🧮 Bereken belasting
+            </button>
+        </div>
+    </section>
+
+    <!-- Resultaat -->
+    @if (_gezamenlijkResultaat is not null)
+    {
+        <section class="berekening-resultaat mt-4 p-3 border rounded">
+            <h3>📊 Berekeningsresultaat</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Omschrijving</th>
+                        <th class="text-end">Bedrag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var regel in _gezamenlijkResultaat.DetailRegels)
+                    {
+                        <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
+                            <td>@regel.Omschrijving</td>
+                            <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
+                                @regel.Bedrag.ToString("N2") €
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="alert @(_gezamenlijkResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
+                @if (_gezamenlijkResultaat.Eindresultaat >= 0)
+                {
+                    <strong>Te betalen: @_gezamenlijkResultaat.Eindresultaat.ToString("N2") €</strong>
+                }
+                else
+                {
+                    <strong>Terug te krijgen: @((-_gezamenlijkResultaat.Eindresultaat).ToString("N2")) €</strong>
+                }
+            </div>
+        </section>
+    }
+}
+
+@code {
+    private readonly List<VakSection> _vakSections = [];
+    private string? _errorMessage;
+    private int _activeTabIndex;
+    private readonly AangifteState _state = new();
+    private GezamenlijkResultaat? _gezamenlijkResultaat;
+
+    [SupplyParameterFromQuery(Name = "vak")]
+    public string? VakCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var markdown = await Http.GetStringAsync("/belastingen/structuur.md");
+
+            if (markdown.Contains("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
+            {
+                _errorMessage = "De markdown is niet als statisch bestand gevonden (fallback naar index.html).";
+                return;
+            }
+
+            _vakSections.AddRange(VakStructuurParser.ParseSections(markdown)
+                .Where(v => !string.Equals(v.Code, "VAK V C", StringComparison.OrdinalIgnoreCase)));
+            TrySetActiveTabFromQuery();
+
+            if (_vakSections.Count == 0)
+            {
+                _errorMessage = "Geen VAK-secties gevonden in structuur.md.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Structuur kon niet geladen worden: {ex.Message}";
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        TrySetActiveTabFromQuery();
+    }
+
+    private void TrySetActiveTabFromQuery()
+    {
+        if (_vakSections.Count == 0 || string.IsNullOrWhiteSpace(VakCode))
+        {
+            return;
+        }
+
+        var index = _vakSections.FindIndex(vak => string.Equals(vak.Code, VakCode, StringComparison.OrdinalIgnoreCase));
+        if (index >= 0)
+        {
+            _activeTabIndex = index;
+        }
+    }
+
+    private async Task SelectTab(int tabIndex)
+    {
+        if (tabIndex < 0 || tabIndex >= _vakSections.Count) return;
+
+        _activeTabIndex = tabIndex;
+
+        var targetVakCode = _vakSections[tabIndex].Code;
+        var uriWithQuery = Navigation.GetUriWithQueryParameter("vak", targetVakCode);
+        Navigation.NavigateTo(uriWithQuery, replace: true);
+
+        await JS.InvokeVoidAsync("scrollTabIntoView", $"[data-tab-index='{tabIndex}']");
+    }
+
+    private void Bereken()
+    {
+        var calculator = new GezamenlijkeBerekeningCalculator();
+        var input = new BerekeningInput
+        {
+            VakII = _state.VakII,
+            VakIII = _state.VakIII,
+            VakIV = _state.VakIV,
+            VakV = _state.VakV,
+            VakVIII = _state.VakVIII,
+            VakIX = _state.VakIX,
+            VakX = _state.VakX,
+            VakXII = _state.VakXII,
+            Gewest = _state.Gewest,
+            GemeentebelastingPercentage = _state.GemeentebelastingPercentage,
+            TypeBeroep = _state.TypeBeroep,
+            NettoInkomenPartner = _state.NettoInkomenPartner,
+        };
+        _gezamenlijkResultaat = calculator.Bereken(input);
+    }
+}
+
+
