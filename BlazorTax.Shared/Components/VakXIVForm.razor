@@ -1,0 +1,27 @@
+<EditForm Model="Data" class="vak4-form">
+
+    <div class="vak2-title">Vak XIV &ndash; BEROEP EN ONDERNEMINGSNUMMER</div>
+
+    <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
+
+    <div class="vak4-row">
+        <div class="vak4-q-text">Beroep:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><InputText @bind-Value="Data.Beroep1" class="vak3-text-input" /></div>
+            <div class="vak4-input-cell"><InputText @bind-Value="Data.Beroep2" class="vak3-text-input" /></div>
+        </div>
+    </div>
+
+    <div class="vak4-row">
+        <div class="vak4-q-text">Ondernemingsnummer:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><InputText @bind-Value="Data.Ondernemingsnummer1" class="vak3-text-input" /></div>
+            <div class="vak4-input-cell"><InputText @bind-Value="Data.Ondernemingsnummer2" class="vak3-text-input" /></div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakXIVData Data { get; set; } = new();
+}

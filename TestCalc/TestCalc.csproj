@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorTax\BlazorTax.csproj" />
+    <ProjectReference Include="..\BlazorTax.Shared\BlazorTax.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

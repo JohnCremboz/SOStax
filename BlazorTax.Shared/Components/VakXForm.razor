@@ -1,0 +1,200 @@
+<EditForm Model="Data" class="vak4-form">
+
+    <div class="vak2-title">Vak X &ndash; (UITGAVEN DIE RECHT GEVEN OP) BELASTINGVERMINDERINGEN</div>
+
+    <!-- ══ I. GEWESTELIJK ══ -->
+    <div class="vak2-section-header">I. GEWESTELIJK</div>
+    <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
+
+    <!-- A. Reno-overeenkomsten -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">
+            A. In het kader van geregistreerde en uiterlijk op 31.12.2018 gesloten renovatieovereenkomsten ter beschikking gestelde bedragen die in aanmerking komen voor belastingvermindering<br />
+            Totaal van de ter beschikking gestelde bedragen:
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">1. op 1.1.2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3332-63</span><InputNumber @bind-Value="Data.Code3332" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4332-33</span><InputNumber @bind-Value="Data.Code4332" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">2. op 31.12.2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">3333-62</span><InputNumber @bind-Value="Data.Code3333" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">4333-32</span><InputNumber @bind-Value="Data.Code4333" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- B. SVK -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            B. Belastingvermindering voor uitgaven gedaan in 2017 of in 2018 voor de vernieuwing van een woning verhuurd via een sociaal verhuurkantoor:
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">3395-97</span><InputNumber @bind-Value="Data.Code3395" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"></div>
+        </div>
+    </div>
+
+    <!-- ══ II. FEDERAAL ══ -->
+    <div class="vak2-section-header">II. FEDERAAL</div>
+    <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
+
+    <!-- A. Giften -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">A. Giften:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1394-61</span><InputNumber @bind-Value="Data.Code1394" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"></div>
+        </div>
+    </div>
+
+    <!-- B. Kinderoppas -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            B. Voor belastingvermindering in aanmerking komend bedrag van de uitgaven voor kinderoppas:
+            <div class="vak9-alert" style="margin-top:4px">
+                &#9432; Max. <strong>&euro;&nbsp;16,90 per oppasdag per kind</strong>. Alleen voor kinderen jonger dan 12 jaar (of zwaar gehandicapt) tijdens de oppas buiten normale lesuren. Gebruik attest 281.86 van de opvanginstantie.
+            </div>
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1384-71</span><InputNumber @bind-Value="Data.Code1384" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"></div>
+        </div>
+    </div>
+
+    <!-- C. Aanvullend pensioen zelfstandigen -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            C. Bijdragen en premies voor een aanvullend pensioen voor zelfstandigen:
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1342-16</span><InputNumber @bind-Value="Data.Code1342" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2342-83</span><InputNumber @bind-Value="Data.Code2342" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <!-- D. Pensioensparen -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            D. Betalingen voor pensioensparen:
+            <div class="vak9-alert" style="margin-top:4px">
+                &#9432; Max. <strong>&euro;&nbsp;1.050</strong> per belastingplichtige (of max. <strong>&euro;&nbsp;1.350</strong> als u uw kredietinstelling vooraf uitdrukkelijk koos voor het hogere plafond). Onverenigbaar met rubriek E, 1 (werkgeversaandelen). Attest 281.60 ter beschikking houden.
+            </div>
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1361-94</span><InputNumber @bind-Value="Data.Code1361" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2361-64</span><InputNumber @bind-Value="Data.Code2361" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <!-- E. Kapitaalaandelen werknemer/dochter -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">
+            E. Betalingen voor het verwerven van nieuwe kapitaalaandelen van een in de Europese Economische Ruimte gevestigde vennootschap <strong>waarin u werknemer bent</strong> of waarvan uw <strong>vennootschap-werkgeefster</strong> een (klein)dochteronderneming is:
+            <div class="vak9-alert" style="margin-top:4px">
+                &#9432; Max. <strong>&euro;&nbsp;820</strong> per belastingplichtige. Onverenigbaar met pensioensparen (rubriek D). Aandelen moeten op 31.12.2025 nog in uw bezit zijn.
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">1. Betalingen gedaan in 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1362-93</span><InputNumber @bind-Value="Data.Code1362" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2362-63</span><InputNumber @bind-Value="Data.Code2362" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">2. Terugname van de voorheen verkregen belastingvermindering door de vervroegde overdracht van aandelen in 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1366-89</span><InputNumber @bind-Value="Data.Code1366" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2366-59</span><InputNumber @bind-Value="Data.Code2366" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- F. Startende ondernemingen -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">
+            F. Betalingen die recht geven op de belastingvermindering voor het verwerven van nieuwe aandelen van startende ondernemingen:
+            <div class="vak9-alert" style="margin-top:4px">
+                &#9432; Max. <strong>&euro;&nbsp;100.000</strong> per belastingplichtige, gezamenlijk voor F&nbsp;(30&nbsp;%&nbsp;+&nbsp;45&nbsp;%) en G&nbsp;(25&nbsp;%). Aandelen ten minste <strong>48 maanden</strong> in bezit houden. Geldig attest (bv. 281.85) ter beschikking houden.
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">1. Betalingen die recht geven op de vermindering van 30%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1318-40</span><InputNumber @bind-Value="Data.Code1318" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2318-10</span><InputNumber @bind-Value="Data.Code2318" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">2. Betalingen die recht geven op de vermindering van 45%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1320-38</span><InputNumber @bind-Value="Data.Code1320" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2320-08</span><InputNumber @bind-Value="Data.Code2320" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">3. Terugname van de voorheen werkelijk verkregen belastingvermindering:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1328-30</span><InputNumber @bind-Value="Data.Code1328" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2328-97</span><InputNumber @bind-Value="Data.Code2328" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- G. Groeibedrijven -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">
+            G. Betalingen die recht geven op de belastingvermindering voor het verwerven van nieuwe aandelen van groeibedrijven:
+            <div class="vak9-alert" style="margin-top:4px">
+                &#9432; Max. <strong>&euro;&nbsp;100.000</strong> per belastingplichtige, <em>samen</em> met rubriek F. Vermindering van <strong>25&nbsp;%</strong>. Aandelen ten minste <strong>48 maanden</strong> in bezit houden.
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">1. Betalingen gedaan in 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1334-24</span><InputNumber @bind-Value="Data.Code1334" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2334-91</span><InputNumber @bind-Value="Data.Code2334" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">2. Terugname van de voorheen werkelijk verkregen belastingvermindering:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1343-15</span><InputNumber @bind-Value="Data.Code1343" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2343-82</span><InputNumber @bind-Value="Data.Code2343" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- H. COVID-19 -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            H. Terugname van de voorheen werkelijk verkregen belastingvermindering voor het verwerven van nieuwe aandelen van ondernemingen die hun omzet sterk hebben zien dalen door de Covid-19-pandemie, in 2020 en/of 2021 gedane betalingen:
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1377-78</span><InputNumber @bind-Value="Data.Code1377" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2377-48</span><InputNumber @bind-Value="Data.Code2377" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <!-- I. Ontwikkelingsfondsen -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">
+            I. Terugname van de voorheen werkelijk verkregen belastingvermindering voor het verwerven van aandelen van erkende ontwikkelingsfondsen door de vervroegde overdracht in 2025:
+        </div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1376-79</span><InputNumber @bind-Value="Data.Code1376" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2376-49</span><InputNumber @bind-Value="Data.Code2376" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakXData Data { get; set; } = new();
+}
+
