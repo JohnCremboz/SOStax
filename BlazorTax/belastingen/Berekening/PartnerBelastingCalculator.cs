@@ -220,7 +220,15 @@ public static class PartnerBelastingCalculator
             r.DetailRegels.Add(new("Federale verminderingen", -r.FederaleVerminderingen));
 
         r.SaldoFederaal = Math.Max(r.GereduceerdeStaat - r.FederaleVerminderingen, 0);
-        r.SaldoGewestelijk = r.GewestelijkeOpcentiemen;
+
+        // ── 8b. Gewestelijke verminderingen ─────────────────────────────
+        r.GewestelijkeVerminderingen = GewestelijkeVerminderingenCalculator.Bereken(
+            inkomen, gewest, r.NettoBelastbaarInkomen);
+
+        if (r.GewestelijkeVerminderingen > 0)
+            r.DetailRegels.Add(new("Gewestelijke verminderingen", -r.GewestelijkeVerminderingen));
+
+        r.SaldoGewestelijk = Math.Max(r.GewestelijkeOpcentiemen - r.GewestelijkeVerminderingen, 0);
 
         // Afzonderlijke belasting toevoegen (buiten progressief systeem)
         r.TotaleBelasting = r.SaldoFederaal + r.SaldoGewestelijk + r.BelastingAfzonderlijk;

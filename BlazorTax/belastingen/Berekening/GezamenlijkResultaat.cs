@@ -54,6 +54,7 @@ public class PartnerResultaat
     public decimal FederaleVerminderingen { get; set; }
     public decimal SaldoFederaal { get; set; }
     public decimal GewestelijkeOpcentiemen { get; set; }
+    public decimal GewestelijkeVerminderingen { get; set; }
 
     // Totaal
     public decimal TotaleBelasting { get; set; }

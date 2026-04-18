@@ -92,6 +92,26 @@ public class PartnerInkomen
     public decimal Deel2Bedrijfsvoorheffing { get; init; }
     public decimal Deel2RoerendeVoorheffing { get; init; }
 
+    // ── Gewestelijke verminderingen (Vak IX) ─────────────────────────────
+    // Geïntegreerde woonbonus (2016–2019)
+    public decimal GeintWoonbonusInteresten { get; init; }
+    public decimal GeintWoonbonusKapitaal { get; init; }
+    public decimal GeintWoonbonusPremies { get; init; }
+    public int GeintWoonbonusKinderen { get; init; }
+    public string? GeintWoonbonusDatumLening { get; init; }
+
+    // Gewestelijke woonbonus (2005–2015)
+    public decimal WoonbonusInteresten { get; init; }
+    public decimal WoonbonusPremies { get; init; }
+
+    // Bouwsparen / langetermijnsparen (gewestelijk)
+    public decimal BouwsparenKapitaal { get; init; }
+    public decimal BouwsparenPremies { get; init; }
+
+    // Federaal langetermijnsparen (niet-eigen woning)
+    public decimal FederaalLTKapitaal { get; init; }
+    public decimal FederaalLTPremies { get; init; }
+
     /// <summary>
     /// Extraheert de gegevens van partner 1 (Code1xxx) uit de vakdata.
     /// </summary>
@@ -100,7 +120,7 @@ public class PartnerInkomen
         VakXVData? vakXV = null, VakXVIData? vakXVI = null,
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
-        VakXXIData? vakXXI = null)
+        VakXXIData? vakXXI = null, VakIXData? vakIX = null)
     {
         return new PartnerInkomen
         {
@@ -187,6 +207,19 @@ public class PartnerInkomen
             // ── Deel 2: Voorheffingen zelfstandigen (Vak XIX) ───────
             Deel2Bedrijfsvoorheffing = vakXIX?.Code1758 ?? 0,
             Deel2RoerendeVoorheffing = vakXIX?.Code1756 ?? 0,
+
+            // ── Gewestelijke verminderingen (Vak IX) ─────────────────
+            GeintWoonbonusInteresten = (vakIX?.Code3138 ?? 0),
+            GeintWoonbonusKapitaal = (vakIX?.Code3355 ?? 0) + (vakIX?.Code3356 ?? 0),
+            GeintWoonbonusPremies = (vakIX?.Code3351 ?? 0) + (vakIX?.Code3352 ?? 0),
+            GeintWoonbonusKinderen = vakIX?.Code3142 ?? 0,
+            GeintWoonbonusDatumLening = vakIX?.Code3140,
+            WoonbonusInteresten = (vakIX?.Code3150 ?? 0) + (vakIX?.Code3146 ?? 0),
+            WoonbonusPremies = (vakIX?.Code3151 ?? 0) + (vakIX?.Code3152 ?? 0),
+            BouwsparenKapitaal = (vakIX?.Code3358 ?? 0),
+            BouwsparenPremies = (vakIX?.Code3353 ?? 0) + (vakIX?.Code3354 ?? 0),
+            FederaalLTKapitaal = (vakIX?.Code1358 ?? 0),
+            FederaalLTPremies = (vakIX?.Code1353 ?? 0),
         };
     }
 
@@ -198,7 +231,7 @@ public class PartnerInkomen
         VakXVData? vakXV = null, VakXVIData? vakXVI = null,
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
-        VakXXIData? vakXXI = null)
+        VakXXIData? vakXXI = null, VakIXData? vakIX = null)
     {
         return new PartnerInkomen
         {
@@ -285,6 +318,20 @@ public class PartnerInkomen
             // ── Deel 2: Voorheffingen zelfstandigen (Vak XIX) ───────
             Deel2Bedrijfsvoorheffing = vakXIX?.Code2758 ?? 0,
             Deel2RoerendeVoorheffing = vakXIX?.Code2756 ?? 0,
+
+            // ── Gewestelijke verminderingen (Vak IX) ─────────────────
+            GeintWoonbonusInteresten = (vakIX?.Code4138 ?? 0),
+            GeintWoonbonusKapitaal = (vakIX?.Code4355 ?? 0) + (vakIX?.Code4356 ?? 0),
+            GeintWoonbonusPremies = (vakIX?.Code4351 ?? 0) + (vakIX?.Code4352 ?? 0),
+            GeintWoonbonusKinderen = vakIX?.Code4142 ?? 0,
+            GeintWoonbonusDatumLening = vakIX?.Code4140,
+            // Woonbonus 2005-2015: geen 4xxx codes — enkel belastingplichtige
+            WoonbonusInteresten = 0,
+            WoonbonusPremies = 0,
+            BouwsparenKapitaal = (vakIX?.Code4358 ?? 0),
+            BouwsparenPremies = (vakIX?.Code4353 ?? 0) + (vakIX?.Code4354 ?? 0),
+            FederaalLTKapitaal = (vakIX?.Code2358 ?? 0),
+            FederaalLTPremies = (vakIX?.Code2353 ?? 0),
         };
     }
 

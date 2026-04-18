@@ -162,11 +162,29 @@ public static class TaxConstants2026
     public const decimal MaxVrijstellingSpaardepositos = 1_020m; // bevroren
     public const decimal VrijstellingDividenden = 833m; // bevroren
 
-    // ── Woonbonus Vlaanderen ────────────────────────────────────────────────
-    public const decimal WoonbonusVlBasis2014 = 2_280m;
-    public const decimal WoonbonusVlBasis2015 = 1_520m;
-    public const decimal WoonbonusVlVerhoging10j = 760m;
-    public const decimal WoonbonusVlExtraKinderen = 80m;
+    // ── Gewestelijke belastingverminderingen ────────────────────────────────
+    // Alle bedragen bevroren door indexatiestop AJ2026–AJ2030
+
+    // Geïntegreerde woonbonus (Vlaanderen, leningen 2016–2019): 40%
+    public const decimal GeintWoonbonusBasis = 1_520m;
+    public const decimal GeintWoonbonusVerhoging10j = 760m;
+    public const decimal GeintWoonbonusExtraKinderen = 80m;  // bij ≥3 kinderen op datum contract
+    public const decimal GeintWoonbonusPercentage = 0.40m;
+
+    // Gewestelijke woonbonus (Vlaanderen, leningen 2005–2014): 40%
+    public const decimal WoonbonusBasis2005_2014 = 2_280m;
+    // Gewestelijke woonbonus (Vlaanderen, leningen 2015): 40%
+    public const decimal WoonbonusBasis2015 = 1_520m;
+    public const decimal WoonbonusVerhoging10j = 760m;
+    public const decimal WoonbonusExtraKinderen = 80m;
+    public const decimal WoonbonusPercentage = 0.40m;
+
+    // Bouwsparen / langetermijnsparen gewestelijk (leningen vóór 2005): 30%
+    public const decimal BouwsparenMaxKorf = 2_350m;
+    public const decimal BouwsparenPercentage = 0.30m;
+
+    // Chèque habitat (Wallonië, leningen 2016–2019) — basisvermindering
+    public const decimal ChequeHabitatBasis = 1_520m;
 
     // ── Langetermijnsparen (federaal, bevroren op AJ2025) ───────────────────
     public const decimal MaxLangetermijnsparenFederaalAbsoluut = 2_450m;

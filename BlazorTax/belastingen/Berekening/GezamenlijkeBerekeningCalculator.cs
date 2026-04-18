@@ -20,12 +20,12 @@ public class GezamenlijkeBerekeningCalculator
         var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(
             input.VakIV, input.VakV, input.VakX,
             input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-            input.VakXIX, input.VakXX, input.VakXXI);
+            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX);
         var inkomen2 = isGehuwd
             ? PartnerInkomen.ExtractPartner(
                 input.VakIV, input.VakV, input.VakX,
                 input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-                input.VakXIX, input.VakXX, input.VakXXI)
+                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX)
             : new PartnerInkomen { Label = "Partner" };
 
         // ── 2. Fase 1: bruto → netto per partner ───────────────────────
@@ -222,6 +222,8 @@ public class GezamenlijkeBerekeningCalculator
             if (r1.VerminderingVervangingsinkomen > 0)
                 regels.Add(new("Verm. vervangingsinkomen", -r1.VerminderingVervangingsinkomen));
             regels.Add(new("Federaal", r1.SaldoFederaal));
+            if (r1.GewestelijkeVerminderingen > 0)
+                regels.Add(new("Gewest. verminderingen", -r1.GewestelijkeVerminderingen));
             regels.Add(new("Gewestelijk", r1.SaldoGewestelijk));
 
             regels.Add(new("═══ PARTNER ═══", 0, true));
@@ -256,6 +258,8 @@ public class GezamenlijkeBerekeningCalculator
             if (r2.VerminderingVervangingsinkomen > 0)
                 regels.Add(new("Verm. vervangingsinkomen", -r2.VerminderingVervangingsinkomen));
             regels.Add(new("Federaal", r2.SaldoFederaal));
+            if (r2.GewestelijkeVerminderingen > 0)
+                regels.Add(new("Gewest. verminderingen", -r2.GewestelijkeVerminderingen));
             regels.Add(new("Gewestelijk", r2.SaldoGewestelijk));
 
             regels.Add(new("═══ GECOMBINEERD ═══", 0, true));
