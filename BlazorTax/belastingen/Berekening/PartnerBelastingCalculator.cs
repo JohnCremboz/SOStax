@@ -270,8 +270,28 @@ public static class PartnerBelastingCalculator
 
         r.SaldoGewestelijk = Math.Max(r.GewestelijkeOpcentiemen - r.GewestelijkeVerminderingen, 0);
 
+        // ── 8c. Vermeerdering wegens geen/onvoldoende voorafbetalingen ───
+        // Alleen voor zelfstandigen (Deel 2 inkomen). Art. 157-168 WIB.
+        // Gemeentebelasting wordt berekend op belasting ZONDER vermeerdering.
+        if (inkomen.HeeftDeel2Inkomen)
+        {
+            decimal belastingBasis = r.SaldoFederaal + r.SaldoGewestelijk;
+            decimal basis106 = belastingBasis * TaxConstants2026.VermeerderingMultiplier;
+            decimal vaCredit = Math.Min(inkomen.Deel2Bedrijfsvoorheffing, basis106);
+            decimal vermBruto = Math.Max(basis106 - vaCredit, 0) * TaxConstants2026.VermeerderingPercentage;
+            decimal verm = Math.Round(vermBruto * TaxConstants2026.VermeerderingReductie, 2);
+
+            // Minimum-drempel: als vermeerdering < max(€100, 0,5% × belasting) → geen vermeerdering
+            decimal drempel = Math.Max(TaxConstants2026.VermeerderingMinimum,
+                                       belastingBasis * TaxConstants2026.VermeerderingMinimumPct);
+            r.Vermeerdering = verm >= drempel ? verm : 0;
+
+            if (r.Vermeerdering > 0)
+                r.DetailRegels.Add(new("Vermeerdering (geen VA)", r.Vermeerdering));
+        }
+
         // Afzonderlijke belasting toevoegen (buiten progressief systeem)
-        r.TotaleBelasting = r.SaldoFederaal + r.SaldoGewestelijk + r.BelastingAfzonderlijk;
+        r.TotaleBelasting = r.SaldoFederaal + r.SaldoGewestelijk + r.BelastingAfzonderlijk + r.Vermeerdering;
 
         // ── 9. Voorheffingen & kredieten ────────────────────────────────
         r.Bedrijfsvoorheffing = inkomen.Bedrijfsvoorheffing

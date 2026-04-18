@@ -59,6 +59,9 @@ public class PartnerResultaat
     // Totaal
     public decimal TotaleBelasting { get; set; }
 
+    // Vermeerdering wegens geen voorafbetaling (zelfstandigen)
+    public decimal Vermeerdering { get; set; }
+
     // Afzonderlijk belastbaar (Deel 2)
     public decimal Afzonderlijk10Pct { get; set; }
     public decimal Afzonderlijk12_5Pct { get; set; }

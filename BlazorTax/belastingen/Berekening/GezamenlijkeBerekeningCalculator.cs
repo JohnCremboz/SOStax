@@ -105,7 +105,7 @@ public class GezamenlijkeBerekeningCalculator
         resultaat.TotaalSaldoFederaal = r1.SaldoFederaal + r2.SaldoFederaal;
         resultaat.TotaalSaldoGewestelijk = r1.SaldoGewestelijk + r2.SaldoGewestelijk;
 
-        // Gemeentebelasting op gecombineerd (federaal + gewestelijk)
+        // Gemeentebelasting op (federaal + gewestelijk) ZONDER vermeerdering
         resultaat.GemeentebelastingPercentage = input.GemeentebelastingPercentage;
         resultaat.BasisGemeentebelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk;
         resultaat.Gemeentebelasting = resultaat.BasisGemeentebelasting * input.GemeentebelastingPercentage / 100m;
@@ -131,13 +131,15 @@ public class GezamenlijkeBerekeningCalculator
         decimal totaalRV = inkomen1.Deel2RoerendeVoorheffing + inkomen2.Deel2RoerendeVoorheffing;
         decimal totaalWerkbonus = r1.BelastingkredietWerkbonus + r2.BelastingkredietWerkbonus;
 
-        // Totale belasting (inclusief afzonderlijk belastbaar)
+        // Totale belasting (inclusief afzonderlijk belastbaar en vermeerdering)
         decimal totaalAfzonderlijk = r1.BelastingAfzonderlijk + r2.BelastingAfzonderlijk;
+        decimal totaalVermeerdering = r1.Vermeerdering + r2.Vermeerdering;
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal
                                 + resultaat.TotaalSaldoGewestelijk
                                 + resultaat.Gemeentebelasting
                                 + Math.Max(resultaat.BBSZSaldo, 0)
-                                + totaalAfzonderlijk;
+                                + totaalAfzonderlijk
+                                + totaalVermeerdering;
 
         // Aftrekken
         decimal totaalAftrek = totaalBV + totaalRV + totaalWerkbonus;
@@ -225,6 +227,8 @@ public class GezamenlijkeBerekeningCalculator
             if (r1.GewestelijkeVerminderingen > 0)
                 regels.Add(new("Gewest. verminderingen", -r1.GewestelijkeVerminderingen));
             regels.Add(new("Gewestelijk", r1.SaldoGewestelijk));
+            if (r1.Vermeerdering > 0)
+                regels.Add(new("Vermeerdering (geen VA)", r1.Vermeerdering));
 
             regels.Add(new("═══ PARTNER ═══", 0, true));
             regels.Add(new("Bruto inkomen", r2.BrutoTotaal));
@@ -261,6 +265,8 @@ public class GezamenlijkeBerekeningCalculator
             if (r2.GewestelijkeVerminderingen > 0)
                 regels.Add(new("Gewest. verminderingen", -r2.GewestelijkeVerminderingen));
             regels.Add(new("Gewestelijk", r2.SaldoGewestelijk));
+            if (r2.Vermeerdering > 0)
+                regels.Add(new("Vermeerdering (geen VA)", r2.Vermeerdering));
 
             regels.Add(new("═══ GECOMBINEERD ═══", 0, true));
         }
@@ -281,9 +287,11 @@ public class GezamenlijkeBerekeningCalculator
         if (totaalAfzonderlijk > 0)
             regels.Add(new("Belasting afzonderlijk", totaalAfzonderlijk));
 
+        decimal totaalVermeerdering = r1.Vermeerdering + r2.Vermeerdering;
+
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk
                                 + resultaat.Gemeentebelasting + Math.Max(resultaat.BBSZSaldo, 0)
-                                + totaalAfzonderlijk;
+                                + totaalAfzonderlijk + totaalVermeerdering;
         regels.Add(new("Totale belasting", totaleBelasting, true));
 
         if (totaalBV > 0)

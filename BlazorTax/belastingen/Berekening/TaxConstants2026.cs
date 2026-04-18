@@ -203,4 +203,11 @@ public static class TaxConstants2026
     public const decimal MaxVrijstellingBijkomendPersoneel = 20_100m;
     public const decimal MaxSociaalPassiefPerMaand = 1_830m;
     public const decimal MaxToekenningMeewerkPercentage = 0.30m; // 30% netto winst
+
+    // ── Vermeerdering wegens geen/onvoldoende voorafbetalingen (art. 157-168 WIB) ──
+    public const decimal VermeerderingMultiplier = 1.06m;   // 106% basisbedrag
+    public const decimal VermeerderingPercentage = 0.09m;   // 9% vermeerdering
+    public const decimal VermeerderingReductie = 0.90m;     // herleid tot 90%
+    public const decimal VermeerderingMinimum = 100m;       // drempel: max(€100, 0,5% belasting)
+    public const decimal VermeerderingMinimumPct = 0.005m;  // 0,5% van de belasting
 }
