@@ -1,5 +1,32 @@
+/* ── SOStax Material Design Theme – Rood-Wit ──────────────────────────────── */
+:root {
+    --sostax-red: #C62828;
+    --sostax-red-dark: #8E0000;
+    --sostax-red-light: #FF5F52;
+    --sostax-red-50: #FFEBEE;
+    --sostax-red-100: #FFCDD2;
+    --sostax-white: #FFFFFF;
+    --sostax-grey-50: #FAFAFA;
+    --sostax-grey-100: #F5F5F5;
+    --sostax-grey-200: #EEEEEE;
+    --sostax-grey-300: #E0E0E0;
+    --sostax-grey-600: #757575;
+    --sostax-grey-800: #424242;
+    --sostax-grey-900: #212121;
+    --sostax-shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    --sostax-shadow-2: 0 3px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.10);
+    --sostax-shadow-3: 0 6px 12px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.10);
+    --sostax-radius: 8px;
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--sostax-grey-900);
+    background-color: var(--sostax-grey-100);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
 }
 
 h1:focus {
@@ -7,17 +34,49 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: var(--sostax-red);
+}
+
+a:hover, .btn-link:hover {
+    color: var(--sostax-red-dark);
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: var(--sostax-red);
+    border-color: var(--sostax-red);
+    border-radius: var(--sostax-radius);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 1.25rem;
+    box-shadow: var(--sostax-shadow-1);
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--sostax-red-dark);
+    border-color: var(--sostax-red-dark);
+    box-shadow: var(--sostax-shadow-2);
+}
+
+.btn-outline-primary {
+    color: var(--sostax-red);
+    border-color: var(--sostax-red);
+    border-radius: var(--sostax-radius);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--sostax-red);
+    color: #fff;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--sostax-red-light);
+}
+
+.form-control:focus {
+    border-color: var(--sostax-red);
 }
 
 .content {
@@ -29,11 +88,11 @@ a, .btn-link {
 }
 
 .invalid {
-    outline: 1px solid red;
+    outline: 1px solid var(--sostax-red);
 }
 
 .validation-message {
-    color: red;
+    color: var(--sostax-red);
 }
 
 #blazor-error-ui {
@@ -85,7 +144,7 @@ a, .btn-link {
     }
 
         .loading-progress circle:last-child {
-            stroke: #1b6ec2;
+            stroke: var(--sostax-red);
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }
@@ -567,7 +626,7 @@ code {
 .vak2-radio {
     margin-top: 0.18rem;
     flex-shrink: 0;
-    accent-color: #1b6ec2;
+    accent-color: var(--sostax-red);
     width: 1rem;
     height: 1rem;
 }
@@ -659,5 +718,116 @@ code {
 .vak2-note {
     font-size: 0.78rem;
     color: #b44;
+}
+
+/* ── SOStax Material Components ───────────────────────────────────────────── */
+.sostax-hero {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    background: linear-gradient(135deg, var(--sostax-red) 0%, var(--sostax-red-dark) 100%);
+    color: #fff;
+    border-radius: var(--sostax-radius);
+    box-shadow: var(--sostax-shadow-2);
+    margin-bottom: 1rem;
+}
+
+.sostax-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin: 0.5rem 0 0.25rem;
+}
+
+.sostax-hero h1 strong {
+    font-weight: 700;
+}
+
+.sostax-hero .lead {
+    font-weight: 300;
+    font-size: 1.1rem;
+    opacity: 0.92;
+}
+
+.sostax-hero-icon {
+    font-size: 3rem;
+    opacity: 0.9;
+}
+
+.sostax-card {
+    background: var(--sostax-white);
+    border-radius: var(--sostax-radius);
+    box-shadow: var(--sostax-shadow-1);
+    padding: 1.25rem 1.5rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.sostax-card:hover {
+    box-shadow: var(--sostax-shadow-2);
+}
+
+.sostax-card h5 {
+    color: var(--sostax-red);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+/* Material-stijl tabs */
+.vak-tabs .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: var(--sostax-grey-600);
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding: 0.65rem 1rem;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.vak-tabs .nav-link:hover {
+    color: var(--sostax-red);
+    border-bottom-color: var(--sostax-red-100);
+    background: transparent;
+}
+
+.vak-tabs .nav-link.active {
+    color: var(--sostax-red);
+    border-bottom-color: var(--sostax-red);
+    background: transparent;
+    font-weight: 500;
+}
+
+/* Material-stijl vak-panel */
+.vak-panel {
+    border: none;
+    border-top: none;
+    padding: 1.25rem;
+    background-color: var(--sostax-white);
+    border-radius: 0 0 var(--sostax-radius) var(--sostax-radius);
+    box-shadow: var(--sostax-shadow-1);
+}
+
+/* Material input styling */
+input[type="number"],
+input[type="text"],
+select {
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+    border-color: var(--sostax-red);
+    outline: none;
+}
+
+/* Material floating labels */
+.form-floating > label {
+    color: var(--sostax-grey-600);
+}
+
+.form-floating > .form-control:focus ~ label {
+    color: var(--sostax-red);
 }
 

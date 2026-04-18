@@ -1,0 +1,871 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        
+        
+            
+        
+
+
+
+
+
+
+
+
+
+
+  
+    <title>Aangifte Vak XVII - Tax-Calc</title>
+  
+  
+  
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="format-detection" content="telephone=no">
+
+<link href="/taxcalc2025/static/css/responsive/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/responsive/fin_style.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/responsive/font-awesome.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/responsive/myminfin.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/common.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/general.css" rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/cat_general.css"
+ rel="stylesheet" type="text/css">
+<link href="/taxcalc2025/static/css/update.css" rel="stylesheet" type="text/css">
+
+<link href="/taxcalc2025/static/css/wacom.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="/taxcalc2025/static/css/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="/taxcalc2025/static/css/font-awesome.min.css" type="text/css" media="print">
+
+
+
+
+<script src="/taxcalc2025/static/js/responsive/jquery.min.js"></script>
+<script src="/taxcalc2025/static/js/jquery-ui.js"></script>
+<script src="/taxcalc2025/static/js/common.js"></script>
+<script src="/taxcalc2025/static/js/mysoapclient.js"></script>
+<script src="/taxcalc2025/static/js/responsive/bootstrap.min.js"></script>
+<script src="/taxcalc2025/static/js/responsive/fin-js.js"></script>
+<script src="/taxcalc2025/static/js/responsive/html5shiv.min.js"></script>
+<script src="/taxcalc2025/static/js/responsive/respond.min.js"></script>
+
+
+
+        
+
+
+
+
+
+
+
+
+
+<script>
+    function onLoadExecute() {
+        var newLocation = isReturnConfirm('null', '', '/taxcalc2025/app/anonymousnull');
+        if (newLocation.length > 0) window.location = newLocation;
+        else goToAnchor("#cadreXVII");
+    }
+</script>
+
+        
+            
+
+
+
+
+
+<script src="/taxcalc2025/static/js/common.js"></script>
+
+
+
+<script>
+    function alertConfirmContinue(askConfirmation) {
+        var newLocation = "/taxcalc2025/static/nl/survey/survey_letter.pdf";
+        if (askConfirmation == "true") {
+            if (newLocation.length > 0) newWindow(newLocation, "", 1080, 800, "yes", "yes");
+        }
+    }
+</script>
+
+
+    <script>
+        alertConfirmContinue('false');
+    </script>
+
+
+
+
+
+        
+    </head>
+    <body onload="onLoadExecute()" style="background-color: white;">
+    <header>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="be-header" class="with-line">
+    <div class="row be-header-inner">
+        <div class="container">
+            <div class="region region-be-header">
+            <div><a id="skiplink" class="offscreen btn-md btn-fin01" href="#bodyContent">Naar de pagina</a></div>
+                <div class="block block-locale col-xs-6 col-sm-4 col-md-6 clearfix">
+                    <div class="language-switcher-locale-url">
+                         
+                    </div>
+                </div>
+                <div id="block-kanselarij-be-header" class="block block-kanselarij col-xs-6 col-sm-8 col-md-6 text-right clearfix nopadding">
+                    <div>
+                        <span class="hidden-xs">Andere informatie en diensten van de overheid:</span>
+                        <a class="underlinedLink" title="belgium.be" href="http://www.belgium.be/nl" target=_blank>http://www.belgium.be/nl</a>
+                        <img alt="Logo of the Belgian government" class="img-responsive" src="/taxcalc2025/static/images/responsive/be-logo.gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <p style="font-size: large; font-weight: bold;color: red;">
+                Opgelet: met deze versie van Tax-Calc kunt u enkel aangiften indienen voor aanslagjaar 2025, inkomsten 2024.
+            </p>
+            
+            
+            
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row nomargin bg_dots_deg">
+    <div class="container">
+        <div class="left header">
+            <div class="fin-logo">
+                <a href="http://finances.belgium.be/nl" target="_blank"><img height="71" alt="Finbel's logo" src="/taxcalc2025/static/images/responsive/_tow_logo.png"/></a>
+            </div>
+        </div>
+        <div class="right header">
+            <div class="login">
+                
+            </div>
+            <div class="njr">
+                <img alt="Belgian-s colors" class="njr" src="/taxcalc2025/static/images/responsive/_fin_njr.gif">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<table style="width:100%;text-align: center;">
+    <tr>
+        <td>
+            <span style="color:red">
+                
+                    Dit is een simulator, die toelaat anoniem uw belastingsaanslag te berekenen. De gegevens worden niet bijgehouden en de aangifte kan niet ingediend worden.
+                
+            </span>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <nav>
+        <div>
+            <div class="navbar navbar-default nopadding">
+                <ul class="nav navbar-nav" style="width: 65%;">
+                    <li style="text-align: center">
+                        
+                            
+                            
+                        
+
+
+
+
+
+
+
+
+
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="
+                                
+                                    javascript:submitForm(document.forms.cadreform,'/taxcalc2025/app/anonymous/private/common/logoff.do')
+                                
+                                
+                            " style="text-transform: none; color: #007DFF;" title="Terug naar het Federaal Portaal" onclick=""><object style="vertical-align:middle" type="image/svg+xml" data="/taxcalc2025/static/images/responsive/IconsTOW-01_back.svg" height="30" width="30" tabindex="-1">
+        <img src="/taxcalc2025/static/images/responsive/IconsTOW-01_back.png" height="30" width="30" alt=""/>
+    </object>
+    Beëindigen</a>
+
+
+                    </li>
+                    <li style="text-align: center">
+                        
+                            
+                            
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="
+                                
+                                    
+                                    
+                                        javascript:submitForm(document.forms.cadreform,'/taxcalc2025/app/anonymous/private/taxform/calculateTaxForm.do')
+                                    
+                                
+                            " style="text-transform: none; color: #007DFF;" title="Berekenen van de belastingen" onclick=""><object style="vertical-align:middle" type="image/svg+xml" data="/taxcalc2025/static/images/responsive/IconsTOW-03_calculate.svg" height="30" width="30" tabindex="-1">
+        <img src="/taxcalc2025/static/images/responsive/IconsTOW-03_calculate.png" height="30" width="30" alt=""/>
+    </object>
+    Berekenen van de belastingen</a>
+
+                    </li>
+                    
+                </ul>
+                <ul class="nav navbar-nav" style="float: right;width: 35%;">
+                    <li style="text-align: center; float: right;">
+                        
+                            
+                            
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="#" style="text-transform: none; color: #007DFF;" title="Help Tax-Calc" onclick="
+                                window.open('https://financien.belgium.be/nl/E-services/Tax-on-web');
+                            "><object style="vertical-align:middle" type="image/svg+xml" data="/taxcalc2025/static/images/responsive/IconsTOW-06_help.svg" height="30" width="30" tabindex="-1">
+        <img src="/taxcalc2025/static/images/responsive/IconsTOW-06_help.png" height="30" width="30" alt=""/>
+    </object>
+    Help</a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <nav>
+        <div>
+            <div id="navbar2" class="navbar navbar-default-primary no-padding">
+                <ul class="nav navbar-nav" style="width:100%">
+                    <li style="width:12%;text-align:center;"><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayPart1.do')" title="Deel 1" id="PART1">Deel 1</a></li>
+
+                    
+                        <li style="width:12%;text-align:center;" class="active"><a href='#'>Deel 2</a></li>
+
+                    
+                    
+                    
+                    <li style="width:17%;text-align:center;"><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayQuickEncoding.do')" id="QUICK">Snelle invoering</a></li>
+
+                    
+                    <li style="width:15%;text-align:center;"><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/showValidationResult.do')" id="VALIDATE_ALL">Lijst met fouten</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+
+
+
+<div class="container">
+    <nav>
+        <div>
+            <div id="navbar3" class="navbar navbar-default nopadding">
+                
+                <ul class="nav navbar-nav">
+                    
+                        <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXIV.do')" title="Beroep en ondernemingsnummer" id="CADRE_XIV">Vak XIV</a></li>
+                    
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXV.do')" title="Diverse inkomsten" id="CADRE_XV">Vak XV</a></li>
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXVI.do')" title="Bezoldigingen van bedrijfsleiders" id="CADRE_XVI">Vak XVI</a></li>
+                    <li class="active"><a href='#'>Vak XVII</a></li>
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXVIII.do')" title="Baten van vrije beroepen, ambten, posten of andere winstgevende bezigheden" id="CADRE_XVIII">Vak XVIII</a></li>
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXIX.do')" title="Verrekenbare bestanddelen in verband met een zelfstandige beroepswerkzaamheid" id="CADRE_XIX">Vak XIX</a></li>
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXX.do')" title="Bezoldigingen van meewerkende echtgenoten en wettelijk samenwonende partners" id="CADRE_XX">Vak XX</a></li>
+                    <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXXI.do')" title="Winst en baten van een vorige beroepswerkzaamheid" id="CADRE_XXI">Vak XXI</a></li>
+                    
+                        <li><a href="javascript:submitForm(document.forms.cadreform, '/taxcalc2025/app/anonymous/private/taxform/displayCadreXXII.do')" title="Eerste vestiging als zelfstandige" id="CADRE_XXII">Vak XXII</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+
+    </header>
+    <div id="bodyContent">
+        
+
+
+
+
+
+
+
+
+<form name="cadreform" method="post" action="/taxcalc2025/app/anonymous/private/taxform/validateCadreXVII.do"><div><input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="7bd069e9c81c5b888e319be365f22ff4"></div>
+    <div class="container"><div style="margin-right: 2%;margin-left:2%;"><input type="hidden" name="redisplay" value="Cadre_XVII"><input type="hidden" name="cadreAnchor" value="cadreXVII"><input type="hidden" name="notesRelativeRubrique" value=""><table style="width:100%;"><thead><tr><th colspan="3"></th><th colspan="2" style="width:12%;"></th><th></th><th colspan="2" style="width:12%;"></th></tr></thead><tbody><tr><td colspan="8"><h2 class="title">Vak XVII - WINST UIT NIJVERHEIDS-, HANDELS- OF LANDBOUWONDERNEMINGEN</h2></td></tr><tr><td colspan="8"><div id='errorcount'></div></td></tr><tr><td colspan="8"><hr class="fin-dark"/></td></tr>
+        
+        
+
+
+
+
+
+
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_1');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>1.</b></td><td style="vertical-align:top;" ><b>Brutowinst van de eigenlijke exploitatie:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1600"><b>1600</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1600" maxlength="11" value="" id="text_c1600" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2600" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_2');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>2.</b></td><td style="vertical-align:top;" ><b>Voorheen vrijgestelde winst die belastbaar wordt (behalve meerwaarden):</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1601"><b>1601</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1601" maxlength="11" value="" id="text_c1601" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2601" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_3');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>3.</b></td><td style="vertical-align:top;" ><b>Financiële opbrengsten:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1602"><b>1602</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1602" maxlength="11" value="" id="text_c1602" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2602" value=""/></td></tr>
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_4');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>4.</b></td><td style="vertical-align:top;" ><b>Meerwaarden (na aftrek van werkelijke kosten van overdracht als u kiest voor de aftrek van uw werkelijke beroepskosten):</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">a)</td><td style="vertical-align:top;" >die afzonderlijk belastbaar zijn (tegen 16,5 %):</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1603"><b>1603</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1603" maxlength="11" value="" id="text_c1603" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2603" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">b)</td><td style="vertical-align:top;" >die gezamenlijk belastbaar zijn:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1604"><b>1604</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1604" maxlength="11" value="" id="text_c1604" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2604" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_5');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>5.</b></td><td style="vertical-align:top;" ><b>Winst die overeenstemt met de voorheen afgetrokken werkelijke kosten van overdracht van activa waarop u in het belastbare tijdperk een (al dan niet belastbare) meerwaarde hebt verwezenlijkt <em>(niet in te vullen als u de toepassing van het wettelijk forfait wenst):</em></b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1615"><b>1615</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1615" maxlength="11" value="" id="text_c1615" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2615" value=""/></td></tr>
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_6');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>6.</b></td><td style="vertical-align:top;" ><b>Vergoedingen:</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">a)</td><td style="vertical-align:top;" >die afzonderlijk belastbaar zijn tegen 12,5 %:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1607"><b>1607</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1607" maxlength="11" value="" id="text_c1607" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2607" value=""/></td></tr>
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">b)</td><td style="vertical-align:top;" >die afzonderlijk belastbaar zijn tegen 16,5 %:</td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+<tr ><td style="padding-left:60px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">1)</td><td style="vertical-align:top;" >financiële uitkeringen in het kader van het COVID-19-overbruggingsrecht (die niet als vervangingsinkomsten belastbaar zijn):</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1636"><b>1636</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1636" maxlength="11" value="" id="text_c1636" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2636" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:60px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">2)</td><td style="vertical-align:top;" >andere:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1605"><b>1605</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1605" maxlength="11" value="" id="text_c1605" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2605" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">c)</td><td style="vertical-align:top;" >die afzonderlijk belastbaar zijn tegen 33 %:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1618"><b>1618</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1618" maxlength="11" value="" id="text_c1618" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2618" value=""/></td></tr>
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">d)</td><td style="vertical-align:top;" >die gezamenlijk belastbaar zijn:</td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+<tr ><td style="padding-left:60px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">1)</td><td style="vertical-align:top;" >financiële uitkeringen in het kader van het COVID-19-overbruggingsrecht (die niet als vervangingsinkomsten belastbaar zijn):</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1637"><b>1637</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1637" maxlength="11" value="" id="text_c1637" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2637" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:60px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">2)</td><td style="vertical-align:top;" >andere:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1610"><b>1610</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1610" maxlength="11" value="" id="text_c1610" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2610" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_7');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>7.</b></td><td style="vertical-align:top;" ><b>Sociale bijdragen :</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1632"><b>1632</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1632" maxlength="11" value="" id="text_c1632" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2632" value=""/></td></tr>
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_8');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>8.</b></td><td style="vertical-align:top;" ><b>Andere beroepskosten <em>(niet invullen als u de toepassing van het wettelijk forfait wenst):</em></b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">a)</td><td style="vertical-align:top;" >kosten van overdracht van activa waarop u in het belastbare tijdperk een (al dan niet belastbare) meerwaarde hebt verwezenlijkt:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1620"><b>1620</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1620" maxlength="11" value="" id="text_c1620" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2620" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">b)</td><td style="vertical-align:top;" >bezoldigingen toegekend aan uw meewerkende echtgenoot of wettelijk samenwonende partner:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1611"><b>1611</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1611" maxlength="11" value="" id="text_c1611" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2611" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">c)</td><td style="vertical-align:top;" >andere dan die vermeld onder a en b:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1606"><b>1606</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1606" maxlength="11" value="" id="text_c1606" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2606" value=""/></td></tr>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_9');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>9.</b></td><td style="vertical-align:top;" ><b>Vrijgestelde waardeverminderingen en voorzieningen:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1609"><b>1609</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1609" maxlength="11" value="" id="text_c1609" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2609" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_10');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>10.</b></td><td style="vertical-align:top;" ><b>Vrijstelling van opbrengsten geboekt als gevolg van de vaststelling van een minnelijk akkoord of de homologatie van een reorganisatieplan:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1608"><b>1608</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1608" maxlength="11" value="" id="text_c1608" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2608" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_11');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>11.</b></td><td style="vertical-align:top;" ><b>Vrijstelling voor bijkomend personeel voor de uitvoer en de integrale<br>kwaliteitszorg:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1612"><b>1612</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1612" maxlength="11" value="" id="text_c1612" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2612" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_12');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>12.</b></td><td style="vertical-align:top;" ><b>Vrijstelling voor ander bijkomend personeel:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1613"><b>1613</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1613" maxlength="11" value="" id="text_c1613" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2613" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_13');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>13.</b></td><td style="vertical-align:top;" ><b>Vrijstelling voor tewerkstelling van stagiairs:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1622"><b>1622</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1622" maxlength="11" value="" id="text_c1622" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2622" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_14');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>14.</b></td><td style="vertical-align:top;" ><b>Vrijstelling voor sociaal passief ingevolge het eenheidsstatuut:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1633"><b>1633</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1633" maxlength="11" value="" id="text_c1633" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2633" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_15');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>15.</b></td><td style="vertical-align:top;" ><b>Investeringsaftrek:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1614"><b>1614</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1614" maxlength="11" value="" id="text_c1614" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2614" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_16');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>16.</b></td><td style="vertical-align:top;" ><b>Toekenning aan uw meewerkende echtgenoot of wettelijk samenwonende partner <em>(bedrag alleen inschrijven in de kolom van de echtgenoot of partner die de toekenning doet)</em>:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1616"><b>1616</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1616" maxlength="11" value="" id="text_c1616" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2616" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_17');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>17.</b></td><td style="vertical-align:top;" ><b>Totaal van de in de rubrieken 1, 2, 3, 4, b, 5 en 6, d vermelde inkomsten verkregen als zelfstandige in bijberoep of als student-zelfstandige:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1617"><b>1617</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1617" maxlength="11" value="" id="text_c1617" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2617" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;position:absolute;margin-left:-15px;"><a href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391#anchor_18');"><img src="/taxcalc2025/static/images/icon_info.gif" class="icon_wizard" title="Fiscale toelichting" alt="Fiscale toelichting"></a></td><td style="vertical-align:top;padding-right:5px;"><b>18.</b></td><td style="vertical-align:top;" ><b>Als u in vak IV, D, 1, a, 1, a, 1; D, 1, a, 1, c, 1 of D, 1, a, 2 aanvullende vergoedingen of in vak IV, E, 2, a, 1 of E, 2, b, 1 een bedrijfstoeslag hebt ingevuld, en u na uw ontslag bij uw gewezen werkgever, het werk hebt hervat als zelfstandige, vermeld dan hier het totaal van de in de rubrieken 1, 2, 3, 4, b, 5 en 6, d hierboven vermelde inkomsten uit die nieuwe zelfstandige activiteit:</b></td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1621"><b>1621</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1621" maxlength="11" value="" id="text_c1621" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2621" value=""/></td></tr>
+
+
+
+    
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>19.</b></td><td style="vertical-align:top;" ><b>Vermeld het land, de code waarnaast ze zijn ingevuld (bv. 1600) en het bedrag van de in de rubrieken 1 tot 16 vermelde inkomsten van buitenlandse oorsprong (en de bijhorende kosten) waarvoor u aanspraak maakt op <span style="color: #C60C08">belastingvermindering voor inkomsten van buitenlandse oorsprong</span> (inkomsten die zijn vrijgesteld met progressievoorbehoud of waarvoor de belasting tot de helft wordt verminderd) of op de  <span style="color: #C60C08">afzonderlijke belasting tegen de aanslagvoet van 0 %</span>:</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+    <tr>
+        <td colspan="8">
+            <a id="counterRevEtrgs1"></a>
+        </td>
+    </tr>
+    
+    <tr><td colspan="2"><table><tr ><td style="padding-right:10px;padding-left:40px;">Land:</td><td style="padding-right:10px;"><select name="text_Q300_1" id="text_Q300_1" style="width:190px;" class="country-select"><option value="" data-descr="(leeg)"></option><option value="ZY" title="INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)">INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)</option><optgroup label="Aangrenzende landen"><option value="DE" title="DUITSLAND">DUITSLAND</option><option value="FR" title="FRANKRIJK">FRANKRIJK</option><option value="LU" title="LUXEMBURG">LUXEMBURG</option><option value="NL" title="NEDERLAND">NEDERLAND</option></optgroup><optgroup label="Rest van Europa"><option value="AX" title="ÅLANDSEILANDEN">ÅLANDSEILANDEN</option><option value="AL" title="ALBANIË">ALBANIË</option><option value="AD" title="ANDORRA">ANDORRA</option><option value="BA" title="BOSNIË EN HERZEGOVINA">BOSNIË EN HERZEGOVINA</option><option value="BG" title="BULGARIJE">BULGARIJE</option><option value="CY" title="CYPRUS">CYPRUS</option><option value="DK" title="DENEMARKEN">DENEMARKEN</option><option value="EE" title="ESTLAND">ESTLAND</option><option value="FO" title="FAERÖER">FAERÖER</option><option value="FI" title="FINLAND">FINLAND</option><option value="GI" title="GIBRALTAR">GIBRALTAR</option><option value="GR" title="GRIEKENLAND">GRIEKENLAND</option><option value="GG" title="GUERNSEY">GUERNSEY</option><option value="HU" title="HONGARIJE">HONGARIJE</option><option value="IE" title="IERLAND">IERLAND</option><option value="IS" title="IJSLAND">IJSLAND</option><option value="IM" title="ISLE OF MAN">ISLE OF MAN</option><option value="IT" title="ITALIË">ITALIË</option><option value="JE" title="JERSEY">JERSEY</option><option value="XK" title="KOSOVO">KOSOVO</option><option value="HR" title="KROATIË">KROATIË</option><option value="LV" title="LETLAND">LETLAND</option><option value="LI" title="LIECHTENSTEIN">LIECHTENSTEIN</option><option value="LT" title="LITOUWEN">LITOUWEN</option><option value="MK" title="MACEDONIË">MACEDONIË</option><option value="MT" title="MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)">MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)</option><option value="MD" title="MOLDAVIË">MOLDAVIË</option><option value="MC" title="MONACO">MONACO</option><option value="ME" title="MONTENEGRO">MONTENEGRO</option><option value="NO" title="NOORWEGEN">NOORWEGEN</option><option value="BV" title="NOORWEGEN BOUVET">NOORWEGEN BOUVET</option><option value="SJ" title="NOORWEGEN SPITSBERGEN EN JAN MAYEN">NOORWEGEN SPITSBERGEN EN JAN MAYEN</option><option value="UA" title="OEKRAÏNE">OEKRAÏNE</option><option value="AT" title="OOSTENRIJK">OOSTENRIJK</option><option value="PL" title="POLEN">POLEN</option><option value="PT" title="PORTUGAL">PORTUGAL</option><option value="RO" title="ROEMENIË">ROEMENIË</option><option value="RU" title="RUSLAND">RUSLAND</option><option value="SM" title="SAN MARINO">SAN MARINO</option><option value="RS" title="SERVIË">SERVIË</option><option value="SI" title="SLOVENIË">SLOVENIË</option><option value="SK" title="SLOWAKIJE">SLOWAKIJE</option><option value="ES" title="SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)">SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)</option><option value="CZ" title="TSJECHIË">TSJECHIË</option><option value="VA" title="VATICAANSTAD">VATICAANSTAD</option><option value="GB" title="VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)">VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)</option><option value="BY" title="WIT-RUSLAND">WIT-RUSLAND</option><option value="SE" title="ZWEDEN">ZWEDEN</option><option value="CH" title="ZWITSERLAND">ZWITSERLAND</option></optgroup><optgroup label="Rest van de wereld"><option value="AF" title="AFGHANISTAN">AFGHANISTAN</option><option value="DZ" title="ALGERIJE">ALGERIJE</option><option value="AS" title="AMERIKAANS-SAMOA">AMERIKAANS-SAMOA</option><option value="VI" title="AMERIKAANSE MAAGDENEILANDEN">AMERIKAANSE MAAGDENEILANDEN</option><option value="ZZ" title="ANDERE LANDEN">ANDERE LANDEN</option><option value="AO" title="ANGOLA">ANGOLA</option><option value="AI" title="ANGUILLA">ANGUILLA</option><option value="AQ" title="ANTARCTICA">ANTARCTICA</option><option value="AG" title="ANTIGUA EN BARBUDA">ANTIGUA EN BARBUDA</option><option value="AR" title="ARGENTINIË">ARGENTINIË</option><option value="AM" title="ARMENIË">ARMENIË</option><option value="AW" title="ARUBA">ARUBA</option><option value="AU" title="AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)">AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)</option><option value="HM" title="AUSTRALIË HEARD EN MCDONALDEILANDEN">AUSTRALIË HEARD EN MCDONALDEILANDEN</option><option value="AZ" title="AZERBEIDZJAN">AZERBEIDZJAN</option><option value="BS" title="BAHAMA'S">BAHAMA'S</option><option value="BH" title="BAHREIN">BAHREIN</option><option value="BD" title="BANGLADESH">BANGLADESH</option><option value="BB" title="BARBADOS">BARBADOS</option><option value="BZ" title="BELIZE">BELIZE</option><option value="BJ" title="BENIN">BENIN</option><option value="BM" title="BERMUDA">BERMUDA</option><option value="BT" title="BHUTAN">BHUTAN</option><option value="BO" title="BOLIVIA">BOLIVIA</option><option value="BQ" title="BONAIRE, SINT EUSTATIUS en SABA">BONAIRE, SINT EUSTATIUS en SABA</option><option value="BW" title="BOTSWANA">BOTSWANA</option><option value="BR" title="BRAZILIË">BRAZILIË</option><option value="IO" title="BRITS TERRITORIUM IN DE INDISCHE OCEAAN">BRITS TERRITORIUM IN DE INDISCHE OCEAAN</option><option value="VG" title="BRITSE MAAGDENEILANDEN">BRITSE MAAGDENEILANDEN</option><option value="BN" title="BRUNEI">BRUNEI</option><option value="BF" title="BURKINA FASO">BURKINA FASO</option><option value="BI" title="BURUNDI">BURUNDI</option><option value="KH" title="CAMBODJA">CAMBODJA</option><option value="CA" title="CANADA">CANADA</option><option value="CF" title="CENTRAAL-AFRIKAANSE REPUBLIEK">CENTRAAL-AFRIKAANSE REPUBLIEK</option><option value="CL" title="CHILI">CHILI</option><option value="CN" title="CHINA">CHINA</option><option value="CX" title="CHRISTMASEILAND">CHRISTMASEILAND</option><option value="CC" title="COCOSEILANDEN">COCOSEILANDEN</option><option value="CO" title="COLOMBIA">COLOMBIA</option><option value="KM" title="COMOREN">COMOREN</option><option value="CD" title="CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)">CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)</option><option value="CG" title="CONGO, REPUBLIEK (BRAZZAVILLE)">CONGO, REPUBLIEK (BRAZZAVILLE)</option><option value="CK" title="COOKEILANDEN">COOKEILANDEN</option><option value="CR" title="COSTA RICA">COSTA RICA</option><option value="CU" title="CUBA">CUBA</option><option value="CW" title="CURAÇAO">CURAÇAO</option><option value="DJ" title="DJIBOUTI">DJIBOUTI</option><option value="DM" title="DOMINICA">DOMINICA</option><option value="DO" title="DOMINICAANSE REPUBLIEK">DOMINICAANSE REPUBLIEK</option><option value="EC" title="ECUADOR">ECUADOR</option><option value="EG" title="EGYPTE">EGYPTE</option><option value="SV" title="EL SALVADOR">EL SALVADOR</option><option value="GQ" title="EQUATORIAAL-GUINEA">EQUATORIAAL-GUINEA</option><option value="ER" title="ERITREA">ERITREA</option><option value="ET" title="ETHIOPIË">ETHIOPIË</option><option value="FK" title="FALKLANDEILANDEN">FALKLANDEILANDEN</option><option value="FJ" title="FIJI">FIJI</option><option value="PH" title="FILIPIJNEN">FILIPIJNEN</option><option value="GF" title="FRANKRIJK FRANS-GUYANA">FRANKRIJK FRANS-GUYANA</option><option value="TF" title="FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN">FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN</option><option value="GP" title="FRANKRIJK GUADELOUPE">FRANKRIJK GUADELOUPE</option><option value="MQ" title="FRANKRIJK MARTINIQUE">FRANKRIJK MARTINIQUE</option><option value="NC" title="FRANKRIJK NIEUW-CALEDONIË">FRANKRIJK NIEUW-CALEDONIË</option><option value="RE" title="FRANKRIJK RÉUNION">FRANKRIJK RÉUNION</option><option value="BL" title="FRANKRIJK SAINT-BARTHÉLEMY">FRANKRIJK SAINT-BARTHÉLEMY</option><option value="MF" title="FRANKRIJK SINT-MAARTEN">FRANKRIJK SINT-MAARTEN</option><option value="PF" title="FRANS-POLYNESIË">FRANS-POLYNESIË</option><option value="GA" title="GABON">GABON</option><option value="GM" title="GAMBIA">GAMBIA</option><option value="GE" title="GEORGIË">GEORGIË</option><option value="GH" title="GHANA">GHANA</option><option value="GD" title="GRENADA">GRENADA</option><option value="GL" title="GROENLAND">GROENLAND</option><option value="GU" title="GUAM">GUAM</option><option value="GT" title="GUATEMALA">GUATEMALA</option><option value="GN" title="GUINEE">GUINEE</option><option value="GW" title="GUINEE-BISSAU">GUINEE-BISSAU</option><option value="GY" title="GUYANA">GUYANA</option><option value="HT" title="HAÏTI">HAÏTI</option><option value="HN" title="HONDURAS">HONDURAS</option><option value="HK" title="HONGKONG">HONGKONG</option><option value="IN" title="INDIA">INDIA</option><option value="ID" title="INDONESIË">INDONESIË</option><option value="IQ" title="IRAK">IRAK</option><option value="IR" title="IRAN">IRAN</option><option value="IL" title="ISRAËL">ISRAËL</option><option value="CI" title="IVOORKUST">IVOORKUST</option><option value="JM" title="JAMAICA">JAMAICA</option><option value="JP" title="JAPAN">JAPAN</option><option value="YE" title="JEMEN">JEMEN</option><option value="JO" title="JORDANIË">JORDANIË</option><option value="KY" title="KAAIMANEILANDEN">KAAIMANEILANDEN</option><option value="CV" title="KAAPVERDIË">KAAPVERDIË</option><option value="CM" title="KAMEROEN">KAMEROEN</option><option value="KZ" title="KAZACHSTAN">KAZACHSTAN</option><option value="KE" title="KENIA">KENIA</option><option value="KG" title="KIRGIZIË">KIRGIZIË</option><option value="KI" title="KIRIBATI">KIRIBATI</option><option value="UM" title="KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN">KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN</option><option value="KW" title="KOEWEIT">KOEWEIT</option><option value="LA" title="LAOS">LAOS</option><option value="LS" title="LESOTHO">LESOTHO</option><option value="LB" title="LIBANON">LIBANON</option><option value="LR" title="LIBERIA">LIBERIA</option><option value="LY" title="LIBIË">LIBIË</option><option value="MO" title="MACAU">MACAU</option><option value="MG" title="MADAGASKAR">MADAGASKAR</option><option value="MW" title="MALAWI">MALAWI</option><option value="MV" title="MALDIVEN">MALDIVEN</option><option value="MY" title="MALEISIË">MALEISIË</option><option value="ML" title="MALI">MALI</option><option value="MA" title="MAROKKO">MAROKKO</option><option value="MH" title="MARSHALLEILANDEN">MARSHALLEILANDEN</option><option value="MR" title="MAURITANIË">MAURITANIË</option><option value="MU" title="MAURITIUS">MAURITIUS</option><option value="YT" title="MAYOTTE">MAYOTTE</option><option value="MX" title="MEXICO">MEXICO</option><option value="FM" title="MICRONESIA">MICRONESIA</option><option value="MN" title="MONGOLIË">MONGOLIË</option><option value="MS" title="MONTSERRAT">MONTSERRAT</option><option value="MZ" title="MOZAMBIQUE">MOZAMBIQUE</option><option value="MM" title="MYANMAR">MYANMAR</option><option value="NA" title="NAMIBIË">NAMIBIË</option><option value="NR" title="NAURU">NAURU</option><option value="NP" title="NEPAL">NEPAL</option><option value="NI" title="NICARAGUA">NICARAGUA</option><option value="NZ" title="NIEUW-ZEELAND">NIEUW-ZEELAND</option><option value="TK" title="NIEUW-ZEELAND TOKELAU-EILANDEN">NIEUW-ZEELAND TOKELAU-EILANDEN</option><option value="NE" title="NIGER">NIGER</option><option value="NG" title="NIGERIA">NIGERIA</option><option value="NU" title="NIUE">NIUE</option><option value="KP" title="NOORD-KOREA">NOORD-KOREA</option><option value="MP" title="NOORDELIJKE MARIANEN">NOORDELIJKE MARIANEN</option><option value="NF" title="NORFOLK">NORFOLK</option><option value="UG" title="OEGANDA">OEGANDA</option><option value="UZ" title="OEZBEKISTAN">OEZBEKISTAN</option><option value="OM" title="OMAN">OMAN</option><option value="TL" title="OOST-TIMOR">OOST-TIMOR</option><option value="PK" title="PAKISTAN">PAKISTAN</option><option value="PW" title="PALAU">PALAU</option><option value="PA" title="PANAMA">PANAMA</option><option value="PG" title="PAPOEA-NIEUW-GUINEA">PAPOEA-NIEUW-GUINEA</option><option value="PY" title="PARAGUAY">PARAGUAY</option><option value="PE" title="PERU">PERU</option><option value="PN" title="PITCAIRNEILANDEN">PITCAIRNEILANDEN</option><option value="PR" title="PUERTO RICO">PUERTO RICO</option><option value="QA" title="QATAR">QATAR</option><option value="XR" title="RWANDA (verlaagd tarief)">RWANDA (verlaagd tarief)</option><option value="RW" title="RWANDA (vrijgesteld)">RWANDA (vrijgesteld)</option><option value="KN" title="SAINT KITTS EN NEVIS">SAINT KITTS EN NEVIS</option><option value="VC" title="SAINT VINCENT EN DE GRENADINES">SAINT VINCENT EN DE GRENADINES</option><option value="PM" title="SAINT-PIERRE EN MIQUELON">SAINT-PIERRE EN MIQUELON</option><option value="LC" title="SAINTLUCIA SAINT LUCIA">SAINTLUCIA SAINT LUCIA</option><option value="SB" title="SALOMONSEILANDEN">SALOMONSEILANDEN</option><option value="WS" title="SAMOA">SAMOA</option><option value="ST" title="SAO TOMÉ EN PRINCIPE">SAO TOMÉ EN PRINCIPE</option><option value="SA" title="SAOEDI-ARABIË">SAOEDI-ARABIË</option><option value="SN" title="SENEGAL">SENEGAL</option><option value="XS" title="SEYCHELLEN (verlaagd tarief)">SEYCHELLEN (verlaagd tarief)</option><option value="SC" title="SEYCHELLEN (vrijgesteld)">SEYCHELLEN (vrijgesteld)</option><option value="SL" title="SIERRA LEONE">SIERRA LEONE</option><option value="SG" title="SINGAPORE">SINGAPORE</option><option value="SX" title="SINT MAARTEN (NEDERLANDS DEEL)">SINT MAARTEN (NEDERLANDS DEEL)</option><option value="SH" title="SINT-HELENA, Ascension en Tristan da Cunha">SINT-HELENA, Ascension en Tristan da Cunha</option><option value="SD" title="SOEDAN">SOEDAN</option><option value="SO" title="SOMALIË">SOMALIË</option><option value="LK" title="SRI LANKA">SRI LANKA</option><option value="PS" title="STAAT PALESTINA">STAAT PALESTINA</option><option value="SR" title="SURINAME">SURINAME</option><option value="SZ" title="SWAZILAND">SWAZILAND</option><option value="SY" title="SYRIË">SYRIË</option><option value="TJ" title="TADZJIKISTAN">TADZJIKISTAN</option><option value="TW" title="TAIWAN">TAIWAN</option><option value="TZ" title="TANZANIA">TANZANIA</option><option value="TH" title="THAILAND">THAILAND</option><option value="TG" title="TOGO">TOGO</option><option value="TO" title="TONGA">TONGA</option><option value="TT" title="TRINIDAD EN TOBAGO">TRINIDAD EN TOBAGO</option><option value="TD" title="TSJAAD">TSJAAD</option><option value="TN" title="TUNESIË">TUNESIË</option><option value="TR" title="TURKIJE">TURKIJE</option><option value="TM" title="TURKMENISTAN">TURKMENISTAN</option><option value="TC" title="TURKS- EN CAICOSEILANDEN">TURKS- EN CAICOSEILANDEN</option><option value="TV" title="TUVALU">TUVALU</option><option value="UY" title="URUGUAY">URUGUAY</option><option value="VU" title="VANUATU">VANUATU</option><option value="VE" title="VENEZUELA">VENEZUELA</option><option value="AE" title="VERENIGDE ARABISCHE EMIRATEN">VERENIGDE ARABISCHE EMIRATEN</option><option value="US" title="VERENIGDE STATEN">VERENIGDE STATEN</option><option value="VN" title="VIETNAM">VIETNAM</option><option value="WF" title="WALLIS EN FUTUNA">WALLIS EN FUTUNA</option><option value="EH" title="WESTELIJKE SAHARA">WESTELIJKE SAHARA</option><option value="ZM" title="ZAMBIA">ZAMBIA</option><option value="ZW" title="ZIMBABWE">ZIMBABWE</option><option value="ZA" title="ZUID-AFRIKA">ZUID-AFRIKA</option><option value="GS" title="ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN">ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN</option><option value="KR" title="ZUID-KOREA">ZUID-KOREA</option><option value="SS" title="ZUID-SOEDAN">ZUID-SOEDAN</option></select></td><td style="padding-right:10px;">Code:</td><td style="padding-right:10px;"><input type="text" name="text_Q301_1" maxlength="4" value="" id="text_Q301_1" style="width:95px"></td><td style="padding-right:10px;">Bedrag:</td><td style="padding-right:10px;"><input type="text" name="text_Q302_1" maxlength="11" value="" id="text_Q302_1" style="width:95px"></td></tr><tr ><td style="padding-right:10px;padding-left:40px;"></td><td style="padding-right:10px;"><select name="text_Q300_2" id="text_Q300_2" style="width:190px;" class="country-select"><option value="" data-descr="(leeg)"></option><option value="ZY" title="INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)">INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)</option><optgroup label="Aangrenzende landen"><option value="DE" title="DUITSLAND">DUITSLAND</option><option value="FR" title="FRANKRIJK">FRANKRIJK</option><option value="LU" title="LUXEMBURG">LUXEMBURG</option><option value="NL" title="NEDERLAND">NEDERLAND</option></optgroup><optgroup label="Rest van Europa"><option value="AX" title="ÅLANDSEILANDEN">ÅLANDSEILANDEN</option><option value="AL" title="ALBANIË">ALBANIË</option><option value="AD" title="ANDORRA">ANDORRA</option><option value="BA" title="BOSNIË EN HERZEGOVINA">BOSNIË EN HERZEGOVINA</option><option value="BG" title="BULGARIJE">BULGARIJE</option><option value="CY" title="CYPRUS">CYPRUS</option><option value="DK" title="DENEMARKEN">DENEMARKEN</option><option value="EE" title="ESTLAND">ESTLAND</option><option value="FO" title="FAERÖER">FAERÖER</option><option value="FI" title="FINLAND">FINLAND</option><option value="GI" title="GIBRALTAR">GIBRALTAR</option><option value="GR" title="GRIEKENLAND">GRIEKENLAND</option><option value="GG" title="GUERNSEY">GUERNSEY</option><option value="HU" title="HONGARIJE">HONGARIJE</option><option value="IE" title="IERLAND">IERLAND</option><option value="IS" title="IJSLAND">IJSLAND</option><option value="IM" title="ISLE OF MAN">ISLE OF MAN</option><option value="IT" title="ITALIË">ITALIË</option><option value="JE" title="JERSEY">JERSEY</option><option value="XK" title="KOSOVO">KOSOVO</option><option value="HR" title="KROATIË">KROATIË</option><option value="LV" title="LETLAND">LETLAND</option><option value="LI" title="LIECHTENSTEIN">LIECHTENSTEIN</option><option value="LT" title="LITOUWEN">LITOUWEN</option><option value="MK" title="MACEDONIË">MACEDONIË</option><option value="MT" title="MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)">MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)</option><option value="MD" title="MOLDAVIË">MOLDAVIË</option><option value="MC" title="MONACO">MONACO</option><option value="ME" title="MONTENEGRO">MONTENEGRO</option><option value="NO" title="NOORWEGEN">NOORWEGEN</option><option value="BV" title="NOORWEGEN BOUVET">NOORWEGEN BOUVET</option><option value="SJ" title="NOORWEGEN SPITSBERGEN EN JAN MAYEN">NOORWEGEN SPITSBERGEN EN JAN MAYEN</option><option value="UA" title="OEKRAÏNE">OEKRAÏNE</option><option value="AT" title="OOSTENRIJK">OOSTENRIJK</option><option value="PL" title="POLEN">POLEN</option><option value="PT" title="PORTUGAL">PORTUGAL</option><option value="RO" title="ROEMENIË">ROEMENIË</option><option value="RU" title="RUSLAND">RUSLAND</option><option value="SM" title="SAN MARINO">SAN MARINO</option><option value="RS" title="SERVIË">SERVIË</option><option value="SI" title="SLOVENIË">SLOVENIË</option><option value="SK" title="SLOWAKIJE">SLOWAKIJE</option><option value="ES" title="SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)">SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)</option><option value="CZ" title="TSJECHIË">TSJECHIË</option><option value="VA" title="VATICAANSTAD">VATICAANSTAD</option><option value="GB" title="VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)">VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)</option><option value="BY" title="WIT-RUSLAND">WIT-RUSLAND</option><option value="SE" title="ZWEDEN">ZWEDEN</option><option value="CH" title="ZWITSERLAND">ZWITSERLAND</option></optgroup><optgroup label="Rest van de wereld"><option value="AF" title="AFGHANISTAN">AFGHANISTAN</option><option value="DZ" title="ALGERIJE">ALGERIJE</option><option value="AS" title="AMERIKAANS-SAMOA">AMERIKAANS-SAMOA</option><option value="VI" title="AMERIKAANSE MAAGDENEILANDEN">AMERIKAANSE MAAGDENEILANDEN</option><option value="ZZ" title="ANDERE LANDEN">ANDERE LANDEN</option><option value="AO" title="ANGOLA">ANGOLA</option><option value="AI" title="ANGUILLA">ANGUILLA</option><option value="AQ" title="ANTARCTICA">ANTARCTICA</option><option value="AG" title="ANTIGUA EN BARBUDA">ANTIGUA EN BARBUDA</option><option value="AR" title="ARGENTINIË">ARGENTINIË</option><option value="AM" title="ARMENIË">ARMENIË</option><option value="AW" title="ARUBA">ARUBA</option><option value="AU" title="AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)">AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)</option><option value="HM" title="AUSTRALIË HEARD EN MCDONALDEILANDEN">AUSTRALIË HEARD EN MCDONALDEILANDEN</option><option value="AZ" title="AZERBEIDZJAN">AZERBEIDZJAN</option><option value="BS" title="BAHAMA'S">BAHAMA'S</option><option value="BH" title="BAHREIN">BAHREIN</option><option value="BD" title="BANGLADESH">BANGLADESH</option><option value="BB" title="BARBADOS">BARBADOS</option><option value="BZ" title="BELIZE">BELIZE</option><option value="BJ" title="BENIN">BENIN</option><option value="BM" title="BERMUDA">BERMUDA</option><option value="BT" title="BHUTAN">BHUTAN</option><option value="BO" title="BOLIVIA">BOLIVIA</option><option value="BQ" title="BONAIRE, SINT EUSTATIUS en SABA">BONAIRE, SINT EUSTATIUS en SABA</option><option value="BW" title="BOTSWANA">BOTSWANA</option><option value="BR" title="BRAZILIË">BRAZILIË</option><option value="IO" title="BRITS TERRITORIUM IN DE INDISCHE OCEAAN">BRITS TERRITORIUM IN DE INDISCHE OCEAAN</option><option value="VG" title="BRITSE MAAGDENEILANDEN">BRITSE MAAGDENEILANDEN</option><option value="BN" title="BRUNEI">BRUNEI</option><option value="BF" title="BURKINA FASO">BURKINA FASO</option><option value="BI" title="BURUNDI">BURUNDI</option><option value="KH" title="CAMBODJA">CAMBODJA</option><option value="CA" title="CANADA">CANADA</option><option value="CF" title="CENTRAAL-AFRIKAANSE REPUBLIEK">CENTRAAL-AFRIKAANSE REPUBLIEK</option><option value="CL" title="CHILI">CHILI</option><option value="CN" title="CHINA">CHINA</option><option value="CX" title="CHRISTMASEILAND">CHRISTMASEILAND</option><option value="CC" title="COCOSEILANDEN">COCOSEILANDEN</option><option value="CO" title="COLOMBIA">COLOMBIA</option><option value="KM" title="COMOREN">COMOREN</option><option value="CD" title="CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)">CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)</option><option value="CG" title="CONGO, REPUBLIEK (BRAZZAVILLE)">CONGO, REPUBLIEK (BRAZZAVILLE)</option><option value="CK" title="COOKEILANDEN">COOKEILANDEN</option><option value="CR" title="COSTA RICA">COSTA RICA</option><option value="CU" title="CUBA">CUBA</option><option value="CW" title="CURAÇAO">CURAÇAO</option><option value="DJ" title="DJIBOUTI">DJIBOUTI</option><option value="DM" title="DOMINICA">DOMINICA</option><option value="DO" title="DOMINICAANSE REPUBLIEK">DOMINICAANSE REPUBLIEK</option><option value="EC" title="ECUADOR">ECUADOR</option><option value="EG" title="EGYPTE">EGYPTE</option><option value="SV" title="EL SALVADOR">EL SALVADOR</option><option value="GQ" title="EQUATORIAAL-GUINEA">EQUATORIAAL-GUINEA</option><option value="ER" title="ERITREA">ERITREA</option><option value="ET" title="ETHIOPIË">ETHIOPIË</option><option value="FK" title="FALKLANDEILANDEN">FALKLANDEILANDEN</option><option value="FJ" title="FIJI">FIJI</option><option value="PH" title="FILIPIJNEN">FILIPIJNEN</option><option value="GF" title="FRANKRIJK FRANS-GUYANA">FRANKRIJK FRANS-GUYANA</option><option value="TF" title="FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN">FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN</option><option value="GP" title="FRANKRIJK GUADELOUPE">FRANKRIJK GUADELOUPE</option><option value="MQ" title="FRANKRIJK MARTINIQUE">FRANKRIJK MARTINIQUE</option><option value="NC" title="FRANKRIJK NIEUW-CALEDONIË">FRANKRIJK NIEUW-CALEDONIË</option><option value="RE" title="FRANKRIJK RÉUNION">FRANKRIJK RÉUNION</option><option value="BL" title="FRANKRIJK SAINT-BARTHÉLEMY">FRANKRIJK SAINT-BARTHÉLEMY</option><option value="MF" title="FRANKRIJK SINT-MAARTEN">FRANKRIJK SINT-MAARTEN</option><option value="PF" title="FRANS-POLYNESIË">FRANS-POLYNESIË</option><option value="GA" title="GABON">GABON</option><option value="GM" title="GAMBIA">GAMBIA</option><option value="GE" title="GEORGIË">GEORGIË</option><option value="GH" title="GHANA">GHANA</option><option value="GD" title="GRENADA">GRENADA</option><option value="GL" title="GROENLAND">GROENLAND</option><option value="GU" title="GUAM">GUAM</option><option value="GT" title="GUATEMALA">GUATEMALA</option><option value="GN" title="GUINEE">GUINEE</option><option value="GW" title="GUINEE-BISSAU">GUINEE-BISSAU</option><option value="GY" title="GUYANA">GUYANA</option><option value="HT" title="HAÏTI">HAÏTI</option><option value="HN" title="HONDURAS">HONDURAS</option><option value="HK" title="HONGKONG">HONGKONG</option><option value="IN" title="INDIA">INDIA</option><option value="ID" title="INDONESIË">INDONESIË</option><option value="IQ" title="IRAK">IRAK</option><option value="IR" title="IRAN">IRAN</option><option value="IL" title="ISRAËL">ISRAËL</option><option value="CI" title="IVOORKUST">IVOORKUST</option><option value="JM" title="JAMAICA">JAMAICA</option><option value="JP" title="JAPAN">JAPAN</option><option value="YE" title="JEMEN">JEMEN</option><option value="JO" title="JORDANIË">JORDANIË</option><option value="KY" title="KAAIMANEILANDEN">KAAIMANEILANDEN</option><option value="CV" title="KAAPVERDIË">KAAPVERDIË</option><option value="CM" title="KAMEROEN">KAMEROEN</option><option value="KZ" title="KAZACHSTAN">KAZACHSTAN</option><option value="KE" title="KENIA">KENIA</option><option value="KG" title="KIRGIZIË">KIRGIZIË</option><option value="KI" title="KIRIBATI">KIRIBATI</option><option value="UM" title="KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN">KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN</option><option value="KW" title="KOEWEIT">KOEWEIT</option><option value="LA" title="LAOS">LAOS</option><option value="LS" title="LESOTHO">LESOTHO</option><option value="LB" title="LIBANON">LIBANON</option><option value="LR" title="LIBERIA">LIBERIA</option><option value="LY" title="LIBIË">LIBIË</option><option value="MO" title="MACAU">MACAU</option><option value="MG" title="MADAGASKAR">MADAGASKAR</option><option value="MW" title="MALAWI">MALAWI</option><option value="MV" title="MALDIVEN">MALDIVEN</option><option value="MY" title="MALEISIË">MALEISIË</option><option value="ML" title="MALI">MALI</option><option value="MA" title="MAROKKO">MAROKKO</option><option value="MH" title="MARSHALLEILANDEN">MARSHALLEILANDEN</option><option value="MR" title="MAURITANIË">MAURITANIË</option><option value="MU" title="MAURITIUS">MAURITIUS</option><option value="YT" title="MAYOTTE">MAYOTTE</option><option value="MX" title="MEXICO">MEXICO</option><option value="FM" title="MICRONESIA">MICRONESIA</option><option value="MN" title="MONGOLIË">MONGOLIË</option><option value="MS" title="MONTSERRAT">MONTSERRAT</option><option value="MZ" title="MOZAMBIQUE">MOZAMBIQUE</option><option value="MM" title="MYANMAR">MYANMAR</option><option value="NA" title="NAMIBIË">NAMIBIË</option><option value="NR" title="NAURU">NAURU</option><option value="NP" title="NEPAL">NEPAL</option><option value="NI" title="NICARAGUA">NICARAGUA</option><option value="NZ" title="NIEUW-ZEELAND">NIEUW-ZEELAND</option><option value="TK" title="NIEUW-ZEELAND TOKELAU-EILANDEN">NIEUW-ZEELAND TOKELAU-EILANDEN</option><option value="NE" title="NIGER">NIGER</option><option value="NG" title="NIGERIA">NIGERIA</option><option value="NU" title="NIUE">NIUE</option><option value="KP" title="NOORD-KOREA">NOORD-KOREA</option><option value="MP" title="NOORDELIJKE MARIANEN">NOORDELIJKE MARIANEN</option><option value="NF" title="NORFOLK">NORFOLK</option><option value="UG" title="OEGANDA">OEGANDA</option><option value="UZ" title="OEZBEKISTAN">OEZBEKISTAN</option><option value="OM" title="OMAN">OMAN</option><option value="TL" title="OOST-TIMOR">OOST-TIMOR</option><option value="PK" title="PAKISTAN">PAKISTAN</option><option value="PW" title="PALAU">PALAU</option><option value="PA" title="PANAMA">PANAMA</option><option value="PG" title="PAPOEA-NIEUW-GUINEA">PAPOEA-NIEUW-GUINEA</option><option value="PY" title="PARAGUAY">PARAGUAY</option><option value="PE" title="PERU">PERU</option><option value="PN" title="PITCAIRNEILANDEN">PITCAIRNEILANDEN</option><option value="PR" title="PUERTO RICO">PUERTO RICO</option><option value="QA" title="QATAR">QATAR</option><option value="XR" title="RWANDA (verlaagd tarief)">RWANDA (verlaagd tarief)</option><option value="RW" title="RWANDA (vrijgesteld)">RWANDA (vrijgesteld)</option><option value="KN" title="SAINT KITTS EN NEVIS">SAINT KITTS EN NEVIS</option><option value="VC" title="SAINT VINCENT EN DE GRENADINES">SAINT VINCENT EN DE GRENADINES</option><option value="PM" title="SAINT-PIERRE EN MIQUELON">SAINT-PIERRE EN MIQUELON</option><option value="LC" title="SAINTLUCIA SAINT LUCIA">SAINTLUCIA SAINT LUCIA</option><option value="SB" title="SALOMONSEILANDEN">SALOMONSEILANDEN</option><option value="WS" title="SAMOA">SAMOA</option><option value="ST" title="SAO TOMÉ EN PRINCIPE">SAO TOMÉ EN PRINCIPE</option><option value="SA" title="SAOEDI-ARABIË">SAOEDI-ARABIË</option><option value="SN" title="SENEGAL">SENEGAL</option><option value="XS" title="SEYCHELLEN (verlaagd tarief)">SEYCHELLEN (verlaagd tarief)</option><option value="SC" title="SEYCHELLEN (vrijgesteld)">SEYCHELLEN (vrijgesteld)</option><option value="SL" title="SIERRA LEONE">SIERRA LEONE</option><option value="SG" title="SINGAPORE">SINGAPORE</option><option value="SX" title="SINT MAARTEN (NEDERLANDS DEEL)">SINT MAARTEN (NEDERLANDS DEEL)</option><option value="SH" title="SINT-HELENA, Ascension en Tristan da Cunha">SINT-HELENA, Ascension en Tristan da Cunha</option><option value="SD" title="SOEDAN">SOEDAN</option><option value="SO" title="SOMALIË">SOMALIË</option><option value="LK" title="SRI LANKA">SRI LANKA</option><option value="PS" title="STAAT PALESTINA">STAAT PALESTINA</option><option value="SR" title="SURINAME">SURINAME</option><option value="SZ" title="SWAZILAND">SWAZILAND</option><option value="SY" title="SYRIË">SYRIË</option><option value="TJ" title="TADZJIKISTAN">TADZJIKISTAN</option><option value="TW" title="TAIWAN">TAIWAN</option><option value="TZ" title="TANZANIA">TANZANIA</option><option value="TH" title="THAILAND">THAILAND</option><option value="TG" title="TOGO">TOGO</option><option value="TO" title="TONGA">TONGA</option><option value="TT" title="TRINIDAD EN TOBAGO">TRINIDAD EN TOBAGO</option><option value="TD" title="TSJAAD">TSJAAD</option><option value="TN" title="TUNESIË">TUNESIË</option><option value="TR" title="TURKIJE">TURKIJE</option><option value="TM" title="TURKMENISTAN">TURKMENISTAN</option><option value="TC" title="TURKS- EN CAICOSEILANDEN">TURKS- EN CAICOSEILANDEN</option><option value="TV" title="TUVALU">TUVALU</option><option value="UY" title="URUGUAY">URUGUAY</option><option value="VU" title="VANUATU">VANUATU</option><option value="VE" title="VENEZUELA">VENEZUELA</option><option value="AE" title="VERENIGDE ARABISCHE EMIRATEN">VERENIGDE ARABISCHE EMIRATEN</option><option value="US" title="VERENIGDE STATEN">VERENIGDE STATEN</option><option value="VN" title="VIETNAM">VIETNAM</option><option value="WF" title="WALLIS EN FUTUNA">WALLIS EN FUTUNA</option><option value="EH" title="WESTELIJKE SAHARA">WESTELIJKE SAHARA</option><option value="ZM" title="ZAMBIA">ZAMBIA</option><option value="ZW" title="ZIMBABWE">ZIMBABWE</option><option value="ZA" title="ZUID-AFRIKA">ZUID-AFRIKA</option><option value="GS" title="ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN">ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN</option><option value="KR" title="ZUID-KOREA">ZUID-KOREA</option><option value="SS" title="ZUID-SOEDAN">ZUID-SOEDAN</option></select></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q301_2" maxlength="4" value="" id="text_Q301_2" style="width:95px"></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q302_2" maxlength="11" value="" id="text_Q302_2" style="width:95px"></td></tr><tr ><td style="padding-right:10px;padding-left:40px;"></td><td style="padding-right:10px;"><select name="text_Q300_3" id="text_Q300_3" style="width:190px;" class="country-select"><option value="" data-descr="(leeg)"></option><option value="ZY" title="INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)">INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)</option><optgroup label="Aangrenzende landen"><option value="DE" title="DUITSLAND">DUITSLAND</option><option value="FR" title="FRANKRIJK">FRANKRIJK</option><option value="LU" title="LUXEMBURG">LUXEMBURG</option><option value="NL" title="NEDERLAND">NEDERLAND</option></optgroup><optgroup label="Rest van Europa"><option value="AX" title="ÅLANDSEILANDEN">ÅLANDSEILANDEN</option><option value="AL" title="ALBANIË">ALBANIË</option><option value="AD" title="ANDORRA">ANDORRA</option><option value="BA" title="BOSNIË EN HERZEGOVINA">BOSNIË EN HERZEGOVINA</option><option value="BG" title="BULGARIJE">BULGARIJE</option><option value="CY" title="CYPRUS">CYPRUS</option><option value="DK" title="DENEMARKEN">DENEMARKEN</option><option value="EE" title="ESTLAND">ESTLAND</option><option value="FO" title="FAERÖER">FAERÖER</option><option value="FI" title="FINLAND">FINLAND</option><option value="GI" title="GIBRALTAR">GIBRALTAR</option><option value="GR" title="GRIEKENLAND">GRIEKENLAND</option><option value="GG" title="GUERNSEY">GUERNSEY</option><option value="HU" title="HONGARIJE">HONGARIJE</option><option value="IE" title="IERLAND">IERLAND</option><option value="IS" title="IJSLAND">IJSLAND</option><option value="IM" title="ISLE OF MAN">ISLE OF MAN</option><option value="IT" title="ITALIË">ITALIË</option><option value="JE" title="JERSEY">JERSEY</option><option value="XK" title="KOSOVO">KOSOVO</option><option value="HR" title="KROATIË">KROATIË</option><option value="LV" title="LETLAND">LETLAND</option><option value="LI" title="LIECHTENSTEIN">LIECHTENSTEIN</option><option value="LT" title="LITOUWEN">LITOUWEN</option><option value="MK" title="MACEDONIË">MACEDONIË</option><option value="MT" title="MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)">MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)</option><option value="MD" title="MOLDAVIË">MOLDAVIË</option><option value="MC" title="MONACO">MONACO</option><option value="ME" title="MONTENEGRO">MONTENEGRO</option><option value="NO" title="NOORWEGEN">NOORWEGEN</option><option value="BV" title="NOORWEGEN BOUVET">NOORWEGEN BOUVET</option><option value="SJ" title="NOORWEGEN SPITSBERGEN EN JAN MAYEN">NOORWEGEN SPITSBERGEN EN JAN MAYEN</option><option value="UA" title="OEKRAÏNE">OEKRAÏNE</option><option value="AT" title="OOSTENRIJK">OOSTENRIJK</option><option value="PL" title="POLEN">POLEN</option><option value="PT" title="PORTUGAL">PORTUGAL</option><option value="RO" title="ROEMENIË">ROEMENIË</option><option value="RU" title="RUSLAND">RUSLAND</option><option value="SM" title="SAN MARINO">SAN MARINO</option><option value="RS" title="SERVIË">SERVIË</option><option value="SI" title="SLOVENIË">SLOVENIË</option><option value="SK" title="SLOWAKIJE">SLOWAKIJE</option><option value="ES" title="SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)">SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)</option><option value="CZ" title="TSJECHIË">TSJECHIË</option><option value="VA" title="VATICAANSTAD">VATICAANSTAD</option><option value="GB" title="VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)">VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)</option><option value="BY" title="WIT-RUSLAND">WIT-RUSLAND</option><option value="SE" title="ZWEDEN">ZWEDEN</option><option value="CH" title="ZWITSERLAND">ZWITSERLAND</option></optgroup><optgroup label="Rest van de wereld"><option value="AF" title="AFGHANISTAN">AFGHANISTAN</option><option value="DZ" title="ALGERIJE">ALGERIJE</option><option value="AS" title="AMERIKAANS-SAMOA">AMERIKAANS-SAMOA</option><option value="VI" title="AMERIKAANSE MAAGDENEILANDEN">AMERIKAANSE MAAGDENEILANDEN</option><option value="ZZ" title="ANDERE LANDEN">ANDERE LANDEN</option><option value="AO" title="ANGOLA">ANGOLA</option><option value="AI" title="ANGUILLA">ANGUILLA</option><option value="AQ" title="ANTARCTICA">ANTARCTICA</option><option value="AG" title="ANTIGUA EN BARBUDA">ANTIGUA EN BARBUDA</option><option value="AR" title="ARGENTINIË">ARGENTINIË</option><option value="AM" title="ARMENIË">ARMENIË</option><option value="AW" title="ARUBA">ARUBA</option><option value="AU" title="AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)">AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)</option><option value="HM" title="AUSTRALIË HEARD EN MCDONALDEILANDEN">AUSTRALIË HEARD EN MCDONALDEILANDEN</option><option value="AZ" title="AZERBEIDZJAN">AZERBEIDZJAN</option><option value="BS" title="BAHAMA'S">BAHAMA'S</option><option value="BH" title="BAHREIN">BAHREIN</option><option value="BD" title="BANGLADESH">BANGLADESH</option><option value="BB" title="BARBADOS">BARBADOS</option><option value="BZ" title="BELIZE">BELIZE</option><option value="BJ" title="BENIN">BENIN</option><option value="BM" title="BERMUDA">BERMUDA</option><option value="BT" title="BHUTAN">BHUTAN</option><option value="BO" title="BOLIVIA">BOLIVIA</option><option value="BQ" title="BONAIRE, SINT EUSTATIUS en SABA">BONAIRE, SINT EUSTATIUS en SABA</option><option value="BW" title="BOTSWANA">BOTSWANA</option><option value="BR" title="BRAZILIË">BRAZILIË</option><option value="IO" title="BRITS TERRITORIUM IN DE INDISCHE OCEAAN">BRITS TERRITORIUM IN DE INDISCHE OCEAAN</option><option value="VG" title="BRITSE MAAGDENEILANDEN">BRITSE MAAGDENEILANDEN</option><option value="BN" title="BRUNEI">BRUNEI</option><option value="BF" title="BURKINA FASO">BURKINA FASO</option><option value="BI" title="BURUNDI">BURUNDI</option><option value="KH" title="CAMBODJA">CAMBODJA</option><option value="CA" title="CANADA">CANADA</option><option value="CF" title="CENTRAAL-AFRIKAANSE REPUBLIEK">CENTRAAL-AFRIKAANSE REPUBLIEK</option><option value="CL" title="CHILI">CHILI</option><option value="CN" title="CHINA">CHINA</option><option value="CX" title="CHRISTMASEILAND">CHRISTMASEILAND</option><option value="CC" title="COCOSEILANDEN">COCOSEILANDEN</option><option value="CO" title="COLOMBIA">COLOMBIA</option><option value="KM" title="COMOREN">COMOREN</option><option value="CD" title="CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)">CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)</option><option value="CG" title="CONGO, REPUBLIEK (BRAZZAVILLE)">CONGO, REPUBLIEK (BRAZZAVILLE)</option><option value="CK" title="COOKEILANDEN">COOKEILANDEN</option><option value="CR" title="COSTA RICA">COSTA RICA</option><option value="CU" title="CUBA">CUBA</option><option value="CW" title="CURAÇAO">CURAÇAO</option><option value="DJ" title="DJIBOUTI">DJIBOUTI</option><option value="DM" title="DOMINICA">DOMINICA</option><option value="DO" title="DOMINICAANSE REPUBLIEK">DOMINICAANSE REPUBLIEK</option><option value="EC" title="ECUADOR">ECUADOR</option><option value="EG" title="EGYPTE">EGYPTE</option><option value="SV" title="EL SALVADOR">EL SALVADOR</option><option value="GQ" title="EQUATORIAAL-GUINEA">EQUATORIAAL-GUINEA</option><option value="ER" title="ERITREA">ERITREA</option><option value="ET" title="ETHIOPIË">ETHIOPIË</option><option value="FK" title="FALKLANDEILANDEN">FALKLANDEILANDEN</option><option value="FJ" title="FIJI">FIJI</option><option value="PH" title="FILIPIJNEN">FILIPIJNEN</option><option value="GF" title="FRANKRIJK FRANS-GUYANA">FRANKRIJK FRANS-GUYANA</option><option value="TF" title="FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN">FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN</option><option value="GP" title="FRANKRIJK GUADELOUPE">FRANKRIJK GUADELOUPE</option><option value="MQ" title="FRANKRIJK MARTINIQUE">FRANKRIJK MARTINIQUE</option><option value="NC" title="FRANKRIJK NIEUW-CALEDONIË">FRANKRIJK NIEUW-CALEDONIË</option><option value="RE" title="FRANKRIJK RÉUNION">FRANKRIJK RÉUNION</option><option value="BL" title="FRANKRIJK SAINT-BARTHÉLEMY">FRANKRIJK SAINT-BARTHÉLEMY</option><option value="MF" title="FRANKRIJK SINT-MAARTEN">FRANKRIJK SINT-MAARTEN</option><option value="PF" title="FRANS-POLYNESIË">FRANS-POLYNESIË</option><option value="GA" title="GABON">GABON</option><option value="GM" title="GAMBIA">GAMBIA</option><option value="GE" title="GEORGIË">GEORGIË</option><option value="GH" title="GHANA">GHANA</option><option value="GD" title="GRENADA">GRENADA</option><option value="GL" title="GROENLAND">GROENLAND</option><option value="GU" title="GUAM">GUAM</option><option value="GT" title="GUATEMALA">GUATEMALA</option><option value="GN" title="GUINEE">GUINEE</option><option value="GW" title="GUINEE-BISSAU">GUINEE-BISSAU</option><option value="GY" title="GUYANA">GUYANA</option><option value="HT" title="HAÏTI">HAÏTI</option><option value="HN" title="HONDURAS">HONDURAS</option><option value="HK" title="HONGKONG">HONGKONG</option><option value="IN" title="INDIA">INDIA</option><option value="ID" title="INDONESIË">INDONESIË</option><option value="IQ" title="IRAK">IRAK</option><option value="IR" title="IRAN">IRAN</option><option value="IL" title="ISRAËL">ISRAËL</option><option value="CI" title="IVOORKUST">IVOORKUST</option><option value="JM" title="JAMAICA">JAMAICA</option><option value="JP" title="JAPAN">JAPAN</option><option value="YE" title="JEMEN">JEMEN</option><option value="JO" title="JORDANIË">JORDANIË</option><option value="KY" title="KAAIMANEILANDEN">KAAIMANEILANDEN</option><option value="CV" title="KAAPVERDIË">KAAPVERDIË</option><option value="CM" title="KAMEROEN">KAMEROEN</option><option value="KZ" title="KAZACHSTAN">KAZACHSTAN</option><option value="KE" title="KENIA">KENIA</option><option value="KG" title="KIRGIZIË">KIRGIZIË</option><option value="KI" title="KIRIBATI">KIRIBATI</option><option value="UM" title="KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN">KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN</option><option value="KW" title="KOEWEIT">KOEWEIT</option><option value="LA" title="LAOS">LAOS</option><option value="LS" title="LESOTHO">LESOTHO</option><option value="LB" title="LIBANON">LIBANON</option><option value="LR" title="LIBERIA">LIBERIA</option><option value="LY" title="LIBIË">LIBIË</option><option value="MO" title="MACAU">MACAU</option><option value="MG" title="MADAGASKAR">MADAGASKAR</option><option value="MW" title="MALAWI">MALAWI</option><option value="MV" title="MALDIVEN">MALDIVEN</option><option value="MY" title="MALEISIË">MALEISIË</option><option value="ML" title="MALI">MALI</option><option value="MA" title="MAROKKO">MAROKKO</option><option value="MH" title="MARSHALLEILANDEN">MARSHALLEILANDEN</option><option value="MR" title="MAURITANIË">MAURITANIË</option><option value="MU" title="MAURITIUS">MAURITIUS</option><option value="YT" title="MAYOTTE">MAYOTTE</option><option value="MX" title="MEXICO">MEXICO</option><option value="FM" title="MICRONESIA">MICRONESIA</option><option value="MN" title="MONGOLIË">MONGOLIË</option><option value="MS" title="MONTSERRAT">MONTSERRAT</option><option value="MZ" title="MOZAMBIQUE">MOZAMBIQUE</option><option value="MM" title="MYANMAR">MYANMAR</option><option value="NA" title="NAMIBIË">NAMIBIË</option><option value="NR" title="NAURU">NAURU</option><option value="NP" title="NEPAL">NEPAL</option><option value="NI" title="NICARAGUA">NICARAGUA</option><option value="NZ" title="NIEUW-ZEELAND">NIEUW-ZEELAND</option><option value="TK" title="NIEUW-ZEELAND TOKELAU-EILANDEN">NIEUW-ZEELAND TOKELAU-EILANDEN</option><option value="NE" title="NIGER">NIGER</option><option value="NG" title="NIGERIA">NIGERIA</option><option value="NU" title="NIUE">NIUE</option><option value="KP" title="NOORD-KOREA">NOORD-KOREA</option><option value="MP" title="NOORDELIJKE MARIANEN">NOORDELIJKE MARIANEN</option><option value="NF" title="NORFOLK">NORFOLK</option><option value="UG" title="OEGANDA">OEGANDA</option><option value="UZ" title="OEZBEKISTAN">OEZBEKISTAN</option><option value="OM" title="OMAN">OMAN</option><option value="TL" title="OOST-TIMOR">OOST-TIMOR</option><option value="PK" title="PAKISTAN">PAKISTAN</option><option value="PW" title="PALAU">PALAU</option><option value="PA" title="PANAMA">PANAMA</option><option value="PG" title="PAPOEA-NIEUW-GUINEA">PAPOEA-NIEUW-GUINEA</option><option value="PY" title="PARAGUAY">PARAGUAY</option><option value="PE" title="PERU">PERU</option><option value="PN" title="PITCAIRNEILANDEN">PITCAIRNEILANDEN</option><option value="PR" title="PUERTO RICO">PUERTO RICO</option><option value="QA" title="QATAR">QATAR</option><option value="XR" title="RWANDA (verlaagd tarief)">RWANDA (verlaagd tarief)</option><option value="RW" title="RWANDA (vrijgesteld)">RWANDA (vrijgesteld)</option><option value="KN" title="SAINT KITTS EN NEVIS">SAINT KITTS EN NEVIS</option><option value="VC" title="SAINT VINCENT EN DE GRENADINES">SAINT VINCENT EN DE GRENADINES</option><option value="PM" title="SAINT-PIERRE EN MIQUELON">SAINT-PIERRE EN MIQUELON</option><option value="LC" title="SAINTLUCIA SAINT LUCIA">SAINTLUCIA SAINT LUCIA</option><option value="SB" title="SALOMONSEILANDEN">SALOMONSEILANDEN</option><option value="WS" title="SAMOA">SAMOA</option><option value="ST" title="SAO TOMÉ EN PRINCIPE">SAO TOMÉ EN PRINCIPE</option><option value="SA" title="SAOEDI-ARABIË">SAOEDI-ARABIË</option><option value="SN" title="SENEGAL">SENEGAL</option><option value="XS" title="SEYCHELLEN (verlaagd tarief)">SEYCHELLEN (verlaagd tarief)</option><option value="SC" title="SEYCHELLEN (vrijgesteld)">SEYCHELLEN (vrijgesteld)</option><option value="SL" title="SIERRA LEONE">SIERRA LEONE</option><option value="SG" title="SINGAPORE">SINGAPORE</option><option value="SX" title="SINT MAARTEN (NEDERLANDS DEEL)">SINT MAARTEN (NEDERLANDS DEEL)</option><option value="SH" title="SINT-HELENA, Ascension en Tristan da Cunha">SINT-HELENA, Ascension en Tristan da Cunha</option><option value="SD" title="SOEDAN">SOEDAN</option><option value="SO" title="SOMALIË">SOMALIË</option><option value="LK" title="SRI LANKA">SRI LANKA</option><option value="PS" title="STAAT PALESTINA">STAAT PALESTINA</option><option value="SR" title="SURINAME">SURINAME</option><option value="SZ" title="SWAZILAND">SWAZILAND</option><option value="SY" title="SYRIË">SYRIË</option><option value="TJ" title="TADZJIKISTAN">TADZJIKISTAN</option><option value="TW" title="TAIWAN">TAIWAN</option><option value="TZ" title="TANZANIA">TANZANIA</option><option value="TH" title="THAILAND">THAILAND</option><option value="TG" title="TOGO">TOGO</option><option value="TO" title="TONGA">TONGA</option><option value="TT" title="TRINIDAD EN TOBAGO">TRINIDAD EN TOBAGO</option><option value="TD" title="TSJAAD">TSJAAD</option><option value="TN" title="TUNESIË">TUNESIË</option><option value="TR" title="TURKIJE">TURKIJE</option><option value="TM" title="TURKMENISTAN">TURKMENISTAN</option><option value="TC" title="TURKS- EN CAICOSEILANDEN">TURKS- EN CAICOSEILANDEN</option><option value="TV" title="TUVALU">TUVALU</option><option value="UY" title="URUGUAY">URUGUAY</option><option value="VU" title="VANUATU">VANUATU</option><option value="VE" title="VENEZUELA">VENEZUELA</option><option value="AE" title="VERENIGDE ARABISCHE EMIRATEN">VERENIGDE ARABISCHE EMIRATEN</option><option value="US" title="VERENIGDE STATEN">VERENIGDE STATEN</option><option value="VN" title="VIETNAM">VIETNAM</option><option value="WF" title="WALLIS EN FUTUNA">WALLIS EN FUTUNA</option><option value="EH" title="WESTELIJKE SAHARA">WESTELIJKE SAHARA</option><option value="ZM" title="ZAMBIA">ZAMBIA</option><option value="ZW" title="ZIMBABWE">ZIMBABWE</option><option value="ZA" title="ZUID-AFRIKA">ZUID-AFRIKA</option><option value="GS" title="ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN">ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN</option><option value="KR" title="ZUID-KOREA">ZUID-KOREA</option><option value="SS" title="ZUID-SOEDAN">ZUID-SOEDAN</option></select></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q301_3" maxlength="4" value="" id="text_Q301_3" style="width:95px"></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q302_3" maxlength="11" value="" id="text_Q302_3" style="width:95px"></td></tr><tr ><td style="padding-right:10px;padding-left:40px;"></td><td style="padding-right:10px;"><select name="text_Q300_4" id="text_Q300_4" style="width:190px;" class="country-select"><option value="" data-descr="(leeg)"></option><option value="ZY" title="INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)">INTERNATIONALE ORGANISATIE (VRIJSTELLING MET PROGRESSIEVOORBEHOUD)</option><optgroup label="Aangrenzende landen"><option value="DE" title="DUITSLAND">DUITSLAND</option><option value="FR" title="FRANKRIJK">FRANKRIJK</option><option value="LU" title="LUXEMBURG">LUXEMBURG</option><option value="NL" title="NEDERLAND">NEDERLAND</option></optgroup><optgroup label="Rest van Europa"><option value="AX" title="ÅLANDSEILANDEN">ÅLANDSEILANDEN</option><option value="AL" title="ALBANIË">ALBANIË</option><option value="AD" title="ANDORRA">ANDORRA</option><option value="BA" title="BOSNIË EN HERZEGOVINA">BOSNIË EN HERZEGOVINA</option><option value="BG" title="BULGARIJE">BULGARIJE</option><option value="CY" title="CYPRUS">CYPRUS</option><option value="DK" title="DENEMARKEN">DENEMARKEN</option><option value="EE" title="ESTLAND">ESTLAND</option><option value="FO" title="FAERÖER">FAERÖER</option><option value="FI" title="FINLAND">FINLAND</option><option value="GI" title="GIBRALTAR">GIBRALTAR</option><option value="GR" title="GRIEKENLAND">GRIEKENLAND</option><option value="GG" title="GUERNSEY">GUERNSEY</option><option value="HU" title="HONGARIJE">HONGARIJE</option><option value="IE" title="IERLAND">IERLAND</option><option value="IS" title="IJSLAND">IJSLAND</option><option value="IM" title="ISLE OF MAN">ISLE OF MAN</option><option value="IT" title="ITALIË">ITALIË</option><option value="JE" title="JERSEY">JERSEY</option><option value="XK" title="KOSOVO">KOSOVO</option><option value="HR" title="KROATIË">KROATIË</option><option value="LV" title="LETLAND">LETLAND</option><option value="LI" title="LIECHTENSTEIN">LIECHTENSTEIN</option><option value="LT" title="LITOUWEN">LITOUWEN</option><option value="MK" title="MACEDONIË">MACEDONIË</option><option value="MT" title="MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)">MALTA (INCLUSIEF GOZO EN DE MALTEZER ARCHIPEL)</option><option value="MD" title="MOLDAVIË">MOLDAVIË</option><option value="MC" title="MONACO">MONACO</option><option value="ME" title="MONTENEGRO">MONTENEGRO</option><option value="NO" title="NOORWEGEN">NOORWEGEN</option><option value="BV" title="NOORWEGEN BOUVET">NOORWEGEN BOUVET</option><option value="SJ" title="NOORWEGEN SPITSBERGEN EN JAN MAYEN">NOORWEGEN SPITSBERGEN EN JAN MAYEN</option><option value="UA" title="OEKRAÏNE">OEKRAÏNE</option><option value="AT" title="OOSTENRIJK">OOSTENRIJK</option><option value="PL" title="POLEN">POLEN</option><option value="PT" title="PORTUGAL">PORTUGAL</option><option value="RO" title="ROEMENIË">ROEMENIË</option><option value="RU" title="RUSLAND">RUSLAND</option><option value="SM" title="SAN MARINO">SAN MARINO</option><option value="RS" title="SERVIË">SERVIË</option><option value="SI" title="SLOVENIË">SLOVENIË</option><option value="SK" title="SLOWAKIJE">SLOWAKIJE</option><option value="ES" title="SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)">SPANJE (INCLUSIEF DE BALEAREN EN DE CANARISCHE EILANDEN)</option><option value="CZ" title="TSJECHIË">TSJECHIË</option><option value="VA" title="VATICAANSTAD">VATICAANSTAD</option><option value="GB" title="VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)">VERENIGD KONINKRIJK (EXCLUSIEF DE KANAALEILANDEN EN HET EILAND MAN)</option><option value="BY" title="WIT-RUSLAND">WIT-RUSLAND</option><option value="SE" title="ZWEDEN">ZWEDEN</option><option value="CH" title="ZWITSERLAND">ZWITSERLAND</option></optgroup><optgroup label="Rest van de wereld"><option value="AF" title="AFGHANISTAN">AFGHANISTAN</option><option value="DZ" title="ALGERIJE">ALGERIJE</option><option value="AS" title="AMERIKAANS-SAMOA">AMERIKAANS-SAMOA</option><option value="VI" title="AMERIKAANSE MAAGDENEILANDEN">AMERIKAANSE MAAGDENEILANDEN</option><option value="ZZ" title="ANDERE LANDEN">ANDERE LANDEN</option><option value="AO" title="ANGOLA">ANGOLA</option><option value="AI" title="ANGUILLA">ANGUILLA</option><option value="AQ" title="ANTARCTICA">ANTARCTICA</option><option value="AG" title="ANTIGUA EN BARBUDA">ANTIGUA EN BARBUDA</option><option value="AR" title="ARGENTINIË">ARGENTINIË</option><option value="AM" title="ARMENIË">ARMENIË</option><option value="AW" title="ARUBA">ARUBA</option><option value="AU" title="AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)">AUSTRALIË (INCLUSIEF NORFOLKEILAND, KORAALZEE-EILANDEN EN ASHMORE EN CARTIEREILANDEN)</option><option value="HM" title="AUSTRALIË HEARD EN MCDONALDEILANDEN">AUSTRALIË HEARD EN MCDONALDEILANDEN</option><option value="AZ" title="AZERBEIDZJAN">AZERBEIDZJAN</option><option value="BS" title="BAHAMA'S">BAHAMA'S</option><option value="BH" title="BAHREIN">BAHREIN</option><option value="BD" title="BANGLADESH">BANGLADESH</option><option value="BB" title="BARBADOS">BARBADOS</option><option value="BZ" title="BELIZE">BELIZE</option><option value="BJ" title="BENIN">BENIN</option><option value="BM" title="BERMUDA">BERMUDA</option><option value="BT" title="BHUTAN">BHUTAN</option><option value="BO" title="BOLIVIA">BOLIVIA</option><option value="BQ" title="BONAIRE, SINT EUSTATIUS en SABA">BONAIRE, SINT EUSTATIUS en SABA</option><option value="BW" title="BOTSWANA">BOTSWANA</option><option value="BR" title="BRAZILIË">BRAZILIË</option><option value="IO" title="BRITS TERRITORIUM IN DE INDISCHE OCEAAN">BRITS TERRITORIUM IN DE INDISCHE OCEAAN</option><option value="VG" title="BRITSE MAAGDENEILANDEN">BRITSE MAAGDENEILANDEN</option><option value="BN" title="BRUNEI">BRUNEI</option><option value="BF" title="BURKINA FASO">BURKINA FASO</option><option value="BI" title="BURUNDI">BURUNDI</option><option value="KH" title="CAMBODJA">CAMBODJA</option><option value="CA" title="CANADA">CANADA</option><option value="CF" title="CENTRAAL-AFRIKAANSE REPUBLIEK">CENTRAAL-AFRIKAANSE REPUBLIEK</option><option value="CL" title="CHILI">CHILI</option><option value="CN" title="CHINA">CHINA</option><option value="CX" title="CHRISTMASEILAND">CHRISTMASEILAND</option><option value="CC" title="COCOSEILANDEN">COCOSEILANDEN</option><option value="CO" title="COLOMBIA">COLOMBIA</option><option value="KM" title="COMOREN">COMOREN</option><option value="CD" title="CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)">CONGO, DEMOCRATISCHE REPUBLIEK (KINSHASA)</option><option value="CG" title="CONGO, REPUBLIEK (BRAZZAVILLE)">CONGO, REPUBLIEK (BRAZZAVILLE)</option><option value="CK" title="COOKEILANDEN">COOKEILANDEN</option><option value="CR" title="COSTA RICA">COSTA RICA</option><option value="CU" title="CUBA">CUBA</option><option value="CW" title="CURAÇAO">CURAÇAO</option><option value="DJ" title="DJIBOUTI">DJIBOUTI</option><option value="DM" title="DOMINICA">DOMINICA</option><option value="DO" title="DOMINICAANSE REPUBLIEK">DOMINICAANSE REPUBLIEK</option><option value="EC" title="ECUADOR">ECUADOR</option><option value="EG" title="EGYPTE">EGYPTE</option><option value="SV" title="EL SALVADOR">EL SALVADOR</option><option value="GQ" title="EQUATORIAAL-GUINEA">EQUATORIAAL-GUINEA</option><option value="ER" title="ERITREA">ERITREA</option><option value="ET" title="ETHIOPIË">ETHIOPIË</option><option value="FK" title="FALKLANDEILANDEN">FALKLANDEILANDEN</option><option value="FJ" title="FIJI">FIJI</option><option value="PH" title="FILIPIJNEN">FILIPIJNEN</option><option value="GF" title="FRANKRIJK FRANS-GUYANA">FRANKRIJK FRANS-GUYANA</option><option value="TF" title="FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN">FRANKRIJK FRANSE ZUIDELIJKE EN ANTARCTISCHE GEBIEDEN</option><option value="GP" title="FRANKRIJK GUADELOUPE">FRANKRIJK GUADELOUPE</option><option value="MQ" title="FRANKRIJK MARTINIQUE">FRANKRIJK MARTINIQUE</option><option value="NC" title="FRANKRIJK NIEUW-CALEDONIË">FRANKRIJK NIEUW-CALEDONIË</option><option value="RE" title="FRANKRIJK RÉUNION">FRANKRIJK RÉUNION</option><option value="BL" title="FRANKRIJK SAINT-BARTHÉLEMY">FRANKRIJK SAINT-BARTHÉLEMY</option><option value="MF" title="FRANKRIJK SINT-MAARTEN">FRANKRIJK SINT-MAARTEN</option><option value="PF" title="FRANS-POLYNESIË">FRANS-POLYNESIË</option><option value="GA" title="GABON">GABON</option><option value="GM" title="GAMBIA">GAMBIA</option><option value="GE" title="GEORGIË">GEORGIË</option><option value="GH" title="GHANA">GHANA</option><option value="GD" title="GRENADA">GRENADA</option><option value="GL" title="GROENLAND">GROENLAND</option><option value="GU" title="GUAM">GUAM</option><option value="GT" title="GUATEMALA">GUATEMALA</option><option value="GN" title="GUINEE">GUINEE</option><option value="GW" title="GUINEE-BISSAU">GUINEE-BISSAU</option><option value="GY" title="GUYANA">GUYANA</option><option value="HT" title="HAÏTI">HAÏTI</option><option value="HN" title="HONDURAS">HONDURAS</option><option value="HK" title="HONGKONG">HONGKONG</option><option value="IN" title="INDIA">INDIA</option><option value="ID" title="INDONESIË">INDONESIË</option><option value="IQ" title="IRAK">IRAK</option><option value="IR" title="IRAN">IRAN</option><option value="IL" title="ISRAËL">ISRAËL</option><option value="CI" title="IVOORKUST">IVOORKUST</option><option value="JM" title="JAMAICA">JAMAICA</option><option value="JP" title="JAPAN">JAPAN</option><option value="YE" title="JEMEN">JEMEN</option><option value="JO" title="JORDANIË">JORDANIË</option><option value="KY" title="KAAIMANEILANDEN">KAAIMANEILANDEN</option><option value="CV" title="KAAPVERDIË">KAAPVERDIË</option><option value="CM" title="KAMEROEN">KAMEROEN</option><option value="KZ" title="KAZACHSTAN">KAZACHSTAN</option><option value="KE" title="KENIA">KENIA</option><option value="KG" title="KIRGIZIË">KIRGIZIË</option><option value="KI" title="KIRIBATI">KIRIBATI</option><option value="UM" title="KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN">KLEINE PACIFISCHE EILANDEN VAN DE VERENIGDE STATEN</option><option value="KW" title="KOEWEIT">KOEWEIT</option><option value="LA" title="LAOS">LAOS</option><option value="LS" title="LESOTHO">LESOTHO</option><option value="LB" title="LIBANON">LIBANON</option><option value="LR" title="LIBERIA">LIBERIA</option><option value="LY" title="LIBIË">LIBIË</option><option value="MO" title="MACAU">MACAU</option><option value="MG" title="MADAGASKAR">MADAGASKAR</option><option value="MW" title="MALAWI">MALAWI</option><option value="MV" title="MALDIVEN">MALDIVEN</option><option value="MY" title="MALEISIË">MALEISIË</option><option value="ML" title="MALI">MALI</option><option value="MA" title="MAROKKO">MAROKKO</option><option value="MH" title="MARSHALLEILANDEN">MARSHALLEILANDEN</option><option value="MR" title="MAURITANIË">MAURITANIË</option><option value="MU" title="MAURITIUS">MAURITIUS</option><option value="YT" title="MAYOTTE">MAYOTTE</option><option value="MX" title="MEXICO">MEXICO</option><option value="FM" title="MICRONESIA">MICRONESIA</option><option value="MN" title="MONGOLIË">MONGOLIË</option><option value="MS" title="MONTSERRAT">MONTSERRAT</option><option value="MZ" title="MOZAMBIQUE">MOZAMBIQUE</option><option value="MM" title="MYANMAR">MYANMAR</option><option value="NA" title="NAMIBIË">NAMIBIË</option><option value="NR" title="NAURU">NAURU</option><option value="NP" title="NEPAL">NEPAL</option><option value="NI" title="NICARAGUA">NICARAGUA</option><option value="NZ" title="NIEUW-ZEELAND">NIEUW-ZEELAND</option><option value="TK" title="NIEUW-ZEELAND TOKELAU-EILANDEN">NIEUW-ZEELAND TOKELAU-EILANDEN</option><option value="NE" title="NIGER">NIGER</option><option value="NG" title="NIGERIA">NIGERIA</option><option value="NU" title="NIUE">NIUE</option><option value="KP" title="NOORD-KOREA">NOORD-KOREA</option><option value="MP" title="NOORDELIJKE MARIANEN">NOORDELIJKE MARIANEN</option><option value="NF" title="NORFOLK">NORFOLK</option><option value="UG" title="OEGANDA">OEGANDA</option><option value="UZ" title="OEZBEKISTAN">OEZBEKISTAN</option><option value="OM" title="OMAN">OMAN</option><option value="TL" title="OOST-TIMOR">OOST-TIMOR</option><option value="PK" title="PAKISTAN">PAKISTAN</option><option value="PW" title="PALAU">PALAU</option><option value="PA" title="PANAMA">PANAMA</option><option value="PG" title="PAPOEA-NIEUW-GUINEA">PAPOEA-NIEUW-GUINEA</option><option value="PY" title="PARAGUAY">PARAGUAY</option><option value="PE" title="PERU">PERU</option><option value="PN" title="PITCAIRNEILANDEN">PITCAIRNEILANDEN</option><option value="PR" title="PUERTO RICO">PUERTO RICO</option><option value="QA" title="QATAR">QATAR</option><option value="XR" title="RWANDA (verlaagd tarief)">RWANDA (verlaagd tarief)</option><option value="RW" title="RWANDA (vrijgesteld)">RWANDA (vrijgesteld)</option><option value="KN" title="SAINT KITTS EN NEVIS">SAINT KITTS EN NEVIS</option><option value="VC" title="SAINT VINCENT EN DE GRENADINES">SAINT VINCENT EN DE GRENADINES</option><option value="PM" title="SAINT-PIERRE EN MIQUELON">SAINT-PIERRE EN MIQUELON</option><option value="LC" title="SAINTLUCIA SAINT LUCIA">SAINTLUCIA SAINT LUCIA</option><option value="SB" title="SALOMONSEILANDEN">SALOMONSEILANDEN</option><option value="WS" title="SAMOA">SAMOA</option><option value="ST" title="SAO TOMÉ EN PRINCIPE">SAO TOMÉ EN PRINCIPE</option><option value="SA" title="SAOEDI-ARABIË">SAOEDI-ARABIË</option><option value="SN" title="SENEGAL">SENEGAL</option><option value="XS" title="SEYCHELLEN (verlaagd tarief)">SEYCHELLEN (verlaagd tarief)</option><option value="SC" title="SEYCHELLEN (vrijgesteld)">SEYCHELLEN (vrijgesteld)</option><option value="SL" title="SIERRA LEONE">SIERRA LEONE</option><option value="SG" title="SINGAPORE">SINGAPORE</option><option value="SX" title="SINT MAARTEN (NEDERLANDS DEEL)">SINT MAARTEN (NEDERLANDS DEEL)</option><option value="SH" title="SINT-HELENA, Ascension en Tristan da Cunha">SINT-HELENA, Ascension en Tristan da Cunha</option><option value="SD" title="SOEDAN">SOEDAN</option><option value="SO" title="SOMALIË">SOMALIË</option><option value="LK" title="SRI LANKA">SRI LANKA</option><option value="PS" title="STAAT PALESTINA">STAAT PALESTINA</option><option value="SR" title="SURINAME">SURINAME</option><option value="SZ" title="SWAZILAND">SWAZILAND</option><option value="SY" title="SYRIË">SYRIË</option><option value="TJ" title="TADZJIKISTAN">TADZJIKISTAN</option><option value="TW" title="TAIWAN">TAIWAN</option><option value="TZ" title="TANZANIA">TANZANIA</option><option value="TH" title="THAILAND">THAILAND</option><option value="TG" title="TOGO">TOGO</option><option value="TO" title="TONGA">TONGA</option><option value="TT" title="TRINIDAD EN TOBAGO">TRINIDAD EN TOBAGO</option><option value="TD" title="TSJAAD">TSJAAD</option><option value="TN" title="TUNESIË">TUNESIË</option><option value="TR" title="TURKIJE">TURKIJE</option><option value="TM" title="TURKMENISTAN">TURKMENISTAN</option><option value="TC" title="TURKS- EN CAICOSEILANDEN">TURKS- EN CAICOSEILANDEN</option><option value="TV" title="TUVALU">TUVALU</option><option value="UY" title="URUGUAY">URUGUAY</option><option value="VU" title="VANUATU">VANUATU</option><option value="VE" title="VENEZUELA">VENEZUELA</option><option value="AE" title="VERENIGDE ARABISCHE EMIRATEN">VERENIGDE ARABISCHE EMIRATEN</option><option value="US" title="VERENIGDE STATEN">VERENIGDE STATEN</option><option value="VN" title="VIETNAM">VIETNAM</option><option value="WF" title="WALLIS EN FUTUNA">WALLIS EN FUTUNA</option><option value="EH" title="WESTELIJKE SAHARA">WESTELIJKE SAHARA</option><option value="ZM" title="ZAMBIA">ZAMBIA</option><option value="ZW" title="ZIMBABWE">ZIMBABWE</option><option value="ZA" title="ZUID-AFRIKA">ZUID-AFRIKA</option><option value="GS" title="ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN">ZUID-GEORGIË EN DE ZUIDELIJKE SANDWICHEILANDEN</option><option value="KR" title="ZUID-KOREA">ZUID-KOREA</option><option value="SS" title="ZUID-SOEDAN">ZUID-SOEDAN</option></select></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q301_4" maxlength="4" value="" id="text_Q301_4" style="width:95px"></td><td style="padding-right:10px;"></td><td style="padding-right:10px;"><input type="text" name="text_Q302_4" maxlength="11" value="" id="text_Q302_4" style="width:95px"></td></tr></table></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+    <tr><td colspan="2" style="vertical-align:top;padding-left:40px;"><a href="javascript:submitForm(cadreform,'/taxcalc2025/app/anonymous/private/taxform/increaseCounter1RECadreXVII.do?cadreAnchor=counterRevEtrgs1')">Een lijn toevoegen</a></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+
+
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>20.</b></td><td style="vertical-align:top;" ><b>Als in de rubrieken 1 tot 16 inkomsten of kosten zijn begrepen die slaan op een in de vorm van een feitelijke vereniging uitgeoefende werkzaamheid, vermeld de juiste aard van die werkzaamheid, de code waarnaast ze zijn vermeld en het bedrag.</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+
+
+<tr>
+    <td colspan="8">
+        <a id="counterRevEtrgs2"></a>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" style="padding-left: 30px;">
+        <table>
+            
+            
+                
+                <tr >
+                    
+                        
+                            <td style="padding-bottom: 10px;padding-right: 5px;">Aard:</td>
+                            <td style="padding-bottom:10px;padding-right:5px;"><input type="text" name="text_Q310_1" maxlength="35" value="" style="width:260px"></td>
+                            <td style="padding-bottom: 10px;padding-right: 5px;">Code:</td>
+                            <td style="padding-bottom:10px;padding-right:5px;"><input type="text" name="text_Q311_1" maxlength="4" value="" style="width:65px"></td>
+                            <td style="padding-bottom: 10px;padding-right: 5px;">Bedrag:</td>
+                            <td style="padding-bottom:10px;padding-right:5px;"><input type="text" name="text_Q312_1" maxlength="11" value="" style="width:100px"></td>
+                        
+                        
+                    
+                </tr>
+            
+                
+                <tr >
+                    
+                        
+                        
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q310_2" maxlength="35" value="" style="width:260px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q311_2" maxlength="4" value="" style="width:65px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q312_2" maxlength="11" value="" style="width:100px"></td>
+                        
+                    
+                </tr>
+            
+                
+                <tr >
+                    
+                        
+                        
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q310_3" maxlength="35" value="" style="width:260px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q311_3" maxlength="4" value="" style="width:65px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q312_3" maxlength="11" value="" style="width:100px"></td>
+                        
+                    
+                </tr>
+            
+                
+                <tr >
+                    
+                        
+                        
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q310_4" maxlength="35" value="" style="width:260px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q311_4" maxlength="4" value="" style="width:65px"></td>
+                            <td style="padding-bottom: 10px;"></td>
+                            <td style="padding-bottom: 10px;"><input type="text" name="text_Q312_4" maxlength="11" value="" style="width:100px"></td>
+                        
+                    
+                </tr>
+            
+        </table>
+    </td>
+    <td class="grey"></td>
+    <td colspan="2"></td>
+    <td class="grey"></td>
+    <td colspan="2"></td>
+</tr>
+<tr><td colspan="2" style="vertical-align:top;padding-left:40px;"><a href="javascript:submitForm(cadreform,'/taxcalc2025/app/anonymous/private/taxform/increaseCounter2RECadreXVII.do?cadreAnchor=counterRevEtrgs2')">Een lijn toevoegen</a></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>21.</b></td><td style="vertical-align:top;" ><b>Slaan de in rubriek 20 vermelde bedragen op meer dan één feitelijke vereniging?</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"><table><tr><td style="text-align:center;padding:10px;"><b>1625</b></td><td style="text-align:center;padding:10px;"><input type="checkbox" name="check_c1625" value="checked" id="check_c1625"></td><td style="text-align:center;padding:10px;">Ja</td></tr><tr><td style="text-align:center;padding:10px;"><b>1626</b></td><td style="text-align:center;padding:10px;"><input type="checkbox" name="check_c1626" value="checked" id="check_c1626"></td><td style="text-align:center;padding:10px;">Neen</td></tr></table></td><td class="grey"></td><td colspan="2"><table><tr><td><input type="hidden" name="check_c2625" value=""/></td></tr></table></td></tr>
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"></td><td style="vertical-align:top;" >Zo ja, houd, per vereniging, het detail ter beschikking van de belastingdienst.</td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+    
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>22.</b></td><td style="vertical-align:top;" ><b>Bevatten de in rubriek 20 vermelde bedragen inkomsten of kosten van buitenlandse oorsprong ?</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"><table><tr><td style="text-align:center;padding:10px;"><b>1630</b></td><td style="text-align:center;padding:10px;"><input type="checkbox" name="check_c1630" value="checked" id="check_c1630"></td><td style="text-align:center;padding:10px;">Ja</td></tr><tr><td style="text-align:center;padding:10px;"><b>1631</b></td><td style="text-align:center;padding:10px;"><input type="checkbox" name="check_c1631" value="checked" id="check_c1631"></td><td style="text-align:center;padding:10px;">Neen</td></tr></table></td><td class="grey"></td><td colspan="2"><table><tr><td><input type="hidden" name="check_c2630" value=""/></td></tr></table></td></tr>
+    <tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"></td><td style="vertical-align:top;" ><em>Zo ja, houd, per land van herkomst, het detail ter beschikking van de belastingdienst.</em></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>23.</b></td><td style="vertical-align:top;" ><b>Als u uw beroep maar gedurende een gedeelte van het jaar hebt uitgeoefend, vermeld:</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">a)</td><td style="vertical-align:top;" >de begindatum <em>(dag, maand, jaar)</em>:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1627"><b>1627</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1627" maxlength="10" value="" id="text_c1627" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2627" value=""/></td></tr>
+
+
+
+<tr ><td style="padding-left:45px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;">b)</td><td style="vertical-align:top;" >de einddatum <em>(dag, maand, jaar)</em>:</td></tr></table></td><td></td><td class="grey"></td><td style="text-align:center;padding:10px;"><label for="text_c1628"><b>1628</b></label></td><td style="text-align:center;padding:10px;"><input type="text" name="text_c1628" maxlength="10" value="" id="text_c1628" style="width:95px" class="input-value"></td><td class="grey"></td><td colspan="2"><input type="hidden" name="text_c2628" value=""/></td></tr>
+
+
+
+    <tr ><td style="padding-left:30px;padding-top:5px;padding-bottom:5px;"><table><tr><td style="vertical-align:top;padding-right:5px;"><b>24.</b></td><td style="vertical-align:top;" ><b>Vermeld het adres van de bedrijfszetel, als die niet samenvalt met uw domicilie:</b></td></tr></table></td><td></td><td class="grey"></td><td colspan="2"></td><td class="grey"></td><td colspan="2"></td></tr>
+
+
+    
+    <tr >
+        <td colspan="2" style="padding-left:45px;"><input type="text" name="text_Q320" maxlength="120" value="" style="width:670px"></td>
+        <td class="grey"></td>
+        <td colspan="2"></td>
+        <td class="grey"></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr >
+        
+        
+            <td colspan="2"><input type="hidden" name="text_Q321" value=""></td>
+        
+        <td class="grey"></td>
+        <td colspan="2"></td>
+        <td class="grey"></td>
+        <td colspan="2"></td>
+    </tr>
+
+
+    </tbody></table><input type="hidden" name="formComplete" id="formComplete"></div></div>
+</form>
+
+
+        
+        
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var cookies = "/taxcalc2025/static/nl/help/data_politic.pdf";
+</script>
+
+
+
+    
+        <div class="container" style="text-align: right;padding-top: 20px;">
+            <button type="button" id="NEXT_CADRE" class="btn btn-fin01"
+                    onclick="javascript:submitForm(document.forms.cadreform,'/taxcalc2025/app/anonymous/private/taxform/validateCadreXVII.do')">
+                Naar het volgend vak
+            </button>
+        </div>
+    
+
+
+<footer class="footer">
+    <div class="row bgfooter">
+        <div class="container">
+            <div style="width:1150px">
+                
+                <div class="col-xs-6 col-md-3 nopadding" style="width:27%; text-align:left;">
+                    <a class="box" href="javascript:newDefaultWindow('/taxcalc2025/app/anonymous/public/taxform/bookHelp.do?cadre=XVII&contentkey=application_help_0391');">
+                        <img src="/taxcalc2025/static/images/icon_info.gif" style="width:15px;height:15px;border:0px;"
+                             title="Fiscale toelichting"
+                             alt="Fiscale toelichting">
+                        Ondersteuning voor dit vak
+                    </a>
+                </div>
+                
+                <div class="col-xs-6 col-md-3 nopadding" style="width:27%; text-align:center;"></div>
+                
+                <div class="col-xs-6 col-md-2 nopadding" style="width:19%; text-align:center;"></div>
+                
+                <div class="col-xs-6 col-md-4 nopadding" style="width:27%; text-align:right;">
+                    
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="mgt20">
+                <div class="col-xs-6 col-md-5 nopadding">
+                </div>
+                <div class="col-xs-6 col-md-7 nopadding right">
+                    <span class="fin09"></span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="footer-bot">
+                <div class="col-xs-12 col-md-6 left nopadding">
+                    <ul>
+                        <li>
+                            <img alt="Belgian-s colors" src="/taxcalc2025/static/images/responsive/_fin_njr.gif">
+                        </li>
+                        
+                        <li>
+                            <a onclick="javascript:alertCookies(cookies)" style="cursor: pointer;">
+                                COOKIEBELEID
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-md-6 right nopadding">
+                    © Copyright Federale Overheidsdienst Financiën
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+
+
+
+
+
+
+
+    </body>
+</html>

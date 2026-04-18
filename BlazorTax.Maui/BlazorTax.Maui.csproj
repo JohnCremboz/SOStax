@@ -29,7 +29,7 @@
         <MauiXamlInflator>SourceGen</MauiXamlInflator>
 
         <!-- Display name -->
-        <ApplicationTitle>BlazorTax</ApplicationTitle>
+        <ApplicationTitle>SOStax</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.blazortax.maui</ApplicationId>
