@@ -136,6 +136,11 @@ public static class TaxConstants2026
     public const decimal MaxBelastingkredietStatutair = 970m;
     public const decimal MaxBelastingkredietWerkbonus = 1_540m;
 
+    // Werkbonus belastingkrediet: omzetting RSZ-werkbonus naar fiscaal krediet
+    // Code1284/2284 aan 33,14%, Code1360/2360 aan 52,54% (art. 289ter/1 WIB92)
+    public const decimal WerkbonusPercentage3314 = 0.3314m;
+    public const decimal WerkbonusPercentage5254 = 0.5254m;
+
     // ── Onroerende inkomsten ────────────────────────────────────────────────
     public const decimal IndexatiecoeffKI = 2.2446m;
     public const decimal Revalorisatiecoeff = 5.63m;

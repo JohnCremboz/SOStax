@@ -114,7 +114,11 @@ public static class PartnerBelastingCalculator
 
         // ── 9. Voorheffingen & kredieten ────────────────────────────────
         r.Bedrijfsvoorheffing = inkomen.Bedrijfsvoorheffing;
-        r.BelastingkredietWerkbonus = Math.Min(inkomen.WerkbonusBedrag, TaxConstants2026.MaxBelastingkredietWerkbonus);
+
+        // Werkbonus belastingkrediet: 33,14% × Code284 + 52,54% × Code360, begrensd op maximum
+        decimal werkbonusKrediet = inkomen.WerkbonusCode284 * TaxConstants2026.WerkbonusPercentage3314
+                                 + inkomen.WerkbonusCode360 * TaxConstants2026.WerkbonusPercentage5254;
+        r.BelastingkredietWerkbonus = Math.Min(werkbonusKrediet, TaxConstants2026.MaxBelastingkredietWerkbonus);
 
         r.SaldoFederaalNaBVEnKredieten = r.SaldoFederaal - r.Bedrijfsvoorheffing - r.BelastingkredietWerkbonus;
     }

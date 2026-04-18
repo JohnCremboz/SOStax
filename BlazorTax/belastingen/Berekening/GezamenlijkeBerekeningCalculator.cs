@@ -68,7 +68,20 @@ public class GezamenlijkeBerekeningCalculator
             ? BelastingvrijeSomCalculator.BerekenPartner(input.VakII, false, !kinderenBijPartner1)
             : 0;
 
-        // ── 5. Fase 2: belasting berekenen per partner ──────────────────
+        // ── 5a. Kinderopvang proportioneel verdelen ─────────────────────────
+        // Tax-Calc verdeelt kinderopvang proportioneel op basis van netto-inkomen
+        if (isGehuwd && inkomen2.HeeftInkomen && inkomen1.Kinderopvang > 0)
+        {
+            decimal totaalKinderopvang = inkomen1.Kinderopvang;
+            decimal totaalNetto = r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen;
+            if (totaalNetto > 0)
+            {
+                inkomen1.Kinderopvang = Math.Round(totaalKinderopvang * r1.NettoBelastbaarInkomen / totaalNetto, 2);
+                inkomen2.Kinderopvang = totaalKinderopvang - inkomen1.Kinderopvang;
+            }
+        }
+
+        // ── 5b. Fase 2: belasting berekenen per partner ─────────────────
         PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest);
 
         if (isGehuwd && inkomen2.HeeftInkomen)
@@ -91,12 +104,18 @@ public class GezamenlijkeBerekeningCalculator
         resultaat.BasisGemeentebelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk;
         resultaat.Gemeentebelasting = resultaat.BasisGemeentebelasting * input.GemeentebelastingPercentage / 100m;
 
-        // BBSZ (vereenvoudigd: verschil ingehouden vs verschuldigd)
+        // BBSZ per persoon (AJ2026: single-proof hervorming)
+        // Alleen verschuldigd als er beroeps- of vervangingsinkomen is (niet bij enkel pensioen)
         decimal bbszIngehouden = inkomen1.BijzondereBijdrageSZ + inkomen2.BijzondereBijdrageSZ;
-        decimal gecombineerdNetto = r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen;
-        decimal bbszVerschuldigd = BerekenBBSZ(gecombineerdNetto);
 
-        resultaat.BBSZGezamenlijkInkomen = gecombineerdNetto;
+        bool bp1HeeftBeroep = inkomen1.BrutoBeroepsinkomen > 0 || inkomen1.BrutoVervangingsinkomen > 0;
+        bool bp2HeeftBeroep = inkomen2.BrutoBeroepsinkomen > 0 || inkomen2.BrutoVervangingsinkomen > 0;
+
+        decimal bbszBP = bp1HeeftBeroep ? BerekenBBSZPerPersoon(r1.NettoBelastbaarInkomen) : 0;
+        decimal bbszPartner = bp2HeeftBeroep ? BerekenBBSZPerPersoon(r2.NettoBelastbaarInkomen) : 0;
+        decimal bbszVerschuldigd = bbszBP + bbszPartner;
+
+        resultaat.BBSZGezamenlijkInkomen = r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen;
         resultaat.BBSZVerschuldigd = bbszVerschuldigd;
         resultaat.BBSZIngehouden = bbszIngehouden;
         resultaat.BBSZSaldo = bbszVerschuldigd - bbszIngehouden;
@@ -124,25 +143,28 @@ public class GezamenlijkeBerekeningCalculator
     }
 
     /// <summary>
-    /// Berekent de BBSZ op basis van het gezamenlijk netto belastbaar inkomen.
-    /// Vereenvoudigd barema (AJ2026).
+    /// Berekent de BBSZ per persoon (AJ2026: single-proof hervorming).
+    /// Barema gebaseerd op het individuele netto belastbaar inkomen.
     /// </summary>
-    private static decimal BerekenBBSZ(decimal gecombineerdNetto)
+    private static decimal BerekenBBSZPerPersoon(decimal nettoInkomen)
     {
-        // BBSZ-barema (bron: RSZ, geïndexeerd AJ2026)
-        // Dit is een benadering - exacte bedragen kunnen licht afwijken
-        if (gecombineerdNetto <= 18_592.02m) return 0;
-        if (gecombineerdNetto <= 21_070.96m)
-            return (gecombineerdNetto - 18_592.02m) * 0.09m; // 9% op schijf
-        if (gecombineerdNetto <= 60_161.85m)
+        // AJ2026 BBSZ-barema per persoon (single-proof)
+        if (nettoInkomen <= 18_592.02m) return 0;
+        if (nettoInkomen <= 21_070.96m)
+            return (nettoInkomen - 18_592.02m) * 0.09m;
+        if (nettoInkomen <= 60_161.85m)
         {
             decimal basis = (21_070.96m - 18_592.02m) * 0.09m; // ~223.10
-            return basis + (gecombineerdNetto - 21_070.96m) * 0.013m; // 1.3% op schijf
+            return basis + (nettoInkomen - 21_070.96m) * 0.013m;
         }
-        // Maximum BBSZ
-        decimal maxBasis = (21_070.96m - 18_592.02m) * 0.09m;
-        decimal maxSchijf2 = (60_161.85m - 21_070.96m) * 0.013m;
-        return maxBasis + maxSchijf2; // ~731.28
+        // Hogere schijven (afbouw single-proof)
+        if (nettoInkomen <= 62_027.14m)
+        {
+            return 731.14m + (nettoInkomen - 60_161.85m) * 0.0111m;
+        }
+        if (nettoInkomen <= 80_654.70m)
+            return 752.14m; // vast bedrag
+        return 731.38m; // afgebouwd maximum
     }
 
     private static void BouwDetailRegels(

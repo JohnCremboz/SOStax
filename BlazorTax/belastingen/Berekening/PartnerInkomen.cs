@@ -42,10 +42,13 @@ public class PartnerInkomen
     public decimal WerkelijkeKosten { get; init; }
     public decimal Bedrijfsvoorheffing { get; init; }
     public decimal BijzondereBijdrageSZ { get; init; }
-    public decimal WerkbonusBedrag { get; init; }
+
+    // Werkbonus RSZ-bedragen per tarief (voor berekening belastingkrediet)
+    public decimal WerkbonusCode284 { get; init; }  // RSZ werkbonus aan 33,14%
+    public decimal WerkbonusCode360 { get; init; }  // RSZ werkbonus aan 52,54%
 
     // Verminderingen
-    public decimal Kinderopvang { get; init; }
+    public decimal Kinderopvang { get; set; }
     public decimal Pensioensparen { get; init; }
     public decimal Giften { get; init; }
 
@@ -80,7 +83,8 @@ public class PartnerInkomen
             WerkelijkeKosten = vakIV.Code1258 ?? 0,
             Bedrijfsvoorheffing = (vakIV.Code1286 ?? 0) + (vakV.Code1225 ?? 0),
             BijzondereBijdrageSZ = vakIV.Code1287 ?? 0,
-            WerkbonusBedrag = (vakIV.Code1284 ?? 0) + (vakIV.Code1360 ?? 0),
+            WerkbonusCode284 = vakIV.Code1284 ?? 0,
+            WerkbonusCode360 = vakIV.Code1360 ?? 0,
             // Verminderingen
             Kinderopvang = vakX.Code1384 ?? 0,
             Pensioensparen = vakX.Code1361 ?? 0,
@@ -119,7 +123,8 @@ public class PartnerInkomen
             WerkelijkeKosten = vakIV.Code2258 ?? 0,
             Bedrijfsvoorheffing = (vakIV.Code2286 ?? 0) + (vakV.Code2225 ?? 0),
             BijzondereBijdrageSZ = vakIV.Code2287 ?? 0,
-            WerkbonusBedrag = (vakIV.Code2284 ?? 0) + (vakIV.Code2360 ?? 0),
+            WerkbonusCode284 = vakIV.Code2284 ?? 0,
+            WerkbonusCode360 = vakIV.Code2360 ?? 0,
             // Verminderingen
             Kinderopvang = 0, // kinderopvang zit op Code1384, wordt later verdeeld
             Pensioensparen = vakX.Code2361 ?? 0,
