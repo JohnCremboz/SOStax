@@ -62,39 +62,79 @@ public static class PartnerBelastingCalculator
         }
 
         // Winst zelfstandige (forfait 30%, max €5.930)
+        // Meerwaarden worden meegenomen in forfait-basis en proportioneel verdeeld
         r.BrutoWinstZelfstandige = inkomen.BrutoWinstZelfstandige;
-        if (r.BrutoWinstZelfstandige > 0)
+        decimal winstMV16 = inkomen.WinstMeerwaarden16_5;
+        decimal winstMV33 = inkomen.WinstMeerwaarden33;
+        if (r.BrutoWinstZelfstandige > 0 || winstMV16 > 0 || winstMV33 > 0)
         {
-            decimal basisW = r.BrutoWinstZelfstandige - inkomen.WinstSocialeBijdragen;
+            decimal brutoTotaalW = r.BrutoWinstZelfstandige + winstMV16 + winstMV33;
+            decimal basisW = brutoTotaalW - inkomen.WinstSocialeBijdragen;
             decimal werkelijkeKostenW = inkomen.WinstBeroepskosten + inkomen.WinstVrijstellingen;
-            // Zelfstandigen: werkelijke kosten of forfait 30%
             decimal forfaitW = ForfaitaireBeroepskostenCalculator.BerekenForfait(
                 Math.Max(basisW, 0), TypeBeroep.Werknemer); // 30% zelfde als werknemer
             if (werkelijkeKostenW > forfaitW)
                 r.WinstKosten = werkelijkeKostenW;
             else
                 r.WinstKosten = forfaitW;
-            decimal nettoW = Math.Max(basisW - r.WinstKosten, 0);
-            nettoDeel2 += nettoW;
+            decimal nettoTotaalW = Math.Max(basisW - r.WinstKosten, 0);
 
-            r.DetailRegels.Add(new("Winst zelfstandige bruto", r.BrutoWinstZelfstandige));
+            // Proportionele verdeling van netto over gezamenlijk en afzonderlijk
+            if (brutoTotaalW > 0 && nettoTotaalW > 0)
+            {
+                decimal ratio = nettoTotaalW / brutoTotaalW;
+                decimal nettoGezW = Math.Round(r.BrutoWinstZelfstandige * ratio, 2);
+                decimal nettoMV16 = Math.Round(winstMV16 * ratio, 2);
+                decimal nettoMV33 = Math.Round(winstMV33 * ratio, 2);
+                nettoDeel2 += nettoGezW;
+                r.Afzonderlijk16_5Pct += nettoMV16;
+                r.Afzonderlijk33Pct += nettoMV33;
+            }
+            else
+            {
+                nettoDeel2 += nettoTotaalW;
+                r.Afzonderlijk16_5Pct += winstMV16;
+                r.Afzonderlijk33Pct += winstMV33;
+            }
+
+            r.DetailRegels.Add(new("Winst zelfstandige bruto", brutoTotaalW));
             r.DetailRegels.Add(new("  Kosten + vrijstellingen",
                 -r.WinstKosten - inkomen.WinstSocialeBijdragen));
         }
 
         // Baten vrij beroep (getrapt forfait: 28,7%/10%/5%/3%, max €5.210)
+        // Meerwaarden worden meegenomen in forfait-basis en proportioneel verdeeld
         r.BrutoBatenVrijBeroep = inkomen.BrutoBatenVrijBeroep;
-        if (r.BrutoBatenVrijBeroep > 0)
+        decimal batenMV16 = inkomen.BatenMeerwaarden16_5;
+        decimal batenMV33 = inkomen.BatenMeerwaarden33;
+        if (r.BrutoBatenVrijBeroep > 0 || batenMV16 > 0 || batenMV33 > 0)
         {
-            decimal basisB = r.BrutoBatenVrijBeroep - inkomen.BatenSocialeBijdragen;
+            decimal brutoTotaalB = r.BrutoBatenVrijBeroep + batenMV16 + batenMV33;
+            decimal basisB = brutoTotaalB - inkomen.BatenSocialeBijdragen;
             decimal werkelijkeKostenB = inkomen.BatenBeroepskosten + inkomen.BatenVrijstellingen;
             decimal? werkKostenB = werkelijkeKostenB > 0 ? werkelijkeKostenB : null;
             (r.BatenKosten, r.BatenForfaitair) =
                 ForfaitaireBeroepskostenCalculator.Bereken(Math.Max(basisB, 0), werkKostenB, TypeBeroep.Baten);
-            decimal nettoB = Math.Max(basisB - r.BatenKosten, 0);
-            nettoDeel2 += nettoB;
+            decimal nettoTotaalB = Math.Max(basisB - r.BatenKosten, 0);
 
-            r.DetailRegels.Add(new("Baten vrij beroep bruto", r.BrutoBatenVrijBeroep));
+            if (brutoTotaalB > 0 && nettoTotaalB > 0)
+            {
+                decimal ratio = nettoTotaalB / brutoTotaalB;
+                decimal nettoGezB = Math.Round(r.BrutoBatenVrijBeroep * ratio, 2);
+                decimal nettoMV16B = Math.Round(batenMV16 * ratio, 2);
+                decimal nettoMV33B = Math.Round(batenMV33 * ratio, 2);
+                nettoDeel2 += nettoGezB;
+                r.Afzonderlijk16_5Pct += nettoMV16B;
+                r.Afzonderlijk33Pct += nettoMV33B;
+            }
+            else
+            {
+                nettoDeel2 += nettoTotaalB;
+                r.Afzonderlijk16_5Pct += batenMV16;
+                r.Afzonderlijk33Pct += batenMV33;
+            }
+
+            r.DetailRegels.Add(new("Baten vrij beroep bruto", brutoTotaalB));
             r.DetailRegels.Add(new(r.BatenForfaitair ? "  Forfait baten" : "  Werkelijke kosten",
                 -r.BatenKosten - inkomen.BatenSocialeBijdragen));
         }

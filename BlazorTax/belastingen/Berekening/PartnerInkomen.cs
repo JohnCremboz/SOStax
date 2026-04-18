@@ -65,12 +65,16 @@ public class PartnerInkomen
     public decimal WinstSocialeBijdragen { get; init; }
     public decimal WinstBeroepskosten { get; init; }
     public decimal WinstVrijstellingen { get; init; }
+    public decimal WinstMeerwaarden16_5 { get; init; }  // Code1603+1636+1605 (bruto, vóór forfait)
+    public decimal WinstMeerwaarden33 { get; init; }    // Code1618 (bruto, vóór forfait)
 
     // ── Deel 2: Baten vrije beroepen (Vak XVIII) ────────────────────────
     public decimal BrutoBatenVrijBeroep { get; init; }
     public decimal BatenSocialeBijdragen { get; init; }
     public decimal BatenBeroepskosten { get; init; }
     public decimal BatenVrijstellingen { get; init; }
+    public decimal BatenMeerwaarden16_5 { get; init; }  // Code1653+1682+1655 (bruto)
+    public decimal BatenMeerwaarden33 { get; init; }    // Code1667 (bruto)
 
     // ── Deel 2: Meewerkende echtgenoot (Vak XX) ─────────────────────────
     public decimal BrutoMeewerkend { get; init; }
@@ -171,6 +175,9 @@ public class PartnerInkomen
             WinstVrijstellingen = (vakXVII?.Code1609 ?? 0) + (vakXVII?.Code1608 ?? 0)
                                 + (vakXVII?.Code1612 ?? 0) + (vakXVII?.Code1633 ?? 0)
                                 + (vakXVII?.Code1614 ?? 0),
+            WinstMeerwaarden16_5 = (vakXVII?.Code1603 ?? 0) + (vakXVII?.Code1636 ?? 0)
+                                  + (vakXVII?.Code1605 ?? 0),
+            WinstMeerwaarden33 = vakXVII?.Code1618 ?? 0,
 
             // ── Deel 2: Baten vrij beroep (Vak XVIII) ───────────────
             BrutoBatenVrijBeroep = ExtractBrutoBaten1(vakXVIII),
@@ -179,6 +186,9 @@ public class PartnerInkomen
             BatenVrijstellingen = (vakXVIII?.Code1681 ?? 0) + (vakXVIII?.Code1662 ?? 0)
                                 + (vakXVIII?.Code1660 ?? 0) + (vakXVIII?.Code1664 ?? 0)
                                 + (vakXVIII?.Code1665 ?? 0) + (vakXVIII?.Code1666 ?? 0),
+            BatenMeerwaarden16_5 = (vakXVIII?.Code1653 ?? 0) + (vakXVIII?.Code1682 ?? 0)
+                                  + (vakXVIII?.Code1655 ?? 0),
+            BatenMeerwaarden33 = vakXVIII?.Code1667 ?? 0,
 
             // ── Deel 2: Meewerkende echtgenoot (Vak XX) ─────────────
             BrutoMeewerkend = vakXX?.Code1450 ?? 0,
@@ -186,14 +196,12 @@ public class PartnerInkomen
             MeewerkendBeroepskosten = vakXX?.Code1452 ?? 0,
 
             // ── Deel 2: Afzonderlijk belastbaar ─────────────────────
+            // Winst/baten meerwaarden worden apart getrackt en proportioneel
+            // verminderd met forfait in PartnerBelastingCalculator
             Afzonderlijk10Pct = (vakXXI?.Code1686 ?? 0),
             Afzonderlijk12_5Pct = (vakXVII?.Code1607 ?? 0) + (vakXXI?.Code1687 ?? 0),
-            Afzonderlijk16_5Pct = (vakXVII?.Code1603 ?? 0) + (vakXVII?.Code1636 ?? 0)
-                                + (vakXVII?.Code1605 ?? 0) + (vakXVIII?.Code1653 ?? 0)
-                                + (vakXVIII?.Code1682 ?? 0) + (vakXVIII?.Code1655 ?? 0)
-                                + (vakXXI?.Code1690 ?? 0) + (vakXXI?.Code1694 ?? 0),
-            Afzonderlijk33Pct = (vakXVII?.Code1618 ?? 0) + (vakXVIII?.Code1667 ?? 0)
-                              + (vakXXI?.Code1691 ?? 0),
+            Afzonderlijk16_5Pct = (vakXXI?.Code1690 ?? 0) + (vakXXI?.Code1694 ?? 0),
+            Afzonderlijk33Pct = (vakXXI?.Code1691 ?? 0),
 
             // ── Deel 2: Diverse inkomsten (Vak XV) ──────────────────
             DiverseInkomstenGezamenlijk = (vakXV?.Code1460 ?? 0) + (vakXV?.Code1200 ?? 0)
@@ -282,6 +290,9 @@ public class PartnerInkomen
             WinstVrijstellingen = (vakXVII?.Code2609 ?? 0) + (vakXVII?.Code2608 ?? 0)
                                 + (vakXVII?.Code2612 ?? 0) + (vakXVII?.Code2633 ?? 0)
                                 + (vakXVII?.Code2614 ?? 0),
+            WinstMeerwaarden16_5 = (vakXVII?.Code2603 ?? 0) + (vakXVII?.Code2636 ?? 0)
+                                  + (vakXVII?.Code2605 ?? 0),
+            WinstMeerwaarden33 = vakXVII?.Code2618 ?? 0,
 
             // ── Deel 2: Baten vrij beroep (Vak XVIII) ───────────────
             BrutoBatenVrijBeroep = ExtractBrutoBaten2(vakXVIII),
@@ -290,6 +301,9 @@ public class PartnerInkomen
             BatenVrijstellingen = (vakXVIII?.Code2681 ?? 0) + (vakXVIII?.Code2662 ?? 0)
                                 + (vakXVIII?.Code2660 ?? 0) + (vakXVIII?.Code2664 ?? 0)
                                 + (vakXVIII?.Code2665 ?? 0) + (vakXVIII?.Code2666 ?? 0),
+            BatenMeerwaarden16_5 = (vakXVIII?.Code2653 ?? 0) + (vakXVIII?.Code2682 ?? 0)
+                                  + (vakXVIII?.Code2655 ?? 0),
+            BatenMeerwaarden33 = vakXVIII?.Code2667 ?? 0,
 
             // ── Deel 2: Meewerkende echtgenoot (Vak XX) ─────────────
             BrutoMeewerkend = vakXX?.Code2450 ?? 0,
@@ -299,12 +313,8 @@ public class PartnerInkomen
             // ── Deel 2: Afzonderlijk belastbaar ─────────────────────
             Afzonderlijk10Pct = (vakXXI?.Code2686 ?? 0),
             Afzonderlijk12_5Pct = (vakXVII?.Code2607 ?? 0) + (vakXXI?.Code2687 ?? 0),
-            Afzonderlijk16_5Pct = (vakXVII?.Code2603 ?? 0) + (vakXVII?.Code2636 ?? 0)
-                                + (vakXVII?.Code2605 ?? 0) + (vakXVIII?.Code2653 ?? 0)
-                                + (vakXVIII?.Code2682 ?? 0) + (vakXVIII?.Code2655 ?? 0)
-                                + (vakXXI?.Code2690 ?? 0) + (vakXXI?.Code2694 ?? 0),
-            Afzonderlijk33Pct = (vakXVII?.Code2618 ?? 0) + (vakXVIII?.Code2667 ?? 0)
-                              + (vakXXI?.Code2691 ?? 0),
+            Afzonderlijk16_5Pct = (vakXXI?.Code2690 ?? 0) + (vakXXI?.Code2694 ?? 0),
+            Afzonderlijk33Pct = (vakXXI?.Code2691 ?? 0),
 
             // ── Deel 2: Diverse inkomsten (Vak XV) ──────────────────
             DiverseInkomstenGezamenlijk = (vakXV?.Code2460 ?? 0) + (vakXV?.Code2200 ?? 0)
@@ -376,6 +386,8 @@ public class PartnerInkomen
     /// <summary>Totaal bruto afzonderlijk belastbaar inkomen Deel 2.</summary>
     public decimal BrutoTotaalDeel2Afzonderlijk =>
         Afzonderlijk10Pct + Afzonderlijk12_5Pct + Afzonderlijk16_5Pct + Afzonderlijk33Pct
+        + WinstMeerwaarden16_5 + WinstMeerwaarden33
+        + BatenMeerwaarden16_5 + BatenMeerwaarden33
         + DiverseInkomsten16_5Pct + DiverseInkomsten33Pct;
 
     /// <summary>Totaal bruto inkomen over alle categorieën (Deel 1 + Deel 2 gezamenlijk).</summary>
