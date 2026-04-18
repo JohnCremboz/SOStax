@@ -19,6 +19,17 @@ public class AangifteState
     public VakXIIData VakXII { get; set; } = new();
     public VakXIIIData VakXIII { get; set; } = new();
 
+    // Deel 2
+    public VakXIVData VakXIV { get; set; } = new();
+    public VakXVData VakXV { get; set; } = new();
+    public VakXVIData VakXVI { get; set; } = new();
+    public VakXVIIData VakXVII { get; set; } = new();
+    public VakXVIIIData VakXVIII { get; set; } = new();
+    public VakXIXData VakXIX { get; set; } = new();
+    public VakXXData VakXX { get; set; } = new();
+    public VakXXIData VakXXI { get; set; } = new();
+    public VakXXIIData VakXXII { get; set; } = new();
+
     // Berekeningsinstellingen
     public Gewest Gewest { get; set; } = Gewest.Vlaanderen;
     public decimal GemeentebelastingPercentage { get; set; } = 7m;

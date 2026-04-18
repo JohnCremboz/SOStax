@@ -321,3 +321,120 @@ Volledige structuur van alle vakken I t.e.m. XIII.
 
 ### E. Werkelijke beroepskosten — huur of zakelijk gebruiksrecht
 - Vermelding indien beroepskosten dergelijke vergoedingen bevatten  
+
+---
+
+## VAK XIV — Beroep en Ondernemingsnummer
+### Beroep
+- Beroep belastingplichtige
+- Beroep partner
+
+### Ondernemingsnummer
+- Ondernemingsnummer belastingplichtige
+- Ondernemingsnummer partner
+
+---
+
+## VAK XV — Diverse Inkomsten
+
+### A. Diverse inkomsten van roerende aard
+- Netto-inkomen onroerende goederen in buitenland
+- Opbrengsten verhuring/onderverhuring roerende goederen
+- Opbrengsten concessie plakbrieven/reclame
+- Inkomsten verhuring jacht-/vis-/vogelvangstrechten
+- Onderhoudsgelden (totaal)
+- Onderhoudsgelden (afzonderlijk belastbaar 80%)
+
+### B. Andere diverse inkomsten
+- Deeleconomie
+- Toevallige winsten (gezamenlijk/afzonderlijk)
+- Prijzen en subsidies
+- Meerwaarden onroerende goederen
+- Meerwaarden aandelen/deelbewijzen
+- Loten van effecten
+- Ander divers inkomen
+- Buitenlandse oorsprong
+
+---
+
+## VAK XVI — Bezoldigingen Bedrijfsleiders
+- Gewone bezoldigingen
+- Huurinkomsten als bezoldiging
+- Voordelen van alle aard
+- Eigen kosten werkgever
+- Inhoudingen aanvullend pensioen
+- Sociale bijdragen
+- Vakantiegeld
+- Opzeggingsvergoedingen
+- Achterstallen
+- Fietsplan
+- Overuren relance
+- Werkbonus
+- Bedrijfsvoorheffing
+- Buitenlandse oorsprong
+
+---
+
+## VAK XVII — Winst uit Nijverheids-, Handels- of Landbouwondernemingen
+- Brutowinst eigenlijke exploitatie
+- Voorheen vrijgestelde winst
+- Financiële opbrengsten
+- Meerwaarden
+- Vergoedingen
+- Sociale bijdragen
+- Beroepskosten
+- Vrijstellingen
+- Investeringsaftrek
+- Toekenning meewerkende echtgenoot
+- Buitenlandse oorsprong
+- Feitelijke vereniging
+
+---
+
+## VAK XVIII — Baten van Vrije Beroepen, Ambten, Posten of Andere Winstgevende Bezigheden
+- Ontvangsten beroep
+- Sportbeoefenaars
+- Achterstallige erelonen
+- Voorheen vrijgestelde baten
+- Meerwaarden
+- Vergoedingen en premies
+- Sociale bijdragen
+- Beroepskosten
+- Vrijstelling sociaal passief
+- Investeringsaftrek
+- Toekenning meewerkende echtgenoot
+- Buitenlandse oorsprong
+- Feitelijke vereniging
+
+---
+
+## VAK XIX — Verrekenbare Bestanddelen Zelfstandige Beroepswerkzaamheid
+- Roerende voorheffing
+- Forfaitair gedeelte buitenlandse belasting
+- Bedrijfsvoorheffing
+- Belastingkredieten
+
+---
+
+## VAK XX — Bezoldigingen Meewerkende Echtgenoten en Wettelijk Samenwonende Partners
+- Toegekende bezoldigingen
+- Sociale bijdragen
+- Beroepskosten
+- Bijberoep/student-zelfstandige
+- Buitenlandse oorsprong
+
+---
+
+## VAK XXI — Winst en Baten van een Vorige Beroepswerkzaamheid
+- Stopzettingsmeerwaarden
+- Kosten overdracht
+- Premies en vergoedingen
+- Winst/baten na stopzetting
+- Sportieve activiteiten
+- Beroepskosten
+- Buitenlandse oorsprong
+
+---
+
+## VAK XXII — Eerste Vestiging als Zelfstandige
+- Aanvangsdatum
