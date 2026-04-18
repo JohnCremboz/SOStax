@@ -149,14 +149,49 @@
     </div>
 
     <div class="vak4-row">
-        <div class="vak4-q-text">14. Roerende voorheffing op auteursrechten:</div>
+        <div class="vak4-q-text">14. Niet-recurrente resultaatsgebonden voordelen:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1418-55</span><InputNumber @bind-Value="Data.Code1418" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2418-25</span><InputNumber @bind-Value="Data.Code2418" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <div class="vak4-row">
+        <div class="vak4-q-text">15. Roerende voorheffing op auteursrechten:</div>
         <div class="vak4-col-duo">
             <div class="vak4-input-cell"><span class="vak2-code">1427-00</span><InputNumber @bind-Value="Data.Code1427" class="vak4-amount" /></div>
             <div class="vak4-input-cell"><span class="vak2-code">2427-00</span><InputNumber @bind-Value="Data.Code2427" class="vak4-amount" /></div>
         </div>
     </div>
 
-    <!-- 15. Buitenlandse oorsprong -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">16. Bijdragen/premies individuele voortzetting pensioen:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1428-44</span><InputNumber @bind-Value="Data.Code1428" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2428-14</span><InputNumber @bind-Value="Data.Code2428" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <!-- 17. Overuren relance 2024 -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">17. Overuren die recht geven op een relancetoeslag (2024):</div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">a) Aantal uren:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1438-06</span><InputNumber @bind-Value="Data.Code1438" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2438-73</span><InputNumber @bind-Value="Data.Code2438" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">b) Bezoldiging voor die uren:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1440-04</span><InputNumber @bind-Value="Data.Code1440" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2440-71</span><InputNumber @bind-Value="Data.Code2440" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 18. Buitenlandse oorsprong -->
     <div class="vak2-section-header">D. BEZOLDIGINGEN VAN BUITENLANDSE OORSPRONG</div>
     <div class="vak3-buitenland-section">
         @foreach (var rij in Data.BuitenlandseInkomsten)

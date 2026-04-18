@@ -171,4 +171,18 @@ public static class TaxConstants2026
     // ── Langetermijnsparen (federaal, bevroren op AJ2025) ───────────────────
     public const decimal MaxLangetermijnsparenFederaalAbsoluut = 2_450m;
     public const decimal MaxLangetermijnsparenFederaalEersteSchijf = 2_040m;
+
+    // ── Afzonderlijke aanslagvoeten (deel 2) ────────────────────────────────
+    public const decimal Tarief10Procent = 0.10m;       // stopzetting 60+ / gedwongen
+    public const decimal Tarief12_5Procent = 0.125m;    // Europese landbouwsubsidies
+    public const decimal Tarief16_5Procent = 0.165m;    // meerwaarden ≥5j, achterstallen, COVID
+    public const decimal Tarief33Procent = 0.33m;       // meerwaarden <5j, immaterieel, scheidsrechters
+
+    // ── Deel 2: drempels en plafonds ────────────────────────────────────────
+    public const decimal DrempelDeeleconomie = 7_700m;  // 2025 (was €7.460 in 2024)
+    public const decimal MaxFietsvergoedingVrijstelling = 3_610m;
+    public const decimal MaxPensioenBijdrageIndividueel = 3_010m;
+    public const decimal MaxVrijstellingBijkomendPersoneel = 20_100m;
+    public const decimal MaxSociaalPassiefPerMaand = 1_830m;
+    public const decimal MaxToekenningMeewerkPercentage = 0.30m; // 30% netto winst
 }

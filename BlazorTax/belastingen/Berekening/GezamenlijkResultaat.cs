@@ -11,9 +11,25 @@ public class PartnerResultaat
     public decimal BrutoVervangingsinkomen { get; set; }
     public decimal BrutoTotaal { get; set; }
 
+    // Deel 2 bruto
+    public decimal BrutoBedrijfsleider { get; set; }
+    public decimal BrutoWinstZelfstandige { get; set; }
+    public decimal BrutoBatenVrijBeroep { get; set; }
+    public decimal BrutoMeewerkend { get; set; }
+    public decimal BrutoDiverseGezamenlijk { get; set; }
+
     // Kosten
     public decimal Beroepskosten { get; set; }
     public bool ForfaitaireBeroepskosten { get; set; }
+
+    // Deel 2 kosten
+    public decimal BedrijfsleiderKosten { get; set; }
+    public bool BedrijfsleiderForfaitair { get; set; }
+    public decimal WinstKosten { get; set; }
+    public decimal BatenKosten { get; set; }
+    public bool BatenForfaitair { get; set; }
+    public decimal MeewerkendKosten { get; set; }
+    public bool MeewerkendForfaitair { get; set; }
 
     // Netto
     public decimal NettoBelastbaarInkomen { get; set; }
@@ -41,6 +57,13 @@ public class PartnerResultaat
 
     // Totaal
     public decimal TotaleBelasting { get; set; }
+
+    // Afzonderlijk belastbaar (Deel 2)
+    public decimal Afzonderlijk10Pct { get; set; }
+    public decimal Afzonderlijk12_5Pct { get; set; }
+    public decimal Afzonderlijk16_5Pct { get; set; }
+    public decimal Afzonderlijk33Pct { get; set; }
+    public decimal BelastingAfzonderlijk { get; set; }
 
     // Voorheffingen & kredieten
     public decimal Bedrijfsvoorheffing { get; set; }

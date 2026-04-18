@@ -282,6 +282,15 @@ public class BerekeningInput
     public required VakXData VakX { get; init; }
     public required VakXIIData VakXII { get; init; }
 
+    // Deel 2 vakken
+    public VakXVData VakXV { get; init; } = new();
+    public VakXVIData VakXVI { get; init; } = new();
+    public VakXVIIData VakXVII { get; init; } = new();
+    public VakXVIIIData VakXVIII { get; init; } = new();
+    public VakXIXData VakXIX { get; init; } = new();
+    public VakXXData VakXX { get; init; } = new();
+    public VakXXIData VakXXI { get; init; } = new();
+
     public Gewest Gewest { get; init; } = Gewest.Vlaanderen;
     public decimal GemeentebelastingPercentage { get; init; } = 7m;
     public TypeBeroep TypeBeroep { get; init; } = TypeBeroep.Werknemer;

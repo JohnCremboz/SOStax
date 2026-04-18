@@ -17,9 +17,15 @@ public class GezamenlijkeBerekeningCalculator
                      || input.VakII.BurgerlijkeStaat == "1010";
 
         // ── 1. Inkomen extraheren per partner ───────────────────────────
-        var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(input.VakIV, input.VakV, input.VakX);
+        var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(
+            input.VakIV, input.VakV, input.VakX,
+            input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
+            input.VakXIX, input.VakXX, input.VakXXI);
         var inkomen2 = isGehuwd
-            ? PartnerInkomen.ExtractPartner(input.VakIV, input.VakV, input.VakX)
+            ? PartnerInkomen.ExtractPartner(
+                input.VakIV, input.VakV, input.VakX,
+                input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
+                input.VakXIX, input.VakXX, input.VakXXI)
             : new PartnerInkomen { Label = "Partner" };
 
         // ── 2. Fase 1: bruto → netto per partner ───────────────────────
