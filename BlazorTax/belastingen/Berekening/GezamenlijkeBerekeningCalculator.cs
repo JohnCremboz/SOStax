@@ -128,22 +128,25 @@ public class GezamenlijkeBerekeningCalculator
 
         // Voorheffingen
         decimal totaalBV = r1.Bedrijfsvoorheffing + r2.Bedrijfsvoorheffing;
+        decimal totaalRV = inkomen1.Deel2RoerendeVoorheffing + inkomen2.Deel2RoerendeVoorheffing;
         decimal totaalWerkbonus = r1.BelastingkredietWerkbonus + r2.BelastingkredietWerkbonus;
 
-        // Totale belasting
+        // Totale belasting (inclusief afzonderlijk belastbaar)
+        decimal totaalAfzonderlijk = r1.BelastingAfzonderlijk + r2.BelastingAfzonderlijk;
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal
                                 + resultaat.TotaalSaldoGewestelijk
                                 + resultaat.Gemeentebelasting
-                                + Math.Max(resultaat.BBSZSaldo, 0);
+                                + Math.Max(resultaat.BBSZSaldo, 0)
+                                + totaalAfzonderlijk;
 
         // Aftrekken
-        decimal totaalAftrek = totaalBV + totaalWerkbonus;
+        decimal totaalAftrek = totaalBV + totaalRV + totaalWerkbonus;
 
         resultaat.Eindresultaat = totaleBelasting - totaalAftrek;
 
         // ── 7. Detailregels opbouwen ────────────────────────────────────
         BouwDetailRegels(resultaat, r1, r2, inkomen1, inkomen2, input, hqBedrag,
-            kinderenBijPartner1, vrijeSom1, vrijeSom2, totaalBV, totaalWerkbonus);
+            kinderenBijPartner1, vrijeSom1, vrijeSom2, totaalBV, totaalRV, totaalWerkbonus);
 
         return resultaat;
     }
@@ -181,7 +184,7 @@ public class GezamenlijkeBerekeningCalculator
         decimal hqBedrag,
         bool kinderenBijPartner1,
         decimal vrijeSom1, decimal vrijeSom2,
-        decimal totaalBV, decimal totaalWerkbonus)
+        decimal totaalBV, decimal totaalRV, decimal totaalWerkbonus)
     {
         var regels = resultaat.DetailRegels;
 
@@ -190,6 +193,22 @@ public class GezamenlijkeBerekeningCalculator
             regels.Add(new("═══ BELASTINGPLICHTIGE ═══", 0, true));
             regels.Add(new("Bruto inkomen", r1.BrutoTotaal));
             regels.Add(new("Beroepskosten", -r1.Beroepskosten));
+
+            // Deel 2 samenvatting
+            if (ink1.HeeftDeel2Inkomen)
+            {
+                if (r1.BrutoBedrijfsleider > 0)
+                    regels.Add(new("Bedrijfsleider netto", r1.BrutoBedrijfsleider - r1.BedrijfsleiderKosten - ink1.BedrijfsleiderSocialeBijdragen));
+                if (r1.BrutoWinstZelfstandige > 0)
+                    regels.Add(new("Winst zelfstandige netto", r1.BrutoWinstZelfstandige - r1.WinstKosten - ink1.WinstSocialeBijdragen));
+                if (r1.BrutoBatenVrijBeroep > 0)
+                    regels.Add(new("Baten vrij beroep netto", r1.BrutoBatenVrijBeroep - r1.BatenKosten - ink1.BatenSocialeBijdragen));
+                if (r1.BrutoMeewerkend > 0)
+                    regels.Add(new("Meewerkend netto", r1.BrutoMeewerkend - r1.MeewerkendKosten - ink1.MeewerkendSocialeBijdragen));
+                if (r1.BelastingAfzonderlijk > 0)
+                    regels.Add(new("Belasting afzonderlijk", r1.BelastingAfzonderlijk));
+            }
+
             regels.Add(new("Netto belastbaar", r1.NettoBelastbaarInkomen, true));
 
             if (hqBedrag > 0 && r1.HuwelijksquotientAfgestaan > 0)
@@ -208,6 +227,22 @@ public class GezamenlijkeBerekeningCalculator
             regels.Add(new("═══ PARTNER ═══", 0, true));
             regels.Add(new("Bruto inkomen", r2.BrutoTotaal));
             regels.Add(new("Beroepskosten", -r2.Beroepskosten));
+
+            // Deel 2 samenvatting partner
+            if (ink2.HeeftDeel2Inkomen)
+            {
+                if (r2.BrutoBedrijfsleider > 0)
+                    regels.Add(new("Bedrijfsleider netto", r2.BrutoBedrijfsleider - r2.BedrijfsleiderKosten - ink2.BedrijfsleiderSocialeBijdragen));
+                if (r2.BrutoWinstZelfstandige > 0)
+                    regels.Add(new("Winst zelfstandige netto", r2.BrutoWinstZelfstandige - r2.WinstKosten - ink2.WinstSocialeBijdragen));
+                if (r2.BrutoBatenVrijBeroep > 0)
+                    regels.Add(new("Baten vrij beroep netto", r2.BrutoBatenVrijBeroep - r2.BatenKosten - ink2.BatenSocialeBijdragen));
+                if (r2.BrutoMeewerkend > 0)
+                    regels.Add(new("Meewerkend netto", r2.BrutoMeewerkend - r2.MeewerkendKosten - ink2.MeewerkendSocialeBijdragen));
+                if (r2.BelastingAfzonderlijk > 0)
+                    regels.Add(new("Belasting afzonderlijk", r2.BelastingAfzonderlijk));
+            }
+
             regels.Add(new("Netto belastbaar", r2.NettoBelastbaarInkomen, true));
 
             if (hqBedrag > 0 && r2.HuwelijksquotientAfgestaan > 0)
@@ -238,12 +273,19 @@ public class GezamenlijkeBerekeningCalculator
         if (resultaat.BBSZSaldo > 0)
             regels.Add(new("BBSZ saldo", resultaat.BBSZSaldo));
 
+        decimal totaalAfzonderlijk = r1.BelastingAfzonderlijk + r2.BelastingAfzonderlijk;
+        if (totaalAfzonderlijk > 0)
+            regels.Add(new("Belasting afzonderlijk", totaalAfzonderlijk));
+
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk
-                                + resultaat.Gemeentebelasting + Math.Max(resultaat.BBSZSaldo, 0);
+                                + resultaat.Gemeentebelasting + Math.Max(resultaat.BBSZSaldo, 0)
+                                + totaalAfzonderlijk;
         regels.Add(new("Totale belasting", totaleBelasting, true));
 
         if (totaalBV > 0)
             regels.Add(new("Bedrijfsvoorheffing", -totaalBV));
+        if (totaalRV > 0)
+            regels.Add(new("Roerende voorheffing", -totaalRV));
         if (totaalWerkbonus > 0)
             regels.Add(new("Belastingkrediet werkbonus", -totaalWerkbonus));
 

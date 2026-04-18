@@ -14,6 +14,7 @@ var scenarios = new (string Naam, BerekeningInput Input, TaxCalcRef Ref)[]
     Scenario2_WerknemerGent(),
     Scenario3_GehuwdMenen(),
     Scenario4_WerknemerAntwerpen(),
+    Scenario5_BedrijfsleiderBrussel(),
 };
 
 foreach (var (naam, input, taxCalcRef) in scenarios)
@@ -259,6 +260,52 @@ static (string, BerekeningInput, TaxCalcRef) Scenario4_WerknemerAntwerpen()
     };
 
     return ("4: Werknemer Antwerpen (€45k loon, BV €12000, 7%)", input, taxCalc);
+}
+
+static (string, BerekeningInput, TaxCalcRef) Scenario5_BedrijfsleiderBrussel()
+{
+    // Bedrijfsleider: €60k bezoldiging + €15k winst zelfstandig bijberoep
+    // Meerwaarde €5k (16,5%)
+    var input = new BerekeningInput
+    {
+        VakII = new VakIIData { BurgerlijkeStaat = "1001" },
+        VakIII = new VakIIIData(),
+        VakIV = new VakIVData(),
+        VakV = new VakVData(),
+        VakVIII = new VakVIIIData(),
+        VakIX = new VakIXData(),
+        VakX = new VakXData { Code1361 = 1020m },  // pensioensparen
+        VakXII = new VakXIIData(),
+        VakXVI = new VakXVIData
+        {
+            Code1400 = 55000m,     // gewone bezoldiging
+            Code1401 = 5000m,      // voordelen alle aard
+            Code1454 = 4500m,      // sociale bijdragen bedrijfsleider
+            Code1421 = 18000m,     // bedrijfsvoorheffing
+        },
+        VakXVII = new VakXVIIData
+        {
+            Code1600 = 15000m,     // winst zelfstandige
+            Code1632 = 3200m,      // sociale bijdragen zelfstandige
+            Code1603 = 5000m,      // meerwaarde 16,5%
+        },
+        VakXIX = new VakXIXData
+        {
+            Code1758 = 2500m,      // BV zelfstandige
+        },
+        Gewest = Gewest.Brussel,
+        GemeentebelastingPercentage = 7.5m,
+        TypeBeroep = TypeBeroep.Werknemer,
+    };
+
+    // Handmatig nagerekend:
+    // Bedrijfsleider: bruto 60k - SB 4.5k = 55.5k basis → forfait 3% = 1665 (max 3130) → netto = 53.835
+    // Winst: bruto 15k - SB 3.2k = 11.8k basis → forfait 30% = 3540 (max 5930) → netto = 8.260
+    // Netto totaal = 53.835 + 8.260 = 62.095
+    // Afzonderlijk 16,5%: 5000 × 0.165 = 825
+    var taxCalc = new TaxCalcRef();
+
+    return ("5: Bedrijfsleider Brussel (€60k bezold + €15k winst + €5k meerwaarde 16,5%)", input, taxCalc);
 }
 
 class TaxCalcRef
