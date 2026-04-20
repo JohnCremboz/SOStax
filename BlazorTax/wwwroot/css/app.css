@@ -690,3 +690,57 @@ code {
     color: #b44;
 }
 
+/* ── Afdrukken ── */
+.no-print {
+    /* zichtbaar op scherm, verborgen bij afdrukken */
+}
+
+.print-only {
+    display: none;
+}
+
+@media print {
+    /* Verberg alles behalve het berekeningsresultaat */
+    body > * {
+        display: none !important;
+    }
+
+    app, #app {
+        display: block !important;
+    }
+
+    app > *, #app > * {
+        display: none !important;
+    }
+
+    .berekening-resultaat {
+        display: block !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    /* Zorg dat tabelrijen niet gesplitst worden over pagina's */
+    tr {
+        page-break-inside: avoid;
+    }
+
+    /* Verberg navigatie, tabs, instellingen */
+    .vak-tabs,
+    .vak-panel,
+    .vak-nav-footer,
+    .berekening-settings,
+    nav,
+    header {
+        display: none !important;
+    }
+}
+

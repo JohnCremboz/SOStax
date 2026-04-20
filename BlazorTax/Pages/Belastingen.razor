@@ -228,7 +228,13 @@ else
     @if (_gezamenlijkResultaat is not null)
     {
         <section class="berekening-resultaat mt-4 p-3 border rounded">
-            <h3>📊 Berekeningsresultaat</h3>
+            <div class="d-flex justify-content-between align-items-center mb-2 no-print">
+                <h3 class="mb-0">📊 Berekeningsresultaat</h3>
+                <button class="btn btn-outline-secondary btn-sm" @onclick="PrintResultaat">
+                    🖨️ Afdrukken / Opslaan als PDF
+                </button>
+            </div>
+            <h3 class="d-none print-only">Belastingberekening AJ2026</h3>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -270,6 +276,11 @@ else
     private bool _snelleInvoerActief = false;
     private readonly AangifteState _state = new();
     private GezamenlijkResultaat? _gezamenlijkResultaat;
+
+    private async Task PrintResultaat()
+    {
+        await JS.InvokeVoidAsync("window.print");
+    }
 
     [SupplyParameterFromQuery(Name = "vak")]
     public string? VakCode { get; set; }
