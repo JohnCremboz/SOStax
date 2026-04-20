@@ -23,7 +23,7 @@ else
         @for (var i = 0; i < _vakSections.Count; i++)
         {
             var vak = _vakSections[i];
-            var isActive = i == _activeTabIndex;
+            var isActive = i == _activeTabIndex && !_snelleInvoerActief;
             var tabHref = Navigation.GetUriWithQueryParameter("vak", vak.Code);
             var tabIndex = i;
 
@@ -39,7 +39,26 @@ else
                 </a>
             </li>
         }
+        <li class="nav-item" role="presentation">
+            <a href="#"
+               class="nav-link @(_snelleInvoerActief ? "active" : null)"
+               role="tab"
+               aria-selected="@_snelleInvoerActief"
+               @onclick:preventDefault
+               @onclick="SelectSnelleInvoer">
+                SNELLE INVOERING
+            </a>
+        </li>
     </ul>
+
+    @if (_snelleInvoerActief)
+    {
+        <section class="vak-panel">
+            <SnelleInvoerForm State="_state" />
+        </section>
+    }
+    else
+    {
 
     var activeSection = _vakSections[_activeTabIndex];
 
@@ -164,6 +183,8 @@ else
         </div>
     </section>
 
+    } <!-- einde else (niet snelle invoer) -->
+
     <!-- Berekeningsinstellingen -->
     <section class="berekening-settings mt-4 p-3 border rounded">
         <h3>⚙️ Berekeningsinstellingen</h3>
@@ -246,6 +267,7 @@ else
     private readonly List<VakSection> _vakSections = [];
     private string? _errorMessage;
     private int _activeTabIndex;
+    private bool _snelleInvoerActief = false;
     private readonly AangifteState _state = new();
     private GezamenlijkResultaat? _gezamenlijkResultaat;
 
@@ -302,6 +324,7 @@ else
     {
         if (tabIndex < 0 || tabIndex >= _vakSections.Count) return;
 
+        _snelleInvoerActief = false;
         _activeTabIndex = tabIndex;
 
         var targetVakCode = _vakSections[tabIndex].Code;
@@ -309,6 +332,11 @@ else
         Navigation.NavigateTo(uriWithQuery, replace: true);
 
         await JS.InvokeVoidAsync("scrollTabIntoView", $"[data-tab-index='{tabIndex}']");
+    }
+
+    private void SelectSnelleInvoer()
+    {
+        _snelleInvoerActief = true;
     }
 
     private void Bereken()
