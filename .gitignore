@@ -7,3 +7,4 @@ riderModule.iml
 *.user
 *.suo
 taxcalc_err_*.html
+.fake
