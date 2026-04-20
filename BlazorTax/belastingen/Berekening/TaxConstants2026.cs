@@ -204,6 +204,10 @@ public static class TaxConstants2026
     public const decimal MaxSociaalPassiefPerMaand = 1_830m;
     public const decimal MaxToekenningMeewerkPercentage = 0.30m; // 30% netto winst
 
+    // ── Overwerktoeslag (art. 154quater WIB92) ────────────────────────────────
+    // Federale belastingvermindering = overwerktoeslag × 57,75%
+    public const decimal OverwerktoeslagVerminderingPercentage = 0.5775m;
+
     // ── Vermeerdering wegens geen/onvoldoende voorafbetalingen (art. 157-168 WIB) ──
     public const decimal VermeerderingMultiplier = 1.06m;   // 106% basisbedrag
     public const decimal VermeerderingPercentage = 0.09m;   // 9% vermeerdering

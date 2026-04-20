@@ -49,8 +49,15 @@ public class PersonenbelastingCalculator
         if (kosten > 0)
             r.DetailRegels.Add(new(isForfaitair ? "Forfaitaire beroepskosten (30%)" : "Werkelijke beroepskosten", -kosten));
 
-        // ── 3. Netto belastbaar inkomen ─────────────────────────────────────
-        r.NettoBelastbaarInkomen = Math.Max(brutoTotaal - kosten, 0);
+        // ── 3. Vorige beroepsverliezen (art. 23 §1 WIB92) ──────────────────
+        decimal vorigeVerliezen = (input.VakIV.Code1349 ?? 0) + (input.VakIV.Code2349 ?? 0);
+        decimal nettoNaKosten = Math.Max(brutoTotaal - kosten, 0);
+        decimal toegepastVerliezen = Math.Min(vorigeVerliezen, nettoNaKosten);
+        if (toegepastVerliezen > 0)
+            r.DetailRegels.Add(new("Vorige beroepsverliezen", -toegepastVerliezen));
+
+        // ── 4. Netto belastbaar inkomen ─────────────────────────────────────
+        r.NettoBelastbaarInkomen = Math.Max(nettoNaKosten - toegepastVerliezen, 0);
         r.DetailRegels.Add(new("Netto belastbaar inkomen", r.NettoBelastbaarInkomen, true));
 
         // ── 4. Huwelijksquotiënt ────────────────────────────────────────────

@@ -16,6 +16,7 @@ var scenarios = new (string Naam, BerekeningInput Input, TaxCalcRef Ref)[]
     Scenario4_WerknemerAntwerpen(),
     Scenario5_BedrijfsleiderBrussel(),
     Scenario6_WerknemerWoonbonus(),
+    Scenario7_PensionarisMenen_1txt(),
 };
 
 foreach (var (naam, input, taxCalcRef) in scenarios)
@@ -69,7 +70,7 @@ foreach (var (naam, input, taxCalcRef) in scenarios)
     }
 
     decimal totaleBelasting = result.TotaalSaldoFederaal + result.TotaalSaldoGewestelijk
-                            + result.Gemeentebelasting + Math.Max(result.BBSZSaldo, 0);
+                            + result.Gemeentebelasting + result.BBSZSaldo;
     Compare("Totale belasting", totaleBelasting, taxCalcRef.TotaleBelasting);
     Compare("Gemeentebelasting", result.Gemeentebelasting, taxCalcRef.Gemeentebelasting);
     if (result.BBSZVerschuldigd > 0 || taxCalcRef.BBSZVerschuldigd > 0)
@@ -360,6 +361,60 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
     var taxCalc = new TaxCalcRef();
 
     return ("6: Werknemer Vlaanderen + geïntegreerde woonbonus (lening 2018)", input, taxCalc);
+}
+
+static (string, BerekeningInput, TaxCalcRef) Scenario7_PensionarisMenen_1txt()
+{
+    // Data uit 1.txt — AJ2024 (inkomsten 2023), gehuwd pensionaarskoppel, gemeente Menen (8%)
+    // Titularis: wettelijk pensioen 18.821,33 + overlevingspensioen 3.087,26 + andere 3.080,79
+    // Partner : wettelijk pensioen  4.365,33 + andere 987,06
+    // BV titularis 1.662,44 | BV partner 29,82
+    var input = new BerekeningInput
+    {
+        VakII = new VakIIData { BurgerlijkeStaat = "1002" },
+        VakIII = new VakIIIData(),
+        VakIV = new VakIVData(),
+        VakV = new VakVData
+        {
+            Code1228 = 18_821.33m,   // wettelijk pensioen titularis
+            Code1229 = 3_087.26m,    // overlevingspensioen titularis
+            Code1211 = 3_080.79m,    // andere pensioenen titularis
+            Code1225 = 1_662.44m,    // bedrijfsvoorheffing titularis
+            Code2228 = 4_365.33m,    // wettelijk pensioen partner
+            Code2211 = 987.06m,      // andere pensioenen partner
+            Code2225 = 29.82m,       // bedrijfsvoorheffing partner
+        },
+        VakVIII = new VakVIIIData(),
+        VakIX = new VakIXData(),
+        VakX = new VakXData(),
+        VakXII = new VakXIIData(),
+        Gewest = Gewest.Vlaanderen,
+        GemeentebelastingPercentage = 8.0m,
+        TypeBeroep = TypeBeroep.Werknemer,
+    };
+
+    // Referentiewaarden uit 1.txt (AJ2024 — indexatie verschilt van AJ2026):
+    var taxCalc = new TaxCalcRef
+    {
+        NettoBP           = 24_989.38m,   // netto vóór HQ (= bruto, geen kosten)
+        NettoPartner      =  5_352.39m,   // netto vóór HQ partner
+        BasisbelastingBP  =  6_215.70m,   // AJ2024-schijven op 21.239,24 na HQ
+        BasisbelastingP   =  2_275.63m,   // AJ2024-schijven op 9.102,53 na HQ
+        VermVrijeSomBP    =  2_831.24m,   // AJ2024 barema vrijeSom op 11.217,47
+        VermVrijeSomP     =  2_275.63m,   // begrensd op basisbelasting partner
+        OmTeSlaneBP       =  3_384.46m,
+        OmTeSlaneP        =       0.00m,
+        VermVervangingBP  =  2_347.96m,   // 2.067,84 basis + 280,12 aanvullend
+        HoofdsomBP        =  1_036.50m,
+        GereduceerdeBP    =    777.82m,   // × 75,043%
+        OpcentiemenBP     =    258.68m,   // × 33,257%
+        GereduceerdeP     =      0.00m,
+        OpcentiemenP      =      0.00m,
+        Gemeentebelasting =     82.92m,   // 1.036,50 × 8%
+        Eindresultaat     =   -572.84m,   // bedrag in voordeel belastingplichtige
+    };
+
+    return ("7: Pensionaarskoppel Menen (1.txt, AJ2024 referentie)", input, taxCalc);
 }
 
 class TaxCalcRef

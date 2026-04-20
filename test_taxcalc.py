@@ -161,4 +161,32 @@ if __name__ == '__main__':
             },
         })
 
+    # === Test 5: Gepensioneerde + zieke partner Heuvelland (AJ2025) ===
+    # Referentie 2025-12-09-Aanslagbiljet 2025.txt: te betalen 3.048,77
+    # bp: pensioen 43.195,23 / BV 5.803,86 / LT-sparen 1.940,04
+    # partner: ziekte 15.430,22 / vorige verliezen 8.127,89 / handicap / giften 1.020,00
+    run('Gepensioneerde + zieke partner Heuvelland',
+        '8954', '07/03/1957', True, '22/01/1964', {
+            'II': {
+                'check_c2020': 'checked',   # partner heeft handicap
+            },
+            'III': {
+                'text_c2105': '787,00',     # KI eigen woning partner
+            },
+            'IV': {
+                'text_c266c_1': '15430,22', # ziekte of invaliditeit partner
+                'text_c2349':   '8127,89',  # overdraagbare verliezen partner
+            },
+            'V': {
+                'text_c228b_1': '43195,23', # wettelijke pensioenen bp
+                'text_c225b_1': '5803,86',  # BV pensioenen bp
+            },
+            'IX': {
+                'text_c1353': '1940,04',    # lange termijnsparen bp
+            },
+            'X': {
+                'text_c2361': '1020,00',    # giften partner
+            },
+        })
+
     print('\nDone!')

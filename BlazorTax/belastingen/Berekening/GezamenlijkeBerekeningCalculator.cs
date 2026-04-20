@@ -137,7 +137,7 @@ public class GezamenlijkeBerekeningCalculator
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal
                                 + resultaat.TotaalSaldoGewestelijk
                                 + resultaat.Gemeentebelasting
-                                + Math.Max(resultaat.BBSZSaldo, 0)
+                                + resultaat.BBSZSaldo  // positief = te betalen, negatief = terug
                                 + totaalAfzonderlijk
                                 + totaalVermeerdering;
 
@@ -280,8 +280,8 @@ public class GezamenlijkeBerekeningCalculator
         regels.Add(new("Totaal gewestelijk", resultaat.TotaalSaldoGewestelijk));
         regels.Add(new($"Gemeentebelasting ({input.GemeentebelastingPercentage}%)", resultaat.Gemeentebelasting));
 
-        if (resultaat.BBSZSaldo > 0)
-            regels.Add(new("BBSZ saldo", resultaat.BBSZSaldo));
+        if (resultaat.BBSZSaldo != 0)
+            regels.Add(new(resultaat.BBSZSaldo >= 0 ? "BBSZ saldo" : "BBSZ terugbetaling", resultaat.BBSZSaldo));
 
         decimal totaalAfzonderlijk = r1.BelastingAfzonderlijk + r2.BelastingAfzonderlijk;
         if (totaalAfzonderlijk > 0)
@@ -290,7 +290,7 @@ public class GezamenlijkeBerekeningCalculator
         decimal totaalVermeerdering = r1.Vermeerdering + r2.Vermeerdering;
 
         decimal totaleBelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk
-                                + resultaat.Gemeentebelasting + Math.Max(resultaat.BBSZSaldo, 0)
+                                + resultaat.Gemeentebelasting + resultaat.BBSZSaldo
                                 + totaalAfzonderlijk + totaalVermeerdering;
         regels.Add(new("Totale belasting", totaleBelasting, true));
 

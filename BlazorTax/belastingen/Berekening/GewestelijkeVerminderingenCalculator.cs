@@ -54,15 +54,6 @@ public static class GewestelijkeVerminderingenCalculator
             totaal += effectief * TaxConstants2026.BouwsparenPercentage;
         }
 
-        // ── 4. Federaal langetermijnsparen niet-eigen woning (30%) ───────
-        decimal fedLT = inkomen.FederaalLTKapitaal + inkomen.FederaalLTPremies;
-
-        if (fedLT > 0)
-        {
-            decimal effectief = Math.Min(fedLT, TaxConstants2026.MaxLangetermijnsparenFederaalAbsoluut);
-            totaal += effectief * 0.30m;
-        }
-
         return totaal;
     }
 

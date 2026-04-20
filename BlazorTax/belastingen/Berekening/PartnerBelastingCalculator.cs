@@ -38,8 +38,28 @@ public static class PartnerBelastingCalculator
                 -r.Beroepskosten));
         }
 
-        decimal nettoDeel1 = Math.Max(
-            r.BrutoBeroepsinkomen + r.BrutoPensioeninkomen + r.BrutoVervangingsinkomen - r.Beroepskosten, 0);
+        decimal nettoDeel1Bruto = r.BrutoBeroepsinkomen + r.BrutoPensioeninkomen + r.BrutoVervangingsinkomen - r.Beroepskosten;
+
+        // ── 2b. Overdraagbare verliezen vorige jaren (art. 23 §1 WIB92) ────
+        r.VorigeVerliezen = Math.Min(inkomen.VorigeVerliezen, Math.Max(nettoDeel1Bruto, 0));
+        if (r.VorigeVerliezen > 0)
+            r.DetailRegels.Add(new("Vorige beroepsverliezen", -r.VorigeVerliezen));
+
+        decimal nettoDeel1 = Math.Max(nettoDeel1Bruto - r.VorigeVerliezen, 0);
+
+        // ── 2c. Afzonderlijk belastbaar aan gemiddeld tarief (art. 171 WIB92) ──────
+        // Opzeggingsvergoedingen (Code1308/2308), vervroegd vakantiegeld (Code1251/2251)
+        // en achterstallen loon (Code1252/2252) zitten in BrutoBeroepsinkomen → proportioneel splitsen.
+        if (inkomen.AfzonderlijkGemiddeldTariefBruto > 0 && r.BrutoBeroepsinkomen > 0)
+        {
+            decimal nettoBeroep = Math.Max(r.BrutoBeroepsinkomen - r.Beroepskosten, 0);
+            decimal ratio = r.BrutoBeroepsinkomen > 0 ? nettoBeroep / r.BrutoBeroepsinkomen : 0;
+            decimal afzNetto = Math.Round(inkomen.AfzonderlijkGemiddeldTariefBruto * ratio, 2);
+            r.AfzonderlijkGemiddeldNetto = afzNetto;
+            nettoDeel1 = Math.Max(nettoDeel1 - afzNetto, 0);
+        }
+        // Achterstallen ziekte/invaliditeit (Code1268/2268): afzonderlijk, geen forfait toegepast
+        r.AfzonderlijkGemiddeldNetto += inkomen.ZiekteAchterstallen;
 
         // ── 3. Deel 2: gezamenlijk belastbare inkomsten ─────────────
         decimal nettoDeel2 = 0;
@@ -221,13 +241,14 @@ public static class PartnerBelastingCalculator
         r.DetailRegels.Add(new("Om te slane belasting", r.OmTeSlane, true));
 
         // ── 6. Vermindering vervangingsinkomsten ────────────────────────
-        if (inkomen.BrutoPensioeninkomen > 0 || inkomen.Werkloosheid > 0 || inkomen.ZiekteInvaliditeit > 0)
+        if (inkomen.BrutoPensioeninkomen > 0 || inkomen.Werkloosheid > 0 || inkomen.ZiekteInvaliditeit > 0
+            || inkomen.AndereVervangings > 0 || inkomen.Beroepsziekte > 0)
         {
             r.VerminderingVervangingsinkomen = VervangingsInkomstenCalculator.Bereken(
                 r.NettoBelastbaarInkomen,
                 inkomen.BrutoPensioeninkomen,
-                inkomen.Werkloosheid,
-                inkomen.ZiekteInvaliditeit);
+                inkomen.Werkloosheid + inkomen.AndereVervangings,
+                inkomen.ZiekteInvaliditeit + inkomen.Beroepsziekte);
 
             // Vermindering begrensd op om te slane
             r.VerminderingVervangingsinkomen = Math.Min(r.VerminderingVervangingsinkomen, r.OmTeSlane);
@@ -237,6 +258,22 @@ public static class PartnerBelastingCalculator
         }
 
         r.Hoofdsom = Math.Max(r.OmTeSlane - r.VerminderingVervangingsinkomen, 0);
+        // ── 6b. Afzonderlijk belastbaar aan gemiddeld tarief (art. 171 WIB92) ─────────
+        // De gemiddelde aanslagvoet = Hoofdsom_gezamenlijk / (netto_gezamenlijk + netto_afzonderlijk)
+        // Afgerond op 1 decimaal in % (conform werkwijze FOD Financën).
+        if (r.AfzonderlijkGemiddeldNetto > 0)
+        {
+            decimal basisVoorGemiddeld = r.NettoBelastbaarNaHQ + r.AfzonderlijkGemiddeldNetto;
+            decimal gemiddeldTarief = basisVoorGemiddeld > 0
+                ? Math.Round(r.Hoofdsom / basisVoorGemiddeld * 100m, 1) / 100m
+                : 0m;
+            r.GemiddeldTariefAfzonderlijk = gemiddeldTarief;
+            r.BelastingAfzonderlijkGemiddeld = Math.Round(r.AfzonderlijkGemiddeldNetto * gemiddeldTarief, 2);
+            r.Hoofdsom += r.BelastingAfzonderlijkGemiddeld;
+            r.DetailRegels.Add(new(
+                $"Afz. bel. gemidd. tarief ({gemiddeldTarief:P1})",
+                r.BelastingAfzonderlijkGemiddeld));
+        }
 
         // ── 7. Federaal / gewestelijk split ─────────────────────────────
         r.GereduceerdeStaat = r.Hoofdsom * (1m - TaxConstants2026.Autonomiefactor);
@@ -328,6 +365,19 @@ public static class PartnerBelastingCalculator
         // Giften (30%)
         if (inkomen.Giften >= TaxConstants2026.MinGift)
             totaal += Math.Min(inkomen.Giften, TaxConstants2026.MaxGift) * TaxConstants2026.PercentageGiften;
+
+        // Overwerktoeslag (art. 154quater WIB92): 57,75% van de overwerktoeslag (Code1234/2234)
+        // Dit is een FEDERALE vermindering (niet opgesplitst gewestelijk).
+        if (inkomen.OverwerktoeslagCode1234 > 0)
+            totaal += inkomen.OverwerktoeslagCode1234 * TaxConstants2026.OverwerktoeslagVerminderingPercentage;
+
+        // Federaal langetermijnsparen niet-eigen woning (Code1358/2358 + Code1353/2353): 30%
+        decimal fedLT = inkomen.FederaalLTKapitaal + inkomen.FederaalLTPremies;
+        if (fedLT > 0)
+        {
+            decimal effectief = Math.Min(fedLT, TaxConstants2026.MaxLangetermijnsparenFederaalAbsoluut);
+            totaal += effectief * 0.30m;
+        }
 
         return totaal;
     }

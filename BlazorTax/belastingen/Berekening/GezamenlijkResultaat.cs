@@ -21,6 +21,7 @@ public class PartnerResultaat
     // Kosten
     public decimal Beroepskosten { get; set; }
     public bool ForfaitaireBeroepskosten { get; set; }
+    public decimal VorigeVerliezen { get; set; }
 
     // Deel 2 kosten
     public decimal BedrijfsleiderKosten { get; set; }
@@ -68,6 +69,12 @@ public class PartnerResultaat
     public decimal Afzonderlijk16_5Pct { get; set; }
     public decimal Afzonderlijk33Pct { get; set; }
     public decimal BelastingAfzonderlijk { get; set; }
+
+    // Afzonderlijk belastbaar aan gemiddeld tarief (art. 171 WIB92)
+    // Vervroegd vakantiegeld (Code1251/2251) en achterstallen loon (Code1252/2252)
+    public decimal AfzonderlijkGemiddeldNetto { get; set; }
+    public decimal GemiddeldTariefAfzonderlijk { get; set; }
+    public decimal BelastingAfzonderlijkGemiddeld { get; set; }
 
     // Voorheffingen & kredieten
     public decimal Bedrijfsvoorheffing { get; set; }

@@ -14,8 +14,15 @@ public class PartnerInkomen
     public decimal FlexiJob { get; init; }
     public decimal Impulsfonds { get; init; }
 
+    /// <summary>
+    /// Bruto vervroegd vakantiegeld (Code1251/2251) en achterstallen loon (Code1252/2252).
+    /// Afzonderlijk belastbaar aan de gemiddelde aanslagvoet (art. 171 WIB92).
+    /// Worden meegenomen in de forfaitbasis maar netto apart belast.
+    /// </summary>
+    public decimal AfzonderlijkGemiddeldTariefBruto { get; init; }
+
     public decimal BrutoBeroepsinkomen =>
-        BrutoLoon + FlexiJob + Impulsfonds
+        BrutoLoon + FlexiJob + Impulsfonds + AfzonderlijkGemiddeldTariefBruto
         + Math.Max(WoonWerkVerkeerTotaal - WoonWerkVerkeerVrijstelling, 0);
 
     // Pensioeninkomen
@@ -32,11 +39,15 @@ public class PartnerInkomen
     // Vervangingsinkomen
     public decimal Werkloosheid { get; init; }
     public decimal ZiekteInvaliditeit { get; init; }
+    public decimal ZiekteAchterstallen { get; init; }  // Code1268/2268: afzonderlijk belastbaar aan gemiddeld tarief
     public decimal Beroepsziekte { get; init; }
     public decimal AndereVervangings { get; init; }
 
     public decimal BrutoVervangingsinkomen =>
         Werkloosheid + ZiekteInvaliditeit + Beroepsziekte + AndereVervangings;
+
+    // Overdraagbare beroepsverliezen van vorige jaren (Code1349/2349)
+    public decimal VorigeVerliezen { get; init; }
 
     // Kosten & voorheffingen
     public decimal WerkelijkeKosten { get; init; }
@@ -46,6 +57,9 @@ public class PartnerInkomen
     // Werkbonus RSZ-bedragen per tarief (voor berekening belastingkrediet)
     public decimal WerkbonusCode284 { get; init; }  // RSZ werkbonus aan 33,14%
     public decimal WerkbonusCode360 { get; init; }  // RSZ werkbonus aan 52,54%
+
+    // Overwerktoeslag (Code1234/2234): grondslag 57,75% vermindering (art. 154quater WIB92)
+    public decimal OverwerktoeslagCode1234 { get; init; }
 
     // Verminderingen
     public decimal Kinderopvang { get; set; }
@@ -130,8 +144,9 @@ public class PartnerInkomen
         {
             Label = "Belastingplichtige",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code1250 ?? 0) + (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
-                      + (vakIV.Code1247 ?? 0),
+            BrutoLoon = (vakIV.Code1250 ?? 0) + (vakIV.Code1247 ?? 0),
+            AfzonderlijkGemiddeldTariefBruto = (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
+                                               + (vakIV.Code1308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code1254 ?? 0,
             WoonWerkVerkeerVrijstelling = vakIV.Code1255 ?? 0,
             FlexiJob = vakIV.Code1262 ?? 0,
@@ -145,16 +160,20 @@ public class PartnerInkomen
             // Vervangingsinkomen
             Werkloosheid = (vakIV.Code1260 ?? 0) + (vakIV.Code1264 ?? 0)
                          + (vakIV.Code1261 ?? 0) + (vakIV.Code1265 ?? 0),
-            ZiekteInvaliditeit = (vakIV.Code1266 ?? 0) + (vakIV.Code1303 ?? 0) + (vakIV.Code1268 ?? 0),
+            ZiekteInvaliditeit = (vakIV.Code1266 ?? 0) + (vakIV.Code1303 ?? 0),
+            ZiekteAchterstallen = vakIV.Code1268 ?? 0,
             Beroepsziekte = vakIV.Code1270 ?? 0,
-            AndereVervangings = vakIV.Code1271 ?? 0,
+            AndereVervangings = (vakIV.Code1271 ?? 0) + (vakIV.Code1269 ?? 0),
+            // Overdraagbare beroepsverliezen
+            VorigeVerliezen = vakIV.Code1349 ?? 0,
+
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code1258 ?? 0,
             Bedrijfsvoorheffing = (vakIV.Code1286 ?? 0) + (vakV.Code1225 ?? 0),
             BijzondereBijdrageSZ = vakIV.Code1287 ?? 0,
             WerkbonusCode284 = vakIV.Code1284 ?? 0,
             WerkbonusCode360 = vakIV.Code1360 ?? 0,
-            // Verminderingen
+            OverwerktoeslagCode1234 = vakIV.Code1234 ?? 0,
             Kinderopvang = vakX.Code1384 ?? 0,
             Pensioensparen = vakX.Code1361 ?? 0,
             Giften = vakX.Code1394 ?? 0,
@@ -245,8 +264,9 @@ public class PartnerInkomen
         {
             Label = "Partner",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code2250 ?? 0) + (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
-                      + (vakIV.Code2247 ?? 0),
+            BrutoLoon = (vakIV.Code2250 ?? 0) + (vakIV.Code2247 ?? 0),
+            AfzonderlijkGemiddeldTariefBruto = (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
+                                               + (vakIV.Code2308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code2254 ?? 0,
             WoonWerkVerkeerVrijstelling = vakIV.Code2255 ?? 0,
             FlexiJob = vakIV.Code2262 ?? 0,
@@ -260,16 +280,20 @@ public class PartnerInkomen
             // Vervangingsinkomen
             Werkloosheid = (vakIV.Code2260 ?? 0) + (vakIV.Code2264 ?? 0)
                          + (vakIV.Code2261 ?? 0) + (vakIV.Code2265 ?? 0),
-            ZiekteInvaliditeit = (vakIV.Code2266 ?? 0) + (vakIV.Code2303 ?? 0) + (vakIV.Code2268 ?? 0),
+            ZiekteInvaliditeit = (vakIV.Code2266 ?? 0) + (vakIV.Code2303 ?? 0),
+            ZiekteAchterstallen = vakIV.Code2268 ?? 0,
             Beroepsziekte = vakIV.Code2270 ?? 0,
-            AndereVervangings = vakIV.Code2271 ?? 0,
+            AndereVervangings = (vakIV.Code2271 ?? 0) + (vakIV.Code2269 ?? 0),
+            // Overdraagbare beroepsverliezen
+            VorigeVerliezen = vakIV.Code2349 ?? 0,
+
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code2258 ?? 0,
             Bedrijfsvoorheffing = (vakIV.Code2286 ?? 0) + (vakV.Code2225 ?? 0),
             BijzondereBijdrageSZ = vakIV.Code2287 ?? 0,
             WerkbonusCode284 = vakIV.Code2284 ?? 0,
             WerkbonusCode360 = vakIV.Code2360 ?? 0,
-            // Verminderingen
+            OverwerktoeslagCode1234 = vakIV.Code2234 ?? 0,
             Kinderopvang = 0, // kinderopvang zit op Code1384, wordt later verdeeld
             Pensioensparen = vakX.Code2361 ?? 0,
             Giften = 0, // giften zit op Code1394, wordt later verdeeld

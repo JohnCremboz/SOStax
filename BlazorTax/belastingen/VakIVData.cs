@@ -231,6 +231,10 @@ public class VakIVData
     public decimal? Code1234 { get; set; }   // grondslag 57,75%
     public decimal? Code2234 { get; set; }
 
+    // ── Vorige beroepsverliezen (art. 23 §1 WIB92) ───────────────────────────
+    public decimal? Code1349 { get; set; }   // overdraagbare verliezen belastingplichtige
+    public decimal? Code2349 { get; set; }   // overdraagbare verliezen partner
+
     // ── H. BEDRIJFSVOORHEFFING ────────────────────────────────────────────────
     public decimal? Code1286 { get; set; }
     public decimal? Code2286 { get; set; }
