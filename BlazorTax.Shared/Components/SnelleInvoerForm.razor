@@ -62,7 +62,6 @@
     private string _code = string.Empty;
     private string _waarde = string.Empty;
     private string _foutmelding = string.Empty;
-    private bool _gevalideerd = false;
     private Dictionary<string, string> _codeOmschrijvingen = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<SnelleInvoerEntry> _entries = [];
 
@@ -180,7 +179,6 @@
         }
 
         _entries.Add(new SnelleInvoerEntry(gevondenCode, omschrijving, waarde));
-        _gevalideerd = false;
         _code = string.Empty;
         _waarde = string.Empty;
     }
@@ -204,7 +202,6 @@
                 _entries[i] = _entries[i] with { Omschrijving = omschrijving };
             }
         }
-        _gevalideerd = true;
     }
 
     private void HandleKeyDown(KeyboardEventArgs e)

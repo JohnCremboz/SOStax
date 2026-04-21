@@ -144,7 +144,7 @@ public class PartnerInkomen
         {
             Label = "Belastingplichtige",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code1250 ?? 0) + (vakIV.Code1247 ?? 0),
+            BrutoLoon = vakIV.Code1250 + (vakIV.Code1247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
                                                + (vakIV.Code1308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code1254 ?? 0,
@@ -264,7 +264,7 @@ public class PartnerInkomen
         {
             Label = "Partner",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code2250 ?? 0) + (vakIV.Code2247 ?? 0),
+            BrutoLoon = vakIV.Code2250 + (vakIV.Code2247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
                                                + (vakIV.Code2308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code2254 ?? 0,
