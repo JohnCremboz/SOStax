@@ -12,14 +12,17 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.6" PrivateAssets="all"/>
     </ItemGroup>
 
-    <!-- Synchroniseer alle CSV- en MD-bestanden uit belastingen/ naar wwwroot/belastingen/ bij elke build -->
     <ItemGroup>
-        <BelastingenAsset Include="belastingen\*.csv;belastingen\structuur.md" />
+        <ProjectReference Include="..\BlazorTax.Shared\BlazorTax.Shared.csproj" />
     </ItemGroup>
 
-    <Target Name="CopyBelastingenAssets" BeforeTargets="Build">
-        <Copy SourceFiles="@(BelastingenAsset)"
-              DestinationFolder="wwwroot\belastingen\"
+    <!-- Copy shared belastingen assets to local wwwroot for dev server -->
+    <Target Name="CopySharedAssets" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <SharedAssets Include="..\BlazorTax.Shared\wwwroot\belastingen\**\*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(SharedAssets)" 
+              DestinationFolder="wwwroot\belastingen\%(RecursiveDir)" 
               SkipUnchangedFiles="true" />
     </Target>
 

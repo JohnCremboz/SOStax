@@ -1,0 +1,350 @@
+@inject IAssetReader AssetReader
+@using System.Reflection
+@using System.Globalization
+
+<div class="snelle-invoer-container">
+    <div class="vak2-title">SNELLE INVOERING</div>
+    <hr />
+
+    <div class="snelle-invoer-row">
+        <label class="snelle-invoer-label">Code :</label>
+        <input type="text"
+               class="form-control snelle-invoer-code"
+               placeholder="bijv. 1250"
+               @bind="_code"
+               @bind:event="oninput"
+               @onkeydown="HandleKeyDown" />
+        <label class="snelle-invoer-label">Waarde :</label>
+        <input type="text"
+               class="form-control snelle-invoer-waarde"
+               @bind="_waarde"
+               @bind:event="oninput"
+               @onkeydown="HandleKeyDown" />
+        <button type="button" class="btn btn-primary" @onclick="Toevoegen">TOEVOEGEN</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(_foutmelding))
+    {
+        <div class="alert alert-danger mt-2">@_foutmelding</div>
+    }
+
+    <div class="mt-3">
+        <button type="button" class="btn btn-primary" @onclick="Valideren">VALIDEREN VAN DE GEGEVENS</button>
+    </div>
+
+    @if (_entries.Count > 0)
+    {
+        <table class="table table-sm table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Omschrijving</th>
+                    <th>Waarde</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in _entries)
+                {
+                    <tr>
+                        <td><code>@entry.Code</code></td>
+                        <td>@entry.Omschrijving</td>
+                        <td>@entry.Waarde</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    [Parameter] public AangifteState State { get; set; } = default!;
+
+    private string _code = string.Empty;
+    private string _waarde = string.Empty;
+    private string _foutmelding = string.Empty;
+    private bool _gevalideerd = false;
+    private Dictionary<string, string> _codeOmschrijvingen = new(StringComparer.OrdinalIgnoreCase);
+    private readonly List<SnelleInvoerEntry> _entries = [];
+
+    private static readonly string[] CsvBestanden =
+    [
+        "belastingen/VAKII.csv",
+        "belastingen/VAKIIB.csv",
+        "belastingen/VAKIII.csv",
+        "belastingen/VAKIVA.csv",
+        "belastingen/VAKIVB.csv",
+        "belastingen/VAKIVC.csv",
+        "belastingen/VAKIVD.csv",
+        "belastingen/VAKIVE.csv",
+        "belastingen/VAKIVF.csv",
+        "belastingen/VAKIVG.csv",
+        "belastingen/VAKIVH.csv",
+        "belastingen/VAKIVI.csv",
+        "belastingen/VAKIVJ.csv",
+        "belastingen/VAKIVK.csv",
+        "belastingen/VAKIVL.csv",
+        "belastingen/VAKIVM.csv",
+        "belastingen/VAKIVN.csv",
+        "belastingen/VAKV.csv",
+        "belastingen/VAKVI.csv",
+        "belastingen/VakVII.csv",
+        "belastingen/VAKVIII.csv",
+        "belastingen/VakIX.csv",
+        "belastingen/VakIX-II.csv",
+        "belastingen/VakIX4.csv",
+        "belastingen/VakIX5.csv",
+        "belastingen/VakIX6.csv",
+        "belastingen/VAKIXb.csv",
+        "belastingen/VAKIXc.csv",
+        "belastingen/VakX.csv",
+        "belastingen/VakXI.csv",
+        "belastingen/VakXII.csv",
+        "belastingen/VakXIII.csv",
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (var bestand in CsvBestanden)
+        {
+            try
+            {
+                var inhoud = await AssetReader.GetStringAsync(bestand);
+                if (!inhoud.Contains("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
+                {
+                    ParseCsvInto(inhoud, _codeOmschrijvingen);
+                }
+            }
+            catch
+            {
+                // Bestand niet gevonden – overslaan
+            }
+        }
+    }
+
+    private static void ParseCsvInto(string csv, Dictionary<string, string> doel)
+    {
+        using var reader = new StringReader(csv.Replace("\r\n", "\n", StringComparison.Ordinal));
+        bool headerOvergeslagen = false;
+        string? lijn;
+
+        while ((lijn = reader.ReadLine()) is not null)
+        {
+            if (string.IsNullOrWhiteSpace(lijn)) continue;
+            if (!headerOvergeslagen) { headerOvergeslagen = true; continue; }
+
+            var komma = lijn.IndexOf(',');
+            if (komma <= 0) continue;
+
+            var code = lijn[..komma].Trim();
+            var omschrijving = lijn[(komma + 1)..].Trim();
+            doel.TryAdd(code, omschrijving);
+        }
+    }
+
+    private void Toevoegen()
+    {
+        _foutmelding = string.Empty;
+        var code = _code.Trim();
+        var waarde = _waarde.Trim();
+
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            _foutmelding = "Vul een code in.";
+            return;
+        }
+
+        if (!TrySetWaarde(code, waarde))
+        {
+            _foutmelding = $"Code '{code}' niet gevonden of ongeldige waarde '{waarde}'.";
+            return;
+        }
+
+        // Zoek de volledige code met controlecijfer op in de dictionary
+        var gevondenCode = code;
+        var omschrijving = string.Empty;
+        if (_codeOmschrijvingen.TryGetValue(code, out var desc))
+        {
+            omschrijving = desc;
+        }
+        else
+        {
+            // Probeer met controlecijfer (key bevat '-')
+            var numericPart = code.Contains('-') ? code.Split('-')[0] : code;
+            var match = _codeOmschrijvingen.FirstOrDefault(kv =>
+                kv.Key.StartsWith(numericPart + "-", StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(match.Key))
+            {
+                gevondenCode = match.Key;
+                omschrijving = match.Value;
+            }
+        }
+
+        _entries.Add(new SnelleInvoerEntry(gevondenCode, omschrijving, waarde));
+        _gevalideerd = false;
+        _code = string.Empty;
+        _waarde = string.Empty;
+    }
+
+    private void Valideren()
+    {
+        // Vul ontbrekende omschrijvingen in
+        for (int i = 0; i < _entries.Count; i++)
+        {
+            if (string.IsNullOrEmpty(_entries[i].Omschrijving))
+            {
+                var numericPart = _entries[i].Code.Contains('-')
+                    ? _entries[i].Code.Split('-')[0]
+                    : _entries[i].Code;
+
+                var match = _codeOmschrijvingen.FirstOrDefault(kv =>
+                    kv.Key.StartsWith(numericPart + "-", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(kv.Key, _entries[i].Code, StringComparison.OrdinalIgnoreCase));
+
+                var omschrijving = !string.IsNullOrEmpty(match.Key) ? match.Value : "(onbekend)";
+                _entries[i] = _entries[i] with { Omschrijving = omschrijving };
+            }
+        }
+        _gevalideerd = true;
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            Toevoegen();
+        }
+    }
+
+    private bool TrySetWaarde(string code, string waarde)
+    {
+        // Ondersteuning voor formaat "1250-11" of "1250" → zoekt property "Code1250"
+        var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
+        var propNaam = "Code" + numericCode;
+
+        // Speciale behandeling voor fiche codes
+        // Code 250 = fiches 281.10 (wedden/lonen)
+        // Code 286 = bedrijfsvoorheffing Vak IV
+        // Code 225 = bedrijfsvoorheffing Vak V
+        if ((numericCode == "1250" || numericCode == "2250") && State.VakIV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1250",
+                State.VakIV.Fiches1250, State.VakIV.Fiches2250);
+        }
+
+        if ((numericCode == "1286" || numericCode == "2286") && State.VakIV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1286",
+                State.VakIV.Fiches1286, State.VakIV.Fiches2286);
+        }
+
+        if ((numericCode == "1225" || numericCode == "2225") && State.VakV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1225",
+                State.VakV.Fiches1225, State.VakV.Fiches2225);
+        }
+
+
+        foreach (var staatsProp in typeof(AangifteState).GetProperties())
+        {
+            var vakData = staatsProp.GetValue(State);
+            if (vakData is null) continue;
+
+            var veldProp = vakData.GetType().GetProperty(propNaam);
+            if (veldProp is null || !veldProp.CanWrite) continue;
+
+            var doelType = Nullable.GetUnderlyingType(veldProp.PropertyType) ?? veldProp.PropertyType;
+
+            try
+            {
+                object? geconverteerdeWaarde = GetConvertedValue(doelType, waarde);
+
+                if (geconverteerdeWaarde is not null || doelType == typeof(string))
+                {
+                    veldProp.SetValue(vakData, geconverteerdeWaarde);
+                    return true;
+                }
+            }
+            catch
+            {
+                // Conversie mislukt – volgende vak proberen
+            }
+        }
+
+        return false;
+    }
+
+    private static object? GetConvertedValue(Type doelType, string waarde)
+    {
+        if (doelType == typeof(bool))
+        {
+            // "1", "true", "ja" = true; alles anders of leeg = false
+            return waarde.Trim().ToLowerInvariant() is "1" or "true" or "ja" or "x";
+        }
+        if (doelType == typeof(int))
+        {
+            return int.Parse(waarde, CultureInfo.InvariantCulture);
+        }
+        if (doelType == typeof(decimal))
+        {
+            var normalized = waarde.Replace(',', '.');
+            return decimal.Parse(normalized, CultureInfo.InvariantCulture);
+        }
+        if (doelType == typeof(string))
+        {
+            return waarde;
+        }
+        return null;
+    }
+
+    private bool AddToFicheList(string waarde, bool isPrimary, List<decimal?> primaryList, List<decimal?> partnerList)
+    {
+        try
+        {
+            var normalized = waarde.Replace(',', '.');
+            var bedrag = decimal.Parse(normalized, CultureInfo.InvariantCulture);
+
+            if (isPrimary)
+            {
+                // Voeg toe aan belastingplichtige fiches
+                var lastIndex = primaryList.Count - 1;
+                if (primaryList[lastIndex].HasValue)
+                {
+                    // Laatste fiche is al ingevuld, voeg nieuwe toe
+                    primaryList.Add(bedrag);
+                    partnerList.Add(null); // Sync partner lijst
+                }
+                else
+                {
+                    // Vul de laatste lege fiche in
+                    primaryList[lastIndex] = bedrag;
+                }
+            }
+            else
+            {
+                // Voeg toe aan partner fiches
+                var lastIndex = partnerList.Count - 1;
+                if (partnerList[lastIndex].HasValue)
+                {
+                    // Laatste fiche is al ingevuld, voeg nieuwe toe
+                    partnerList.Add(bedrag);
+                    primaryList.Add(null); // Sync belastingplichtige lijst
+                }
+                else
+                {
+                    // Vul de laatste lege fiche in
+                    partnerList[lastIndex] = bedrag;
+                }
+            }
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private sealed record SnelleInvoerEntry(string Code, string Omschrijving, string Waarde)
+    {
+        public string Omschrijving { get; set; } = Omschrijving;
+    }
+}

@@ -1,0 +1,110 @@
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.top-row {
+    min-height: 3.5rem;
+    background-color: rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #fff !important;
+}
+
+.navbar-brand strong {
+    font-weight: 700;
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+    margin-right: 0.85rem;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
+
+.nav-item {
+    font-size: 0.95rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item ::deep a {
+        color: rgba(255,255,255,0.85);
+        border-radius: 8px;
+        height: 3.25rem;
+        display: flex;
+        align-items: center;
+        line-height: 3.25rem;
+        transition: background-color 0.15s ease;
+        padding: 0.5rem 1rem;
+    }
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+    font-weight: 500;
+}
+
+.nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.12);
+    color: white;
+}
+
+.nav-sub-item {
+    padding-bottom: 0.25rem;
+}
+
+.nav-sub-item ::deep a {
+    height: 2.2rem;
+    line-height: 2.2rem;
+    padding-left: 2.1rem;
+    font-size: 0.85rem;
+}
+
+/* Optimalisatie voor 1080p */
+@media (min-width: 1800px) {
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .nav-icon {
+        font-size: 1.4rem;
+        margin-right: 1rem;
+    }
+
+    .nav-item {
+        font-size: 1rem;
+    }
+
+    .nav-item ::deep a {
+        height: 3.5rem;
+        line-height: 3.5rem;
+    }
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .collapse {
+        display: block;
+    }
+
+    .nav-scrollable {
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}

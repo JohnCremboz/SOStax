@@ -1,0 +1,350 @@
+<EditForm Model="Data" class="vak4-form">
+
+    <div class="vak2-title">Vak V &ndash; PENSIOENEN</div>
+
+    <!-- ══ A. PENSIOENEN ══ -->
+    <div class="vak2-section-header">A. PENSIOENEN</div>
+    <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
+
+    <!-- A1. Andere pensioenen -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">1. Andere pensioenen</div>
+
+        <!-- Wettelijke pensioenen -->
+        <div class="vak4-subrow"><div class="vak4-q-text vak4-indent"><strong>Wettelijke pensioenen</strong> (vanaf de wettelijke pensioenleeftijd):</div><div class="vak4-col-duo"></div></div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">a) gewone:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1228-33</span><InputNumber @bind-Value="Data.Code1228" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2228-03</span><InputNumber @bind-Value="Data.Code2228" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">b) van december 2025 (overheid):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1314-44</span><InputNumber @bind-Value="Data.Code1314" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2314-14</span><InputNumber @bind-Value="Data.Code2314" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">c) achterstallen:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1230-31</span><InputNumber @bind-Value="Data.Code1230" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2230-01</span><InputNumber @bind-Value="Data.Code2230" class="vak4-amount" /></div>
+            </div>
+        </div>
+
+        <!-- Overlevingspensioenen -->
+        <div class="vak4-subrow"><div class="vak4-q-text vak4-indent"><strong>Overlevingspensioenen</strong> en overgangsuitkeringen:</div><div class="vak4-col-duo"></div></div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">a) gewone:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1229-32</span><InputNumber @bind-Value="Data.Code1229" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2229-02</span><InputNumber @bind-Value="Data.Code2229" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">b) van december 2025 (overheid):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1315-43</span><InputNumber @bind-Value="Data.Code1315" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2315-13</span><InputNumber @bind-Value="Data.Code2315" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">c) achterstallen:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1231-30</span><InputNumber @bind-Value="Data.Code1231" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2231-97</span><InputNumber @bind-Value="Data.Code2231" class="vak4-amount" /></div>
+            </div>
+        </div>
+
+        <!-- Andere pensioenen/renten/kapitalen -->
+        <div class="vak4-subrow"><div class="vak4-q-text vak4-indent"><strong>Andere pensioenen en renten</strong> (en kapitalen en afkoopwaarden die gezamenlijk belastbaar zijn):</div><div class="vak4-col-duo"></div></div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">a) gewone:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1211-50</span><InputNumber @bind-Value="Data.Code1211" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2211-20</span><InputNumber @bind-Value="Data.Code2211" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">b) van december 2025 (overheid):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1316-42</span><InputNumber @bind-Value="Data.Code1316" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2316-12</span><InputNumber @bind-Value="Data.Code2316" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">c) achterstallen:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1212-49</span><InputNumber @bind-Value="Data.Code1212" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2212-19</span><InputNumber @bind-Value="Data.Code2212" class="vak4-amount" /></div>
+            </div>
+        </div>
+
+        <!-- Kapitalen en afkoopwaarden -->
+        <div class="vak4-subrow"><div class="vak4-q-text vak4-indent"><strong>Kapitalen en afkoopwaarden</strong> (afzonderlijk belastbaar):</div><div class="vak4-col-duo"></div></div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 33%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1213-48</span><InputNumber @bind-Value="Data.Code1213" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2213-18</span><InputNumber @bind-Value="Data.Code2213" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 20%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1245-16</span><InputNumber @bind-Value="Data.Code1245" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2245-83</span><InputNumber @bind-Value="Data.Code2245" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 18%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1253-08</span><InputNumber @bind-Value="Data.Code1253" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2253-75</span><InputNumber @bind-Value="Data.Code2253" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 16,5% (wettelijke pensioenen):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1232-29</span><InputNumber @bind-Value="Data.Code1232" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2232-96</span><InputNumber @bind-Value="Data.Code2232" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 16,5% (overlevingspensioenen):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1237-24</span><InputNumber @bind-Value="Data.Code1237" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2237-91</span><InputNumber @bind-Value="Data.Code2237" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 16,5% (andere):</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1214-47</span><InputNumber @bind-Value="Data.Code1214" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2214-17</span><InputNumber @bind-Value="Data.Code2214" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">belastbaar tegen 10%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1215-46</span><InputNumber @bind-Value="Data.Code1215" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2215-16</span><InputNumber @bind-Value="Data.Code2215" class="vak4-amount" /></div>
+            </div>
+        </div>
+
+        <!-- Omzettingsrenten -->
+        <div class="vak4-subrow"><div class="vak4-q-text vak4-indent"><strong>Omzettingsrenten</strong>:</div><div class="vak4-col-duo"></div></div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">betaald of toegekend in 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1216-45</span><InputNumber @bind-Value="Data.Code1216" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2216-15</span><InputNumber @bind-Value="Data.Code2216" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent2">betaald of toegekend in 2013–2024:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1218-43</span><InputNumber @bind-Value="Data.Code1218" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2218-13</span><InputNumber @bind-Value="Data.Code2218" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- A2. Arbeidsongevallen/beroepsziekten -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">2. Arbeidsongevallen en beroepsziekten</div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">a) uitkeringen:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1217-44</span><InputNumber @bind-Value="Data.Code1217" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2217-14</span><InputNumber @bind-Value="Data.Code2217" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">b) achterstallen:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1224-37</span><InputNumber @bind-Value="Data.Code1224" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2224-07</span><InputNumber @bind-Value="Data.Code2224" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">c) omzettingsrenten betaald/toegekend in 2025:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1226-35</span><InputNumber @bind-Value="Data.Code1226" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2226-05</span><InputNumber @bind-Value="Data.Code2226" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">d) omzettingsrenten betaald/toegekend in 2013–2024:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1227-34</span><InputNumber @bind-Value="Data.Code1227" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2227-04</span><InputNumber @bind-Value="Data.Code2227" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- A3. Pensioensparen -->
+    <div class="vak4-group">
+        <div class="vak4-q-label">3. Pensioensparen</div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">a) gezamenlijk belastbaar:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1219-42</span><InputNumber @bind-Value="Data.Code1219" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2219-12</span><InputNumber @bind-Value="Data.Code2219" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">b) afzonderlijk belastbaar tegen 33%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1220-41</span><InputNumber @bind-Value="Data.Code1220" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2220-11</span><InputNumber @bind-Value="Data.Code2220" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">c) afzonderlijk belastbaar tegen 16,5%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1221-40</span><InputNumber @bind-Value="Data.Code1221" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2221-10</span><InputNumber @bind-Value="Data.Code2221" class="vak4-amount" /></div>
+            </div>
+        </div>
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">d) afzonderlijk belastbaar tegen 8%:</div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell"><span class="vak2-code">1222-39</span><InputNumber @bind-Value="Data.Code1222" class="vak4-amount" /></div>
+                <div class="vak4-input-cell"><span class="vak2-code">2222-09</span><InputNumber @bind-Value="Data.Code2222" class="vak4-amount" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- A4. Niet-ingehouden sociale bijdragen -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">4. Niet ingehouden persoonlijke sociale bijdragen:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell"><span class="vak2-code">1223-38</span><InputNumber @bind-Value="Data.Code1223" class="vak4-amount" /></div>
+            <div class="vak4-input-cell"><span class="vak2-code">2223-08</span><InputNumber @bind-Value="Data.Code2223" class="vak4-amount" /></div>
+        </div>
+    </div>
+
+    <!-- ══ B. BEDRIJFSVOORHEFFING ══ -->
+    <div class="vak2-section-header">B. BEDRIJFSVOORHEFFING</div>
+    <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
+
+    <div class="vak4-group">
+        <div class="vak4-q-label">1. Volgens fiches:</div>
+
+        @for (int i = 0; i < Data.Fiches1225.Count; i++)
+        {
+            var index = i;
+            <div class="vak4-subrow vak4-fiche-row">
+                <div class="vak4-q-text vak4-indent">
+                    @if (i == 0)
+                    {
+                        <span>Fiche @(i + 1)</span>
+                    }
+                    else
+                    {
+                        <span>Fiche @(i + 1)</span>
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-2" @onclick="() => RemoveFiche1225(index)" title="Verwijder deze fiche">
+                            <span class="material-icons" style="font-size: 1rem;">delete</span>
+                        </button>
+                    }
+                </div>
+                <div class="vak4-col-duo">
+                    <div class="vak4-input-cell vak4-orange">
+                        <span class="vak2-code">(225)</span>
+                        <InputNumber @bind-Value="Data.Fiches1225[index]" class="vak4-amount" />
+                    </div>
+                    <div class="vak4-input-cell vak4-orange">
+                        <span class="vak2-code">(225)</span>
+                        <InputNumber @bind-Value="Data.Fiches2225[index]" class="vak4-amount" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Knop om nieuwe fiche toe te voegen -->
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">
+                <button type="button" class="btn btn-sm btn-outline-primary" @onclick="AddFiche1225">
+                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">add</span>
+                    Fiche toevoegen
+                </button>
+            </div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell">
+                    <span class="fw-bold">Totaal:</span>
+                    <span class="vak4-readonly-amount">@Data.Code1225.ToString("N2")</span>
+                </div>
+                <div class="vak4-input-cell">
+                    <span class="fw-bold">Totaal:</span>
+                    <span class="vak4-readonly-amount">@Data.Code2225.ToString("N2")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Totaal -->
+    <div class="vak4-row">
+        <div class="vak4-q-text">2. Totaal van rubriek 1:</div>
+        <div class="vak4-col-duo">
+            <div class="vak4-input-cell">
+                <span class="vak2-code">1225-36</span>
+                <span class="vak4-readonly-amount fw-bold">@Data.Code1225.ToString("N2")</span>
+            </div>
+            <div class="vak4-input-cell">
+                <span class="vak2-code">2225-06</span>
+                <span class="vak4-readonly-amount fw-bold">@Data.Code2225.ToString("N2")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ C. PENSIOENEN VAN BUITENLANDSE OORSPRONG ══ -->
+    <div class="vak2-section-header">C. PENSIOENEN VAN BUITENLANDSE OORSPRONG</div>
+    <div class="vak3-buitenland-hint">
+        Vermeld het land, de code waarnaast ze zijn ingevuld, het bedrag en het type vermindering.
+    </div>
+    <div class="vak3-buitenland-section">
+        @foreach (var rij in Data.BuitenlandsePensioenen)
+        {
+            <div class="vak3-buitenland-row">
+                <div class="vak3-buitenland-cell"><label>Land:</label><InputText @bind-Value="rij.Land" class="vak3-text-input" /></div>
+                <div class="vak3-buitenland-cell"><label>Code:</label><InputText @bind-Value="rij.Code" class="vak3-text-input vak3-code-input" /></div>
+                <div class="vak3-buitenland-cell"><label>Bedrag:</label><InputNumber @bind-Value="rij.Bedrag" class="vak3-amount-input" /></div>
+                <div class="vak3-buitenland-cell">
+                    <label>Type:</label>
+                    <InputSelect @bind-Value="rij.TypeVermindering" class="vak5-select">
+                        <option value="">— kies —</option>
+                        <option value="vrijstelling">Vrijstelling met progressievoorbehoud</option>
+                        <option value="vermindering">Vermindering tot de helft</option>
+                    </InputSelect>
+                </div>
+            </div>
+        }
+        <button type="button" class="vak3-add-btn" @onclick="() => Data.BuitenlandsePensioenen.Add(new())">+ rij</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public VakVData Data { get; set; } = new();
+
+    private void AddFiche1225()
+    {
+        Data.Fiches1225.Add(null);
+        Data.Fiches2225.Add(null);
+    }
+
+    private void RemoveFiche1225(int index)
+    {
+        if (Data.Fiches1225.Count > 1 && index > 0)
+        {
+            Data.Fiches1225.RemoveAt(index);
+            Data.Fiches2225.RemoveAt(index);
+        }
+    }
+}
+
+
+
