@@ -231,11 +231,72 @@
     <div class="vak2-section-header">B. BEDRIJFSVOORHEFFING</div>
     <div class="vak4-header-row"><div></div><div class="vak4-col-head">Belastingplichtige</div><div class="vak4-col-head">Partner</div></div>
 
+    <div class="vak4-group">
+        <div class="vak4-q-label">1. Volgens fiches:</div>
+
+        @for (int i = 0; i < Data.Fiches1225.Count; i++)
+        {
+            var index = i;
+            <div class="vak4-subrow vak4-fiche-row">
+                <div class="vak4-q-text vak4-indent">
+                    @if (i == 0)
+                    {
+                        <span>Fiche @(i + 1)</span>
+                    }
+                    else
+                    {
+                        <span>Fiche @(i + 1)</span>
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-2" @onclick="() => RemoveFiche1225(index)" title="Verwijder deze fiche">
+                            <span class="material-icons" style="font-size: 1rem;">delete</span>
+                        </button>
+                    }
+                </div>
+                <div class="vak4-col-duo">
+                    <div class="vak4-input-cell vak4-orange">
+                        <span class="vak2-code">(225)</span>
+                        <InputNumber @bind-Value="Data.Fiches1225[index]" class="vak4-amount" />
+                    </div>
+                    <div class="vak4-input-cell vak4-orange">
+                        <span class="vak2-code">(225)</span>
+                        <InputNumber @bind-Value="Data.Fiches2225[index]" class="vak4-amount" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Knop om nieuwe fiche toe te voegen -->
+        <div class="vak4-subrow">
+            <div class="vak4-q-text vak4-indent">
+                <button type="button" class="btn btn-sm btn-outline-primary" @onclick="AddFiche1225">
+                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">add</span>
+                    Fiche toevoegen
+                </button>
+            </div>
+            <div class="vak4-col-duo">
+                <div class="vak4-input-cell">
+                    <span class="fw-bold">Totaal:</span>
+                    <span class="vak4-readonly-amount">@Data.Code1225.ToString("N2")</span>
+                </div>
+                <div class="vak4-input-cell">
+                    <span class="fw-bold">Totaal:</span>
+                    <span class="vak4-readonly-amount">@Data.Code2225.ToString("N2")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Totaal -->
     <div class="vak4-row">
-        <div class="vak4-q-text">Totaal ingehouden bedrijfsvoorheffing:</div>
+        <div class="vak4-q-text">2. Totaal van rubriek 1:</div>
         <div class="vak4-col-duo">
-            <div class="vak4-input-cell"><span class="vak2-code">1225-36</span><InputNumber @bind-Value="Data.Code1225" class="vak4-amount" /></div>
-            <div class="vak4-input-cell"><span class="vak2-code">2225-06</span><InputNumber @bind-Value="Data.Code2225" class="vak4-amount" /></div>
+            <div class="vak4-input-cell">
+                <span class="vak2-code">1225-36</span>
+                <span class="vak4-readonly-amount fw-bold">@Data.Code1225.ToString("N2")</span>
+            </div>
+            <div class="vak4-input-cell">
+                <span class="vak2-code">2225-06</span>
+                <span class="vak4-readonly-amount fw-bold">@Data.Code2225.ToString("N2")</span>
+            </div>
         </div>
     </div>
 
@@ -268,6 +329,21 @@
 
 @code {
     [Parameter] public VakVData Data { get; set; } = new();
+
+    private void AddFiche1225()
+    {
+        Data.Fiches1225.Add(null);
+        Data.Fiches2225.Add(null);
+    }
+
+    private void RemoveFiche1225(int index)
+    {
+        if (Data.Fiches1225.Count > 1 && index > 0)
+        {
+            Data.Fiches1225.RemoveAt(index);
+            Data.Fiches2225.RemoveAt(index);
+        }
+    }
 }
 
 

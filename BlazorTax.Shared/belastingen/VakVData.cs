@@ -74,8 +74,13 @@ public class VakVData
     public decimal? Code2223 { get; set; }
 
     // ── B. Bedrijfsvoorheffing ─────────────────────────────────────────────────
-    public decimal? Code1225 { get; set; }
-    public decimal? Code2225 { get; set; }
+    // Meerdere fiches voor bedrijfsvoorheffing (code 225)
+    public List<decimal?> Fiches1225 { get; set; } = new() { null };
+    public List<decimal?> Fiches2225 { get; set; } = new() { null };
+
+    // Computed totals voor bedrijfsvoorheffing volgens fiches (1225-36 / 2225-06)
+    public decimal Code1225 => Fiches1225.Sum(f => f ?? 0m);
+    public decimal Code2225 => Fiches2225.Sum(f => f ?? 0m);
 
     // ── C. Pensioenen buitenlandse oorsprong ──────────────────────────────────
     public List<BuitenlandsPensioen> BuitenlandsePensioenen { get; set; } = [new()];

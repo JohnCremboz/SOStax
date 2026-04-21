@@ -17,15 +17,42 @@
     --sostax-shadow-2: 0 3px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.10);
     --sostax-shadow-3: 0 6px 12px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.10);
     --sostax-radius: 8px;
+    --base-font-size: 15px;
+}
+
+/* Optimalisatie voor 1080p */
+@media (min-width: 1800px) {
+    :root {
+        --base-font-size: 16px;
+    }
 }
 
 html, body {
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: var(--base-font-size);
     color: var(--sostax-grey-900);
     background-color: var(--sostax-grey-100);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.65rem;
+    font-weight: 500;
+    margin-bottom: 0.875rem;
+}
+
+h3 {
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+h4, h5, h6 {
     font-weight: 500;
 }
 
@@ -49,7 +76,8 @@ a:hover, .btn-link:hover {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    padding: 0.5rem 1.25rem;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.95rem;
     box-shadow: var(--sostax-shadow-1);
     transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -58,6 +86,14 @@ a:hover, .btn-link:hover {
     background-color: var(--sostax-red-dark);
     border-color: var(--sostax-red-dark);
     box-shadow: var(--sostax-shadow-2);
+}
+
+/* Grotere knoppen voor 1080p */
+@media (min-width: 1800px) {
+    .btn-primary {
+        padding: 0.75rem 1.75rem;
+        font-size: 1rem;
+    }
 }
 
 .btn-outline-primary {
@@ -75,12 +111,36 @@ a:hover, .btn-link:hover {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--sostax-red-light);
 }
 
+.form-control, .form-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: var(--sostax-radius);
+}
+
 .form-control:focus {
     border-color: var(--sostax-red);
 }
 
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Grotere form controls voor 1080p */
+@media (min-width: 1800px) {
+    .form-control, .form-select {
+        padding: 0.625rem 0.875rem;
+        font-size: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+}
+
 .content {
-    padding-top: 1.1rem;
+    padding-top: 1.25rem;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -463,6 +523,21 @@ code {
     font-size: 0.875rem;
 }
 
+.vak4-readonly-amount {
+    width: 8rem;
+    text-align: right;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+    color: var(--sostax-grey-900);
+    border-bottom: 2px solid var(--sostax-red);
+}
+
+.vak4-fiche-row {
+    background-color: var(--sostax-grey-50);
+    border-left: 3px solid var(--sostax-red-100);
+    padding-left: 0.5rem;
+}
+
 .vak4-count { width: 4rem; }
 
 .vak4-note {
@@ -806,10 +881,10 @@ code {
     border-radius: 0;
     color: var(--sostax-grey-600);
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    padding: 0.65rem 1rem;
+    padding: 0.75rem 1.1rem;
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -826,14 +901,29 @@ code {
     font-weight: 500;
 }
 
+/* Grotere tabs voor 1080p */
+@media (min-width: 1800px) {
+    .vak-tabs .nav-link {
+        font-size: 0.95rem;
+        padding: 0.875rem 1.25rem;
+    }
+}
+
 /* Material-stijl vak-panel */
 .vak-panel {
     border: none;
     border-top: none;
-    padding: 1.25rem;
+    padding: 1.5rem 1.75rem;
     background-color: var(--sostax-white);
     border-radius: 0 0 var(--sostax-radius) var(--sostax-radius);
     box-shadow: var(--sostax-shadow-1);
+}
+
+/* Grotere vak-panel voor 1080p */
+@media (min-width: 1800px) {
+    .vak-panel {
+        padding: 1.75rem 2rem;
+    }
 }
 
 /* Material input styling */
@@ -860,3 +950,56 @@ select:focus {
     color: var(--sostax-red);
 }
 
+/* Berekeningsinstellingen sectie */
+.berekening-settings {
+    background-color: var(--sostax-white);
+    border: 1px solid var(--sostax-grey-300);
+    border-radius: var(--sostax-radius);
+    padding: 1.5rem;
+    box-shadow: var(--sostax-shadow-1);
+}
+
+.berekening-settings h3 {
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+    color: var(--sostax-grey-900);
+}
+
+/* Grotere berekeningsinstellingen voor 1080p */
+@media (min-width: 1800px) {
+    .berekening-settings {
+        padding: 1.75rem 2rem;
+    }
+
+    .berekening-settings h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Berekening resultaat sectie */
+.berekening-resultaat {
+    background-color: var(--sostax-white);
+    border: 2px solid var(--sostax-red-100);
+    border-radius: var(--sostax-radius);
+    padding: 1.5rem;
+    box-shadow: var(--sostax-shadow-2);
+}
+
+.berekening-resultaat h3 {
+    color: var(--sostax-red);
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Grotere resultaat sectie voor 1080p */
+@media (min-width: 1800px) {
+    .berekening-resultaat {
+        padding: 1.75rem 2rem;
+    }
+
+    .berekening-resultaat h3 {
+        font-size: 1.65rem;
+        margin-bottom: 1.5rem;
+    }
+}

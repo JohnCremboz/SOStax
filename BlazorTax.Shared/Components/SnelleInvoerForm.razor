@@ -227,6 +227,28 @@
         var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
         var propNaam = "Code" + numericCode;
 
+        // Speciale behandeling voor fiche codes
+        // Code 250 = fiches 281.10 (wedden/lonen)
+        // Code 286 = bedrijfsvoorheffing Vak IV
+        // Code 225 = bedrijfsvoorheffing Vak V
+        if ((numericCode == "1250" || numericCode == "2250") && State.VakIV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1250", 
+                State.VakIV.Fiches1250, State.VakIV.Fiches2250);
+        }
+
+        if ((numericCode == "1286" || numericCode == "2286") && State.VakIV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1286",
+                State.VakIV.Fiches1286, State.VakIV.Fiches2286);
+        }
+
+        if ((numericCode == "1225" || numericCode == "2225") && State.VakV is not null)
+        {
+            return AddToFicheList(waarde, numericCode == "1225",
+                State.VakV.Fiches1225, State.VakV.Fiches2225);
+        }
+
         foreach (var staatsProp in typeof(AangifteState).GetProperties())
         {
             var vakData = staatsProp.GetValue(State);
@@ -277,6 +299,53 @@
             return waarde;
         }
         return null;
+    }
+
+    private bool AddToFicheList(string waarde, bool isPrimary, List<decimal?> primaryList, List<decimal?> partnerList)
+    {
+        try
+        {
+            var normalized = waarde.Replace(',', '.');
+            var bedrag = decimal.Parse(normalized, CultureInfo.InvariantCulture);
+
+            if (isPrimary)
+            {
+                // Voeg toe aan belastingplichtige fiches
+                var lastIndex = primaryList.Count - 1;
+                if (primaryList[lastIndex].HasValue)
+                {
+                    // Laatste fiche is al ingevuld, voeg nieuwe toe
+                    primaryList.Add(bedrag);
+                    partnerList.Add(null); // Sync partner lijst
+                }
+                else
+                {
+                    // Vul de laatste lege fiche in
+                    primaryList[lastIndex] = bedrag;
+                }
+            }
+            else
+            {
+                // Voeg toe aan partner fiches
+                var lastIndex = partnerList.Count - 1;
+                if (partnerList[lastIndex].HasValue)
+                {
+                    // Laatste fiche is al ingevuld, voeg nieuwe toe
+                    partnerList.Add(bedrag);
+                    primaryList.Add(null); // Sync belastingplichtige lijst
+                }
+                else
+                {
+                    // Vul de laatste lege fiche in
+                    partnerList[lastIndex] = bedrag;
+                }
+            }
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private sealed record SnelleInvoerEntry(string Code, string Omschrijving, string Waarde)

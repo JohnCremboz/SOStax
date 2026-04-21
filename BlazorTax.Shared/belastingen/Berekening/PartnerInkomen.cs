@@ -130,7 +130,7 @@ public class PartnerInkomen
         {
             Label = "Belastingplichtige",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code1250 ?? 0) + (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
+            BrutoLoon = vakIV.Code1250 + (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
                       + (vakIV.Code1247 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code1254 ?? 0,
             WoonWerkVerkeerVrijstelling = vakIV.Code1255 ?? 0,
@@ -150,7 +150,7 @@ public class PartnerInkomen
             AndereVervangings = vakIV.Code1271 ?? 0,
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code1258 ?? 0,
-            Bedrijfsvoorheffing = (vakIV.Code1286 ?? 0) + (vakV.Code1225 ?? 0),
+            Bedrijfsvoorheffing = vakIV.Code1286 + vakV.Code1225,
             BijzondereBijdrageSZ = vakIV.Code1287 ?? 0,
             WerkbonusCode284 = vakIV.Code1284 ?? 0,
             WerkbonusCode360 = vakIV.Code1360 ?? 0,
@@ -245,7 +245,7 @@ public class PartnerInkomen
         {
             Label = "Partner",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = (vakIV.Code2250 ?? 0) + (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
+            BrutoLoon = vakIV.Code2250 + (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
                       + (vakIV.Code2247 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code2254 ?? 0,
             WoonWerkVerkeerVrijstelling = vakIV.Code2255 ?? 0,
@@ -265,7 +265,7 @@ public class PartnerInkomen
             AndereVervangings = vakIV.Code2271 ?? 0,
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code2258 ?? 0,
-            Bedrijfsvoorheffing = (vakIV.Code2286 ?? 0) + (vakV.Code2225 ?? 0),
+            Bedrijfsvoorheffing = vakIV.Code2286 + vakV.Code2225,
             BijzondereBijdrageSZ = vakIV.Code2287 ?? 0,
             WerkbonusCode284 = vakIV.Code2284 ?? 0,
             WerkbonusCode360 = vakIV.Code2360 ?? 0,

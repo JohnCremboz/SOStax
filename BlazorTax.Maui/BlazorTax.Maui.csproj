@@ -76,4 +76,14 @@
         <ProjectReference Include="..\BlazorTax.Shared\BlazorTax.Shared.csproj" />
     </ItemGroup>
 
+    <!-- Copy shared belastingen assets to local wwwroot for BlazorWebView -->
+    <Target Name="CopySharedAssets" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <SharedAssets Include="..\BlazorTax.Shared\wwwroot\belastingen\**\*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(SharedAssets)" 
+              DestinationFolder="wwwroot\belastingen\%(RecursiveDir)" 
+              SkipUnchangedFiles="true" />
+    </Target>
+
 </Project>

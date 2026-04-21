@@ -17,7 +17,7 @@ main {
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
     justify-content: flex-start;
-    height: 3.5rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
@@ -25,7 +25,7 @@ main {
 
 .sostax-topbar-title {
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #424242;
     letter-spacing: 0.01em;
 }
@@ -62,7 +62,7 @@ main {
     }
 
     .sidebar {
-        width: 250px;
+        width: 280px;
         height: 100vh;
         position: sticky;
         top: 0;
@@ -81,7 +81,24 @@ main {
     }
 
     .top-row, article {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
+        padding-left: 2.5rem !important;
+        padding-right: 2rem !important;
+    }
+}
+
+/* Optimalisatie voor 1080p (1920x1080) */
+@media (min-width: 1800px) {
+    .sidebar {
+        width: 320px;
+    }
+
+    .top-row, article {
+        padding-left: 3rem !important;
+        padding-right: 2.5rem !important;
+    }
+
+    main {
+        max-width: 1600px;
+        margin: 0 auto;
     }
 }

@@ -20,7 +20,7 @@
     <BelastingenAsset Include="belastingen\*.csv;belastingen\structuur.md" />
   </ItemGroup>
 
-  <Target Name="CopyBelastingenAssets" BeforeTargets="Build">
+  <Target Name="CopyBelastingenAssets" BeforeTargets="BeforeBuild;ResolveStaticWebAssetsInputs">
     <Copy SourceFiles="@(BelastingenAsset)"
           DestinationFolder="wwwroot\belastingen\"
           SkipUnchangedFiles="true" />

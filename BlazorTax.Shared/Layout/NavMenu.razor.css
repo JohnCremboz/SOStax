@@ -9,7 +9,7 @@
 }
 
 .navbar-brand {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 400;
     letter-spacing: 0.02em;
     color: #fff !important;
@@ -20,15 +20,15 @@
 }
 
 .nav-icon {
-    font-size: 1.25rem;
-    margin-right: 0.75rem;
+    font-size: 1.3rem;
+    margin-right: 0.85rem;
     vertical-align: middle;
     position: relative;
     top: -1px;
 }
 
 .nav-item {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     padding-bottom: 0.5rem;
 }
 
@@ -43,11 +43,12 @@
     .nav-item ::deep a {
         color: rgba(255,255,255,0.85);
         border-radius: 8px;
-        height: 3rem;
+        height: 3.25rem;
         display: flex;
         align-items: center;
-        line-height: 3rem;
+        line-height: 3.25rem;
         transition: background-color 0.15s ease;
+        padding: 0.5rem 1rem;
     }
 
 .nav-item ::deep a.active {
@@ -70,6 +71,27 @@
     line-height: 2.2rem;
     padding-left: 2.1rem;
     font-size: 0.85rem;
+}
+
+/* Optimalisatie voor 1080p */
+@media (min-width: 1800px) {
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .nav-icon {
+        font-size: 1.4rem;
+        margin-right: 1rem;
+    }
+
+    .nav-item {
+        font-size: 1rem;
+    }
+
+    .nav-item ::deep a {
+        height: 3.5rem;
+        line-height: 3.5rem;
+    }
 }
 
 @media (min-width: 641px) {

@@ -158,7 +158,7 @@ public class PersonenbelastingCalculator
 
     private static decimal BerekenBrutoBeroepsinkomen(VakIVData vak)
     {
-        return (vak.Code1250 ?? 0) + (vak.Code2250 ?? 0)
+        return vak.Code1250 + vak.Code2250
              + (vak.Code1251 ?? 0) + (vak.Code2251 ?? 0)
              + (vak.Code1252 ?? 0) + (vak.Code2252 ?? 0)
              + (vak.Code1247 ?? 0) + (vak.Code2247 ?? 0)
@@ -222,8 +222,8 @@ public class PersonenbelastingCalculator
 
     private static decimal BerekenBedrijfsvoorheffing(VakIVData vakIV, VakVData vakV)
     {
-        return (vakIV.Code1286 ?? 0) + (vakIV.Code2286 ?? 0)
-             + (vakV.Code1225 ?? 0) + (vakV.Code2225 ?? 0);
+        return vakIV.Code1286 + vakIV.Code2286
+             + vakV.Code1225 + vakV.Code2225;
     }
 
     private static decimal BerekenWerkbonus(VakIVData vak)

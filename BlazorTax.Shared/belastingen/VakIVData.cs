@@ -3,9 +3,22 @@
 /// <summary>Data model voor VAK IV – A. Gewone bezoldigingen</summary>
 public class VakIVData
 {
-    // 1. Wedden/lonen
-    public decimal? Code1250 { get; set; }   // totaal fiches
-    public decimal? Code2250 { get; set; }
+    // 1. Wedden/lonen - Meerdere fiches 281.10
+    public List<decimal?> Fiches1250 { get; set; } = new() { null }; // Belastingplichtige
+    public List<decimal?> Fiches2250 { get; set; } = new() { null }; // Partner
+
+    // Computed totals voor 1a) - volgens fiches 281.10
+    public decimal Code1250 => Fiches1250.Sum(f => f ?? 0m);
+    public decimal Code2250 => Fiches2250.Sum(f => f ?? 0m);
+
+    // 1b) Niet op fiche vermeld
+    public decimal? Code1250B { get; set; }
+    public decimal? Code2250B { get; set; }
+
+    // Totaal 1250-11 en 2250-78 (1a + 1b)
+    public decimal Total1250 => Code1250 + (Code1250B ?? 0m);
+    public decimal Total2250 => Code2250 + (Code2250B ?? 0m);
+
     public decimal? Code1251 { get; set; }   // vervroegd vakantiegeld
     public decimal? Code2251 { get; set; }
     public decimal? Code1252 { get; set; }   // achterstallen
@@ -232,8 +245,21 @@ public class VakIVData
     public decimal? Code2234 { get; set; }
 
     // ── H. BEDRIJFSVOORHEFFING ────────────────────────────────────────────────
-    public decimal? Code1286 { get; set; }
-    public decimal? Code2286 { get; set; }
+    // Meerdere fiches voor bedrijfsvoorheffing (code 286)
+    public List<decimal?> Fiches1286 { get; set; } = new() { null };
+    public List<decimal?> Fiches2286 { get; set; } = new() { null };
+
+    // Computed totals voor bedrijfsvoorheffing volgens fiches
+    public decimal Code1286 => Fiches1286.Sum(f => f ?? 0m);
+    public decimal Code2286 => Fiches2286.Sum(f => f ?? 0m);
+
+    // Bedrijfsvoorheffing op niet-op-fiche vakantiegeld (indien van toepassing)
+    public decimal? Code1286B { get; set; }
+    public decimal? Code2286B { get; set; }
+
+    // Totaal bedrijfsvoorheffing (1286-72 / 2286-42)
+    public decimal Total1286 => Code1286 + (Code1286B ?? 0m);
+    public decimal Total2286 => Code2286 + (Code2286B ?? 0m);
 
     // ── I. BIJZONDERE BIJDRAGE SOCIALE ZEKERHEID ─────────────────────────────
     public decimal? Code1287 { get; set; }
