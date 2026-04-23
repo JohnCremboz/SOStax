@@ -13,10 +13,20 @@
     font-weight: 400;
     letter-spacing: 0.02em;
     color: #fff !important;
+    display: inline-flex;
+    align-items: center;
 }
 
 .navbar-brand strong {
     font-weight: 700;
+}
+
+.brand-logo {
+    width: 1.3rem;
+    height: 1.3rem;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .nav-icon {
@@ -77,6 +87,11 @@
 @media (min-width: 1800px) {
     .navbar-brand {
         font-size: 1.4rem;
+    }
+
+    .brand-logo {
+        width: 1.4rem;
+        height: 1.4rem;
     }
 
     .nav-icon {

@@ -1,0 +1,12 @@
+@page "/snelle-invoer"
+@inject AangifteStateService AangifteStateService
+
+<PageTitle>SOStax – Snelle Invoer</PageTitle>
+
+<h1>Snelle Invoer</h1>
+<p class="text-muted">Voer snel codes en waarden in zonder de tab-navigatie van Belastingen.</p>
+
+<section class="vak-panel">
+    <h2 class="mb-3">⚡ Snelle Invoer</h2>
+    <SnelleInvoerForm State="AangifteStateService.State" />
+</section>

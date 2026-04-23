@@ -3,6 +3,7 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject IGemeenteAanslagvoetService GemeenteService
+@inject AangifteStateService AangifteStateService
 @using BlazorTax.Belastingen.Berekening
 
 <PageTitle>SOStax – Belastingen</PageTitle>
@@ -24,7 +25,7 @@ else
         @for (var i = 0; i < _vakSections.Count; i++)
         {
             var vak = _vakSections[i];
-            var isActive = i == _activeTabIndex && !_snelleInvoerActief;
+            var isActive = i == _activeTabIndex;
             var tabHref = Navigation.GetUriWithQueryParameter("vak", vak.Code);
             var tabIndex = i;
 
@@ -40,28 +41,8 @@ else
                 </a>
             </li>
         }
-        <li class="nav-item" role="presentation">
-            <a href="#"
-               class="nav-link @(_snelleInvoerActief ? "active" : null)"
-               role="tab"
-               aria-selected="@_snelleInvoerActief"
-               @onclick:preventDefault
-               @onclick="SelectSnelleInvoer">
-                SNELLE INVOERING
-            </a>
-        </li>
     </ul>
-
-    @if (_snelleInvoerActief)
-    {
-        <section class="vak-panel">
-            <h2 class="mb-3">⚡ Snelle Invoer</h2>
-            <SnelleInvoerForm State="_state" />
-        </section>
-    }
-    else
-    {
-
+ 
     var activeSection = _vakSections[_activeTabIndex];
 
     <section class="vak-panel">
@@ -69,91 +50,91 @@ else
 
         @if (string.Equals(activeSection.Code, "VAK I", StringComparison.OrdinalIgnoreCase))
         {
-            <VakIForm Data="_state.VakI" />
+            <VakIForm Data="AangifteStateService.State.VakI" />
         }
         else if (string.Equals(activeSection.Code, "VAK II", StringComparison.OrdinalIgnoreCase))
         {
-            <VakIIForm Data="_state.VakII" />
+            <VakIIForm Data="AangifteStateService.State.VakII" />
         }
         else if (string.Equals(activeSection.Code, "VAK III", StringComparison.OrdinalIgnoreCase))
         {
-            <VakIIIForm Data="_state.VakIII" />
+            <VakIIIForm Data="AangifteStateService.State.VakIII" />
         }
         else if (string.Equals(activeSection.Code, "VAK IV", StringComparison.OrdinalIgnoreCase))
         {
-            <VakIVForm Data="_state.VakIV" />
+            <VakIVForm Data="AangifteStateService.State.VakIV" />
         }
         else if (string.Equals(activeSection.Code, "VAK V", StringComparison.OrdinalIgnoreCase))
         {
-            <VakVForm Data="_state.VakV" />
+            <VakVForm Data="AangifteStateService.State.VakV" />
         }
         else if (string.Equals(activeSection.Code, "VAK VI", StringComparison.OrdinalIgnoreCase))
         {
-            <VakVIForm Data="_state.VakVI" />
+            <VakVIForm Data="AangifteStateService.State.VakVI" />
         }
         else if (string.Equals(activeSection.Code, "VAK VII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakVIIForm Data="_state.VakVII" />
+            <VakVIIForm Data="AangifteStateService.State.VakVII" />
         }
         else if (string.Equals(activeSection.Code, "VAK VIII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakVIIIForm Data="_state.VakVIII" />
+            <VakVIIIForm Data="AangifteStateService.State.VakVIII" />
         }
         else if (string.Equals(activeSection.Code, "VAK IX", StringComparison.OrdinalIgnoreCase))
         {
-            <VakIXForm Data="_state.VakIX" />
+            <VakIXForm Data="AangifteStateService.State.VakIX" />
         }
         else if (string.Equals(activeSection.Code, "VAK X", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXForm Data="_state.VakX" />
+            <VakXForm Data="AangifteStateService.State.VakX" />
         }
         else if (string.Equals(activeSection.Code, "VAK XI", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXIForm Data="_state.VakXI" />
+            <VakXIForm Data="AangifteStateService.State.VakXI" />
         }
         else if (string.Equals(activeSection.Code, "VAK XII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXIIForm Data="_state.VakXII" />
+            <VakXIIForm Data="AangifteStateService.State.VakXII" />
         }
         else if (string.Equals(activeSection.Code, "VAK XIII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXIIIForm Data="_state.VakXIII" />
+            <VakXIIIForm Data="AangifteStateService.State.VakXIII" />
         }
         else if (string.Equals(activeSection.Code, "VAK XIV", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXIVForm Data="_state.VakXIV" />
+            <VakXIVForm Data="AangifteStateService.State.VakXIV" />
         }
         else if (string.Equals(activeSection.Code, "VAK XV", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXVForm Data="_state.VakXV" />
+            <VakXVForm Data="AangifteStateService.State.VakXV" />
         }
         else if (string.Equals(activeSection.Code, "VAK XVI", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXVIForm Data="_state.VakXVI" />
+            <VakXVIForm Data="AangifteStateService.State.VakXVI" />
         }
         else if (string.Equals(activeSection.Code, "VAK XVII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXVIIForm Data="_state.VakXVII" />
+            <VakXVIIForm Data="AangifteStateService.State.VakXVII" />
         }
         else if (string.Equals(activeSection.Code, "VAK XVIII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXVIIIForm Data="_state.VakXVIII" />
+            <VakXVIIIForm Data="AangifteStateService.State.VakXVIII" />
         }
         else if (string.Equals(activeSection.Code, "VAK XIX", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXIXForm Data="_state.VakXIX" />
+            <VakXIXForm Data="AangifteStateService.State.VakXIX" />
         }
         else if (string.Equals(activeSection.Code, "VAK XX", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXXForm Data="_state.VakXX" />
+            <VakXXForm Data="AangifteStateService.State.VakXX" />
         }
         else if (string.Equals(activeSection.Code, "VAK XXI", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXXIForm Data="_state.VakXXI" />
+            <VakXXIForm Data="AangifteStateService.State.VakXXI" />
         }
         else if (string.Equals(activeSection.Code, "VAK XXII", StringComparison.OrdinalIgnoreCase))
         {
-            <VakXXIIForm Data="_state.VakXXII" />
+            <VakXXIIForm Data="AangifteStateService.State.VakXXII" />
         }
         else
         {
@@ -185,15 +166,13 @@ else
         </div>
     </section>
 
-    } <!-- einde else (niet snelle invoer) -->
-
     <!-- Berekeningsinstellingen -->
     <section class="berekening-settings mt-4 p-3 border rounded">
         <h3>⚙️ Berekeningsinstellingen</h3>
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Gewest</label>
-                <select class="form-select" @bind="_state.Gewest">
+                <select class="form-select" @bind="AangifteStateService.State.Gewest">
                     <option value="@Gewest.Vlaanderen">Vlaanderen</option>
                     <option value="@Gewest.Wallonie">Wallonië</option>
                     <option value="@Gewest.Brussel">Brussel</option>
@@ -223,7 +202,7 @@ else
             <div class="col-md-4">
                 <label class="form-label">Gemeentebelasting (%)</label>
                 <input type="number" class="form-control" step="0.01" min="0" max="15"
-                       @bind="_state.GemeentebelastingPercentage" 
+                       @bind="AangifteStateService.State.GemeentebelastingPercentage" 
                        readonly="@(!string.IsNullOrEmpty(_geselecteerdeGemeente))"
                        title="@(_geselecteerdeGemeente != null ? $"Automatisch geladen voor {_geselecteerdeGemeente}" : "Voer handmatig in of selecteer gemeente")" />
             </div>
@@ -236,7 +215,7 @@ else
     </section>
 
     <!-- Resultaat -->
-    @if (_gezamenlijkResultaat is not null)
+    @if (AangifteStateService.LaatsteResultaat is not null)
     {
         <section class="berekening-resultaat mt-4 p-3 border rounded">
             <div class="d-flex justify-content-between align-items-center mb-2 no-print">
@@ -254,7 +233,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var regel in _gezamenlijkResultaat.DetailRegels)
+                    @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
                     {
                         <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
                             <td>@regel.Omschrijving</td>
@@ -266,14 +245,14 @@ else
                 </tbody>
             </table>
 
-            <div class="alert @(_gezamenlijkResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
-                @if (_gezamenlijkResultaat.Eindresultaat >= 0)
+            <div class="alert @(AangifteStateService.LaatsteResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
+                @if (AangifteStateService.LaatsteResultaat.Eindresultaat >= 0)
                 {
-                    <strong>Te betalen: @_gezamenlijkResultaat.Eindresultaat.ToString("N2") €</strong>
+                    <strong>Te betalen: @AangifteStateService.LaatsteResultaat.Eindresultaat.ToString("N2") €</strong>
                 }
                 else
                 {
-                    <strong>Terug te krijgen: @((-_gezamenlijkResultaat.Eindresultaat).ToString("N2")) €</strong>
+                    <strong>Terug te krijgen: @((-AangifteStateService.LaatsteResultaat.Eindresultaat).ToString("N2")) €</strong>
                 }
             </div>
         </section>
@@ -284,9 +263,6 @@ else
     private readonly List<VakSection> _vakSections = [];
     private string? _errorMessage;
     private int _activeTabIndex;
-    private bool _snelleInvoerActief = false;
-    private readonly AangifteState _state = new();
-    private GezamenlijkResultaat? _gezamenlijkResultaat;
 
     private async Task PrintResultaat()
     {
@@ -313,9 +289,6 @@ else
     [SupplyParameterFromQuery(Name = "vak")]
     public string? VakCode { get; set; }
 
-    [SupplyParameterFromQuery(Name = "snelleinvoer")]
-    public bool? SnelleInvoerParam { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         try
@@ -337,15 +310,7 @@ else
             _vakSections.AddRange(VakStructuurParser.ParseSections(markdown)
                 .Where(v => !string.Equals(v.Code, "VAK V C", StringComparison.OrdinalIgnoreCase)));
 
-            // Check if snelle invoer should be activated from query parameter
-            if (SnelleInvoerParam == true)
-            {
-                _snelleInvoerActief = true;
-            }
-            else
-            {
-                TrySetActiveTabFromQuery();
-            }
+            TrySetActiveTabFromQuery();
 
             if (_vakSections.Count == 0)
             {
@@ -381,7 +346,6 @@ else
     {
         if (tabIndex < 0 || tabIndex >= _vakSections.Count) return;
 
-        _snelleInvoerActief = false;
         _activeTabIndex = tabIndex;
 
         var targetVakCode = _vakSections[tabIndex].Code;
@@ -389,11 +353,6 @@ else
         Navigation.NavigateTo(uriWithQuery, replace: true);
 
         await JS.InvokeVoidAsync("scrollTabIntoView", $"[data-tab-index='{tabIndex}']");
-    }
-
-    private void SelectSnelleInvoer()
-    {
-        _snelleInvoerActief = true;
     }
 
     private void UpdateGemeenteSuggesties()
@@ -437,37 +396,12 @@ else
         var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
         if (aanslagvoet.HasValue)
         {
-            _state.GemeentebelastingPercentage = aanslagvoet.Value;
+            AangifteStateService.State.GemeentebelastingPercentage = aanslagvoet.Value;
         }
     }
 
     private void Bereken()
     {
-        var calculator = new GezamenlijkeBerekeningCalculator();
-        var input = new BerekeningInput
-        {
-            VakII = _state.VakII,
-            VakIII = _state.VakIII,
-            VakIV = _state.VakIV,
-            VakV = _state.VakV,
-            VakVIII = _state.VakVIII,
-            VakIX = _state.VakIX,
-            VakX = _state.VakX,
-            VakXII = _state.VakXII,
-            VakXV = _state.VakXV,
-            VakXVI = _state.VakXVI,
-            VakXVII = _state.VakXVII,
-            VakXVIII = _state.VakXVIII,
-            VakXIX = _state.VakXIX,
-            VakXX = _state.VakXX,
-            VakXXI = _state.VakXXI,
-            Gewest = _state.Gewest,
-            GemeentebelastingPercentage = _state.GemeentebelastingPercentage,
-            TypeBeroep = _state.TypeBeroep,
-            NettoInkomenPartner = _state.NettoInkomenPartner,
-        };
-        _gezamenlijkResultaat = calculator.Bereken(input);
+        AangifteStateService.Bereken();
     }
 }
-
-

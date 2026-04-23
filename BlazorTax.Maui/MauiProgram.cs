@@ -18,6 +18,7 @@ public static class MauiProgram
 		builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddSingleton<IAssetReader, MauiAssetReader>();
 		builder.Services.AddSingleton<IGemeenteAanslagvoetService, GemeenteAanslagvoetService>();
+		builder.Services.AddScoped<AangifteStateService>();
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
