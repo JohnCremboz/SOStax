@@ -200,7 +200,8 @@ else
         }
         catch (Exception ex)
         {
-            _errorMessage = $"Structuur kon niet geladen worden: {ex.Message}";
+            _ = ex; // details alleen in dev console, niet tonen aan gebruiker
+            _errorMessage = "Structuur kon niet geladen worden. Probeer het later opnieuw.";
         }
     }
 

@@ -26,7 +26,8 @@ public class GemeenteAanslagvoetService : IGemeenteAanslagvoetService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Fout bij laden gemeentelijke aanslagvoeten: {ex.Message}");
+            Console.WriteLine("Fout bij laden gemeentelijke aanslagvoeten.");
+            _ = ex;
             throw;
         }
     }
@@ -139,6 +140,9 @@ public class GemeenteAanslagvoetService : IGemeenteAanslagvoetService
 
         if (string.IsNullOrWhiteSpace(zoekterm))
             return _gemeenteNamen.AsReadOnly();
+
+        if (zoekterm.Length > 100)
+            return Array.Empty<string>();
 
         return _gemeenteNamen
             .Where(g => g.Contains(zoekterm, StringComparison.OrdinalIgnoreCase))

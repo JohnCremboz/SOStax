@@ -279,12 +279,14 @@
         }
         if (doelType == typeof(int))
         {
-            return int.Parse(waarde, CultureInfo.InvariantCulture);
+            return int.TryParse(waarde, NumberStyles.Integer, CultureInfo.InvariantCulture, out int intVal)
+                ? intVal : null;
         }
         if (doelType == typeof(decimal))
         {
             var normalized = waarde.Replace(',', '.');
-            return decimal.Parse(normalized, CultureInfo.InvariantCulture);
+            return decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal decVal)
+                ? decVal : null;
         }
         if (doelType == typeof(string))
         {
@@ -295,49 +297,43 @@
 
     private bool AddToFicheList(string waarde, bool isPrimary, List<decimal?> primaryList, List<decimal?> partnerList)
     {
-        try
-        {
-            var normalized = waarde.Replace(',', '.');
-            var bedrag = decimal.Parse(normalized, CultureInfo.InvariantCulture);
+        var normalized = waarde.Replace(',', '.');
+        if (!decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out var bedrag))
+            return false;
 
-            if (isPrimary)
+        if (isPrimary)
+        {
+            // Voeg toe aan belastingplichtige fiches
+            var lastIndex = primaryList.Count - 1;
+            if (primaryList[lastIndex].HasValue)
             {
-                // Voeg toe aan belastingplichtige fiches
-                var lastIndex = primaryList.Count - 1;
-                if (primaryList[lastIndex].HasValue)
-                {
-                    // Laatste fiche is al ingevuld, voeg nieuwe toe
-                    primaryList.Add(bedrag);
-                    partnerList.Add(null); // Sync partner lijst
-                }
-                else
-                {
-                    // Vul de laatste lege fiche in
-                    primaryList[lastIndex] = bedrag;
-                }
+                // Laatste fiche is al ingevuld, voeg nieuwe toe
+                primaryList.Add(bedrag);
+                partnerList.Add(null); // Sync partner lijst
             }
             else
             {
-                // Voeg toe aan partner fiches
-                var lastIndex = partnerList.Count - 1;
-                if (partnerList[lastIndex].HasValue)
-                {
-                    // Laatste fiche is al ingevuld, voeg nieuwe toe
-                    partnerList.Add(bedrag);
-                    primaryList.Add(null); // Sync belastingplichtige lijst
-                }
-                else
-                {
-                    // Vul de laatste lege fiche in
-                    partnerList[lastIndex] = bedrag;
-                }
+                // Vul de laatste lege fiche in
+                primaryList[lastIndex] = bedrag;
             }
-            return true;
         }
-        catch
+        else
         {
-            return false;
+            // Voeg toe aan partner fiches
+            var lastIndex = partnerList.Count - 1;
+            if (partnerList[lastIndex].HasValue)
+            {
+                // Laatste fiche is al ingevuld, voeg nieuwe toe
+                partnerList.Add(bedrag);
+                primaryList.Add(null); // Sync belastingplichtige lijst
+            }
+            else
+            {
+                // Vul de laatste lege fiche in
+                partnerList[lastIndex] = bedrag;
+            }
         }
+        return true;
     }
 
     private sealed record SnelleInvoerEntry(string Code, string Omschrijving, string Waarde)
