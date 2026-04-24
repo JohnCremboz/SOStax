@@ -1,19 +1,31 @@
-﻿@page "/belastingen"
+@page "/belastingen"
 @inject IAssetReader AssetReader
-@inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject IGemeenteAanslagvoetService GemeenteService
 @inject AangifteStateService AangifteStateService
 @using BlazorTax.Belastingen.Berekening
+@using Microsoft.AspNetCore.Components.Rendering
 
 <PageTitle>SOStax – Belastingen</PageTitle>
 
 <h1>Personenbelasting AJ 2026</h1>
-<p class="text-muted">Structuur met tabs per vak uit <code>structuur.md</code>.</p>
+<p class="text-muted">Begeleide workflow per stap in plaats van tab-navigatie per vak.</p>
 
 @if (!string.IsNullOrWhiteSpace(_errorMessage))
 {
     <div class="alert alert-danger" role="alert">@_errorMessage</div>
+}
+@if (AangifteStateService.ValidatieFouten.Count > 0)
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Controleer uw invoer:</strong>
+        <ul class="mb-0">
+            @foreach (var fout in AangifteStateService.ValidatieFouten)
+            {
+                <li>@fout</li>
+            }
+        </ul>
+    </div>
 }
 else if (_vakSections.Count == 0)
 {
@@ -21,286 +33,157 @@ else if (_vakSections.Count == 0)
 }
 else
 {
-    <ul class="nav nav-tabs vak-tabs" role="tablist">
-        @for (var i = 0; i < _vakSections.Count; i++)
-        {
-            var vak = _vakSections[i];
-            var isActive = i == _activeTabIndex;
-            var tabHref = Navigation.GetUriWithQueryParameter("vak", vak.Code);
-            var tabIndex = i;
+    var currentStep = _workflowSteps[_activeStepIndex];
 
-            <li class="nav-item" role="presentation">
-                <a href="@tabHref"
-                   class="nav-link @(isActive ? "active" : null)"
-                   role="tab"
-                   aria-selected="@isActive"
-                   data-tab-index="@tabIndex"
-                   @onclick:preventDefault
-                   @onclick="() => SelectTab(tabIndex)">
-                    @vak.Code
-                </a>
+    <section class="workflow-header p-3 border rounded bg-white mb-3">
+        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+            <div>
+                <h2 class="mb-1">@currentStep.Title</h2>
+                <p class="text-muted mb-0">Stap @(_activeStepIndex + 1) van @_workflowSteps.Count · @currentStep.Description</p>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
+                <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+            </div>
+        </div>
+    </section>
+
+    <ol class="workflow-stepper list-unstyled d-flex flex-wrap gap-2 mb-3">
+        @for (var i = 0; i < _workflowSteps.Count; i++)
+        {
+            var step = _workflowSteps[i];
+            <li>
+                <button type="button"
+                        class="btn btn-sm @(i == _activeStepIndex ? "btn-primary" : "btn-outline-secondary")"
+                        @onclick="() => GaNaarStap(i)">
+                    @(i + 1). @step.Title
+                </button>
             </li>
         }
-    </ul>
- 
-    var activeSection = _vakSections[_activeTabIndex];
+    </ol>
 
     <section class="vak-panel">
-        <h2>@activeSection.Title</h2>
+        @switch (currentStep.Key)
+        {
+            case "intro":
+                <h3>Welkom</h3>
+                <p>Deze wizard begeleidt u stap voor stap door de relevante vakken.</p>
+                <ul>
+                    <li>Start met uw persoonlijke situatie (Vak I &amp; Vak II).</li>
+                    <li>Daarna volgen inkomsten en aftrekken.</li>
+                    <li>Niet-relevante vakken worden automatisch verborgen op basis van Vak II.</li>
+                </ul>
+                break;
 
-        @if (string.Equals(activeSection.Code, "VAK I", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakIForm Data="AangifteStateService.State.VakI" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK II", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakIIForm Data="AangifteStateService.State.VakII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK III", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakIIIForm Data="AangifteStateService.State.VakIII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK IV", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakIVForm Data="AangifteStateService.State.VakIV" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK V", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakVForm Data="AangifteStateService.State.VakV" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK VI", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakVIForm Data="AangifteStateService.State.VakVI" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK VII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakVIIForm Data="AangifteStateService.State.VakVII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK VIII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakVIIIForm Data="AangifteStateService.State.VakVIII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK IX", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakIXForm Data="AangifteStateService.State.VakIX" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK X", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXForm Data="AangifteStateService.State.VakX" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XI", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXIForm Data="AangifteStateService.State.VakXI" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXIIForm Data="AangifteStateService.State.VakXII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XIII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXIIIForm Data="AangifteStateService.State.VakXIII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XIV", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXIVForm Data="AangifteStateService.State.VakXIV" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XV", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXVForm Data="AangifteStateService.State.VakXV" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XVI", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXVIForm Data="AangifteStateService.State.VakXVI" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XVII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXVIIForm Data="AangifteStateService.State.VakXVII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XVIII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXVIIIForm Data="AangifteStateService.State.VakXVIII" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XIX", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXIXForm Data="AangifteStateService.State.VakXIX" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XX", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXXForm Data="AangifteStateService.State.VakXX" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XXI", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXXIForm Data="AangifteStateService.State.VakXXI" />
-        }
-        else if (string.Equals(activeSection.Code, "VAK XXII", StringComparison.OrdinalIgnoreCase))
-        {
-            <VakXXIIForm Data="AangifteStateService.State.VakXXII" />
-        }
-        else
-        {
-            <pre class="vak-markdown">@activeSection.Content</pre>
-        }
+            case "persoonlijk":
+                @RenderStepVakken(_persoonlijkeVakken, "Geen persoonlijke vakken gevonden.")
+                break;
 
-        <div class="vak-nav-footer">
-            @{
-                var prevIndex = _activeTabIndex - 1;
-                var nextIndex = _activeTabIndex + 1;
-                var prevHref = prevIndex >= 0 ? Navigation.GetUriWithQueryParameter("vak", _vakSections[prevIndex].Code) : "#";
-                var nextHref = nextIndex < _vakSections.Count ? Navigation.GetUriWithQueryParameter("vak", _vakSections[nextIndex].Code) : "#";
-            }
-            <a href="@prevHref"
-               class="btn btn-outline-secondary @(_activeTabIndex == 0 ? "disabled" : null)"
-               aria-disabled="@(_activeTabIndex == 0)"
-               @onclick:preventDefault
-               @onclick="async () => { if (_activeTabIndex > 0) await SelectTab(prevIndex); }">
-                &#8592; @(prevIndex >= 0 ? _vakSections[prevIndex].Code : "")
-            </a>
-            <span class="vak-nav-counter">@(_activeTabIndex + 1) / @_vakSections.Count</span>
-            <a href="@nextHref"
-               class="btn btn-outline-primary @(_activeTabIndex == _vakSections.Count - 1 ? "disabled" : null)"
-               aria-disabled="@(_activeTabIndex == _vakSections.Count - 1)"
-               @onclick:preventDefault
-               @onclick="async () => { if (_activeTabIndex < _vakSections.Count - 1) await SelectTab(nextIndex); }">
-                @(nextIndex < _vakSections.Count ? _vakSections[nextIndex].Code : "") &#8594;
-            </a>
-        </div>
-    </section>
+            case "inkomsten":
+                @RenderStepVakken(_inkomstenVakken, "Geen inkomensvakken beschikbaar met de huidige filter.")
+                break;
 
-    <!-- Berekeningsinstellingen -->
-    <section class="berekening-settings mt-4 p-3 border rounded">
-        <h3>⚙️ Berekeningsinstellingen</h3>
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label">Gewest</label>
-                <select class="form-select" @bind="AangifteStateService.State.Gewest">
-                    <option value="@Gewest.Vlaanderen">Vlaanderen</option>
-                    <option value="@Gewest.Wallonie">Wallonië</option>
-                    <option value="@Gewest.Brussel">Brussel</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Gemeente</label>
-                <input type="text" class="form-control" 
-                       value="@_geselecteerdeGemeente" 
-                       @oninput="OnGemeenteInput"
-                       @onfocus="() => { _toonGemeenteSuggesties = true; UpdateGemeenteSuggesties(); }"
-                       @onblur="OnGemeenteBlur"
-                       placeholder="Typ een gemeente..."
-                       autocomplete="off" />
-                @if (_toonGemeenteSuggesties && _gemeenteSuggesties.Count > 0)
-                {
-                    <div class="dropdown-menu show" style="max-height: 200px; overflow-y: auto; width: 100%; position: absolute; z-index: 1000;">
-                        @foreach (var gemeente in _gemeenteSuggesties)
-                        {
-                            <button type="button" class="dropdown-item" @onmousedown="() => SelecteerGemeente(gemeente)">
-                                @gemeente
-                            </button>
-                        }
-                    </div>
-                }
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Gemeentebelasting (%)</label>
-                <input type="number" class="form-control" step="0.01" min="0" max="15"
-                       @bind="AangifteStateService.State.GemeentebelastingPercentage" 
-                       readonly="@(!string.IsNullOrEmpty(_geselecteerdeGemeente))"
-                       title="@(_geselecteerdeGemeente != null ? $"Automatisch geladen voor {_geselecteerdeGemeente}" : "Voer handmatig in of selecteer gemeente")" />
-            </div>
-        </div>
-        <div class="mt-3">
-            <button type="button" class="btn btn-primary btn-lg" @onclick="Bereken">
-                🧮 Bereken belasting
-            </button>
-        </div>
-    </section>
+            case "aftrekken":
+                @RenderStepVakken(_aftrekVakken, "Geen aftrekvakken beschikbaar met de huidige filter.")
+                break;
 
-    <!-- Resultaat -->
-    @if (AangifteStateService.LaatsteResultaat is not null)
-    {
-        <section class="berekening-resultaat mt-4 p-3 border rounded">
-            <div class="d-flex justify-content-between align-items-center mb-2 no-print">
-                <h3 class="mb-0">📊 Berekeningsresultaat</h3>
-                <button class="btn btn-outline-secondary btn-sm" @onclick="PrintResultaat">
-                    🖨️ Afdrukken / Opslaan als PDF
-                </button>
-            </div>
-            <h3 class="d-none print-only">Belastingberekening AJ2026</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>Omschrijving</th>
-                        <th class="text-end">Bedrag</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
+            case "controle":
+                <h3>Controle</h3>
+                <p class="text-muted">Overzicht van vakken die momenteel in de workflow zijn opgenomen.</p>
+                <ul class="mb-0">
+                    @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
                     {
-                        <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
-                            <td>@regel.Omschrijving</td>
-                            <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
-                                @regel.Bedrag.ToString("N2") €
-                            </td>
-                        </tr>
+                        <li>@vak.Code — @vak.Title</li>
                     }
-                </tbody>
-            </table>
+                </ul>
+                break;
 
-            <div class="alert @(AangifteStateService.LaatsteResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
-                @if (AangifteStateService.LaatsteResultaat.Eindresultaat >= 0)
-                {
-                    <strong>Te betalen: @AangifteStateService.LaatsteResultaat.Eindresultaat.ToString("N2") €</strong>
-                }
-                else
-                {
-                    <strong>Terug te krijgen: @((-AangifteStateService.LaatsteResultaat.Eindresultaat).ToString("N2")) €</strong>
-                }
-            </div>
-        </section>
-    }
+            case "resultaat":
+                <h3>Berekenen en resultaat</h3>
+                <p class="text-muted">Controleer instellingen en voer daarna de berekening uit.</p>
+                @RenderBerekening()
+                break;
+        }
+
+        <div class="vak-nav-footer mt-4">
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    disabled="@(_activeStepIndex == 0)"
+                    @onclick="VorigeStap">
+                &#8592; Vorige stap
+            </button>
+            <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
+            @if (_activeStepIndex == _workflowSteps.Count - 1)
+            {
+                <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
+                    Nieuwe aangifte
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="btn btn-outline-primary"
+                        @onclick="VolgendeStap">
+                    Volgende stap &#8594;
+                </button>
+            }
+        </div>
+    </section>
 }
 
 @code {
+    private static readonly List<WorkflowStep> _workflowSteps =
+    [
+        new("intro", "Intro", "Korte uitleg en startpunt"),
+        new("persoonlijk", "Persoonlijke situatie", "Vak I en Vak II"),
+        new("inkomsten", "Inkomsten", "Vakken rond inkomsten"),
+        new("aftrekken", "Aftrekken", "Vakken rond aftrekken en verminderingen"),
+        new("controle", "Controle", "Overzicht van relevante vakken"),
+        new("resultaat", "Resultaat", "Instellingen, berekening en uitkomst")
+    ];
+
+    private static readonly List<string> _persoonlijkeVakken = ["VAK I", "VAK II"];
+    private static readonly List<string> _inkomstenVakken =
+    [
+        "VAK III", "VAK IV", "VAK V", "VAK VI", "VAK VII",
+        "VAK XVII", "VAK XVIII"
+    ];
+    private static readonly List<string> _aftrekVakken =
+    [
+        "VAK VIII", "VAK IX", "VAK X", "VAK XI", "VAK XII", "VAK XIII",
+        "VAK XIV", "VAK XV", "VAK XVI", "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
+    ];
+
+    private static readonly HashSet<string> _partnerVakken = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "VAK XIV", "VAK XV", "VAK XVI", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
+    };
+
+    private static readonly HashSet<string> _gezinsVakken = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "VAK X", "VAK XII"
+    };
+
     private readonly List<VakSection> _vakSections = [];
     private string? _errorMessage;
-    private int _activeTabIndex;
-
-    private async Task PrintResultaat()
-    {
-        await JS.InvokeVoidAsync("window.print");
-    }
+    private int _activeStepIndex;
+    private bool _isBerekenen;
+    private bool _toonAlleVakken;
 
     private string? _geselecteerdeGemeente;
     private List<string> _gemeenteSuggesties = new();
-    private bool _toonGemeenteSuggesties = false;
-
-    private string? GeselecteerdeGemeente
-    {
-        get => _geselecteerdeGemeente;
-        set
-        {
-            if (_geselecteerdeGemeente != value)
-            {
-                _geselecteerdeGemeente = value;
-                UpdateGemeenteSuggesties();
-            }
-        }
-    }
-
-    [SupplyParameterFromQuery(Name = "vak")]
-    public string? VakCode { get; set; }
+    private bool _toonGemeenteSuggesties;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Initialize gemeente service
             if (!GemeenteService.IsInitialized)
             {
                 await GemeenteService.InitializeAsync(AssetReader);
             }
 
             var markdown = await AssetReader.GetStringAsync("belastingen/structuur.md");
-
             if (markdown.Contains("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
             {
                 _errorMessage = "De markdown is niet als statisch bestand gevonden (fallback naar index.html).";
@@ -309,8 +192,6 @@ else
 
             _vakSections.AddRange(VakStructuurParser.ParseSections(markdown)
                 .Where(v => !string.Equals(v.Code, "VAK V C", StringComparison.OrdinalIgnoreCase)));
-
-            TrySetActiveTabFromQuery();
 
             if (_vakSections.Count == 0)
             {
@@ -323,42 +204,440 @@ else
         }
     }
 
-    protected override void OnParametersSet()
+    private void GaNaarStap(int index)
     {
-        TrySetActiveTabFromQuery();
-    }
-
-    private void TrySetActiveTabFromQuery()
-    {
-        if (_vakSections.Count == 0 || string.IsNullOrWhiteSpace(VakCode))
+        if (index < 0 || index >= _workflowSteps.Count)
         {
             return;
         }
 
-        var index = _vakSections.FindIndex(vak => string.Equals(vak.Code, VakCode, StringComparison.OrdinalIgnoreCase));
-        if (index >= 0)
+        _activeStepIndex = index;
+    }
+
+    private void VolgendeStap()
+    {
+        if (_activeStepIndex < _workflowSteps.Count - 1)
         {
-            _activeTabIndex = index;
+            _activeStepIndex++;
         }
     }
 
-    private async Task SelectTab(int tabIndex)
+    private void VorigeStap()
     {
-        if (tabIndex < 0 || tabIndex >= _vakSections.Count) return;
+        if (_activeStepIndex > 0)
+        {
+            _activeStepIndex--;
+        }
+    }
 
-        _activeTabIndex = tabIndex;
+    private void StartNieuweAangifte()
+    {
+        AangifteStateService.NieuweAangifte();
+        _geselecteerdeGemeente = null;
+        _gemeenteSuggesties = [];
+        _toonGemeenteSuggesties = false;
+        _isBerekenen = false;
+        _activeStepIndex = 0;
+    }
 
-        var targetVakCode = _vakSections[tabIndex].Code;
-        var uriWithQuery = Navigation.GetUriWithQueryParameter("vak", targetVakCode);
-        Navigation.NavigateTo(uriWithQuery, replace: true);
+    private RenderFragment RenderStepVakken(IReadOnlyList<string> codes, string leegMelding) => builder =>
+    {
+        var vakken = GetWorkflowVakSections(codes).ToList();
+        if (vakken.Count == 0)
+        {
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "class", "alert alert-info");
+            builder.AddContent(2, leegMelding);
+            builder.CloseElement();
+            return;
+        }
 
-        await JS.InvokeVoidAsync("scrollTabIntoView", $"[data-tab-index='{tabIndex}']");
+        var seq = 10;
+        foreach (var vak in vakken)
+        {
+            builder.OpenElement(seq++, "article");
+            builder.AddAttribute(seq++, "class", "workflow-vak mb-4");
+
+            builder.OpenElement(seq++, "h3");
+            builder.AddAttribute(seq++, "class", "h5");
+            builder.AddContent(seq++, vak.Title);
+            builder.CloseElement();
+
+            builder.AddContent(seq++, RenderVakForm(vak));
+            builder.CloseElement();
+        }
+    };
+
+    private IEnumerable<VakSection> GetWorkflowVakSections(IReadOnlyList<string> codes)
+    {
+        foreach (var code in codes)
+        {
+            var vak = _vakSections.FirstOrDefault(v => string.Equals(v.Code, code, StringComparison.OrdinalIgnoreCase));
+            if (vak is not null && ShouldShowVak(code))
+            {
+                yield return vak;
+            }
+        }
+    }
+
+    private bool ShouldShowVak(string vakCode)
+    {
+        if (_toonAlleVakken || string.Equals(vakCode, "VAK I", StringComparison.OrdinalIgnoreCase) || string.Equals(vakCode, "VAK II", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (_partnerVakken.Contains(vakCode) && !HeeftPartner() && !HeeftVakData(vakCode))
+        {
+            return false;
+        }
+
+        if (_gezinsVakken.Contains(vakCode) && !HeeftGezinslasten() && !HeeftVakData(vakCode))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool HeeftPartner()
+    {
+        var burgerlijkeStaat = AangifteStateService.State.VakII.BurgerlijkeStaat;
+        return string.Equals(burgerlijkeStaat, BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(burgerlijkeStaat, BurgerlijkeStaatCodes.WeduwnaarOfWeduwe, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool HeeftGezinslasten()
+    {
+        var vakII = AangifteStateService.State.VakII;
+        return (vakII.Code1030 ?? 0) > 0
+            || (vakII.Code1034 ?? 0) > 0
+            || (vakII.Code1036 ?? 0) > 0
+            || (vakII.Code1027 ?? 0) > 0
+            || (vakII.Code1032 ?? 0) > 0;
+    }
+
+    private bool HeeftVakData(string vakCode)
+    {
+        object? vakData = vakCode.ToUpperInvariant() switch
+        {
+            "VAK I" => (object?)AangifteStateService.State.VakI,
+            "VAK II" => AangifteStateService.State.VakII,
+            "VAK III" => AangifteStateService.State.VakIII,
+            "VAK IV" => AangifteStateService.State.VakIV,
+            "VAK V" => AangifteStateService.State.VakV,
+            "VAK VI" => AangifteStateService.State.VakVI,
+            "VAK VII" => AangifteStateService.State.VakVII,
+            "VAK VIII" => AangifteStateService.State.VakVIII,
+            "VAK IX" => AangifteStateService.State.VakIX,
+            "VAK X" => AangifteStateService.State.VakX,
+            "VAK XI" => AangifteStateService.State.VakXI,
+            "VAK XII" => AangifteStateService.State.VakXII,
+            "VAK XIII" => AangifteStateService.State.VakXIII,
+            "VAK XIV" => AangifteStateService.State.VakXIV,
+            "VAK XV" => AangifteStateService.State.VakXV,
+            "VAK XVI" => AangifteStateService.State.VakXVI,
+            "VAK XVII" => AangifteStateService.State.VakXVII,
+            "VAK XVIII" => AangifteStateService.State.VakXVIII,
+            "VAK XIX" => AangifteStateService.State.VakXIX,
+            "VAK XX" => AangifteStateService.State.VakXX,
+            "VAK XXI" => AangifteStateService.State.VakXXI,
+            "VAK XXII" => AangifteStateService.State.VakXXII,
+            _ => null
+        };
+
+        return HeeftInhoud(vakData);
+    }
+
+    private static bool HeeftInhoud(object? vakData)
+    {
+        if (vakData is null)
+        {
+            return false;
+        }
+
+        foreach (var property in vakData.GetType().GetProperties())
+        {
+            var value = property.GetValue(vakData);
+            if (value is null)
+            {
+                continue;
+            }
+
+            if (value is bool boolValue && boolValue)
+            {
+                return true;
+            }
+
+            if (value is string strValue && !string.IsNullOrWhiteSpace(strValue))
+            {
+                return true;
+            }
+
+            if (value is int intValue && intValue != 0)
+            {
+                return true;
+            }
+
+            if (value is decimal decimalValue && decimalValue != 0m)
+            {
+                return true;
+            }
+
+            if (value is System.Collections.IEnumerable enumerable and not string)
+            {
+                foreach (var item in enumerable)
+                {
+                    if (item is decimal amount && amount != 0m)
+                    {
+                        return true;
+                    }
+
+                    if (item is string itemString && !string.IsNullOrWhiteSpace(itemString))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private RenderFragment RenderVakForm(VakSection section) => builder =>
+    {
+        switch (section.Code.ToUpperInvariant())
+        {
+            case "VAK I":
+                builder.OpenComponent<VakIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakI);
+                builder.CloseComponent();
+                break;
+            case "VAK II":
+                builder.OpenComponent<VakIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakII);
+                builder.CloseComponent();
+                break;
+            case "VAK III":
+                builder.OpenComponent<VakIIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakIII);
+                builder.CloseComponent();
+                break;
+            case "VAK IV":
+                builder.OpenComponent<VakIVForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakIV);
+                builder.CloseComponent();
+                break;
+            case "VAK V":
+                builder.OpenComponent<VakVForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakV);
+                builder.CloseComponent();
+                break;
+            case "VAK VI":
+                builder.OpenComponent<VakVIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakVI);
+                builder.CloseComponent();
+                break;
+            case "VAK VII":
+                builder.OpenComponent<VakVIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakVII);
+                builder.CloseComponent();
+                break;
+            case "VAK VIII":
+                builder.OpenComponent<VakVIIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakVIII);
+                builder.CloseComponent();
+                break;
+            case "VAK IX":
+                builder.OpenComponent<VakIXForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakIX);
+                builder.CloseComponent();
+                break;
+            case "VAK X":
+                builder.OpenComponent<VakXForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakX);
+                builder.CloseComponent();
+                break;
+            case "VAK XI":
+                builder.OpenComponent<VakXIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXI);
+                builder.CloseComponent();
+                break;
+            case "VAK XII":
+                builder.OpenComponent<VakXIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXII);
+                builder.CloseComponent();
+                break;
+            case "VAK XIII":
+                builder.OpenComponent<VakXIIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXIII);
+                builder.CloseComponent();
+                break;
+            case "VAK XIV":
+                builder.OpenComponent<VakXIVForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXIV);
+                builder.CloseComponent();
+                break;
+            case "VAK XV":
+                builder.OpenComponent<VakXVForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXV);
+                builder.CloseComponent();
+                break;
+            case "VAK XVI":
+                builder.OpenComponent<VakXVIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXVI);
+                builder.CloseComponent();
+                break;
+            case "VAK XVII":
+                builder.OpenComponent<VakXVIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXVII);
+                builder.CloseComponent();
+                break;
+            case "VAK XVIII":
+                builder.OpenComponent<VakXVIIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXVIII);
+                builder.CloseComponent();
+                break;
+            case "VAK XIX":
+                builder.OpenComponent<VakXIXForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXIX);
+                builder.CloseComponent();
+                break;
+            case "VAK XX":
+                builder.OpenComponent<VakXXForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXX);
+                builder.CloseComponent();
+                break;
+            case "VAK XXI":
+                builder.OpenComponent<VakXXIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXXI);
+                builder.CloseComponent();
+                break;
+            case "VAK XXII":
+                builder.OpenComponent<VakXXIIForm>(0);
+                builder.AddAttribute(1, "Data", AangifteStateService.State.VakXXII);
+                builder.CloseComponent();
+                break;
+            default:
+                builder.OpenElement(0, "pre");
+                builder.AddAttribute(1, "class", "vak-markdown");
+                builder.AddContent(2, section.Content);
+                builder.CloseElement();
+                break;
+        }
+    };
+
+    private RenderFragment RenderBerekening() => @<div>
+        <section class="berekening-settings mt-4 p-3 border rounded">
+            <h3>⚙️ Berekeningsinstellingen</h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Gewest</label>
+                    <select class="form-select" @bind="AangifteStateService.State.Gewest">
+                        <option value="@Gewest.Vlaanderen">Vlaanderen</option>
+                        <option value="@Gewest.Wallonie">Wallonië</option>
+                        <option value="@Gewest.Brussel">Brussel</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Gemeente</label>
+                    <input type="text" class="form-control"
+                           value="@_geselecteerdeGemeente"
+                           @oninput="OnGemeenteInput"
+                           @onfocus="() => { _toonGemeenteSuggesties = true; UpdateGemeenteSuggesties(); }"
+                           @onblur="OnGemeenteBlur"
+                           placeholder="Typ een gemeente..."
+                           autocomplete="off" />
+                    @if (_toonGemeenteSuggesties && _gemeenteSuggesties.Count > 0)
+                    {
+                        <div class="dropdown-menu show" style="max-height: 200px; overflow-y: auto; width: 100%; position: absolute; z-index: 1000;">
+                            @foreach (var gemeente in _gemeenteSuggesties)
+                            {
+                                <button type="button" class="dropdown-item" @onmousedown="() => SelecteerGemeente(gemeente)">
+                                    @gemeente
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Gemeentebelasting (%)</label>
+                    <input type="number" class="form-control" step="0.01" min="0" max="15"
+                           @bind="AangifteStateService.State.GemeentebelastingPercentage"
+                           readonly="@(!string.IsNullOrEmpty(_geselecteerdeGemeente))"
+                           title="@(_geselecteerdeGemeente != null ? $"Automatisch geladen voor {_geselecteerdeGemeente}" : "Voer handmatig in of selecteer gemeente")" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="button" class="btn btn-primary btn-lg" @onclick="Bereken" disabled="@_isBerekenen">
+                    @if (_isBerekenen)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Berekening bezig...</span>
+                    }
+                    else
+                    {
+                        <span>🧮 Bereken belasting</span>
+                    }
+                </button>
+            </div>
+        </section>
+
+        @if (AangifteStateService.LaatsteResultaat is not null)
+        {
+            <section class="berekening-resultaat mt-4 p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-center mb-2 no-print">
+                    <h3 class="mb-0">📊 Berekeningsresultaat</h3>
+                    <button class="btn btn-outline-secondary btn-sm" @onclick="PrintResultaat">
+                        🖨️ Afdrukken / Opslaan als PDF
+                    </button>
+                </div>
+                <h3 class="d-none print-only">Belastingberekening AJ2026</h3>
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Omschrijving</th>
+                            <th class="text-end">Bedrag</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
+                        {
+                            <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
+                                <td>@regel.Omschrijving</td>
+                                <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
+                                    @regel.Bedrag.ToString("N2") €
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="alert @(AangifteStateService.LaatsteResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
+                    @if (AangifteStateService.LaatsteResultaat.Eindresultaat >= 0)
+                    {
+                        <strong>Te betalen: @AangifteStateService.LaatsteResultaat.Eindresultaat.ToString("N2") €</strong>
+                    }
+                    else
+                    {
+                        <strong>Terug te krijgen: @((-AangifteStateService.LaatsteResultaat.Eindresultaat).ToString("N2")) €</strong>
+                    }
+                </div>
+            </section>
+        }
+    </div>;
+
+    private async Task PrintResultaat()
+    {
+        await JS.InvokeVoidAsync("window.print");
     }
 
     private void UpdateGemeenteSuggesties()
     {
         if (!GemeenteService.IsInitialized)
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(_geselecteerdeGemeente))
         {
@@ -382,7 +661,6 @@ else
 
     private async Task OnGemeenteBlur()
     {
-        // Delay sluiten zodat de onclick event van de dropdown kan afvuren
         await Task.Delay(200);
         _toonGemeenteSuggesties = false;
     }
@@ -392,7 +670,6 @@ else
         _geselecteerdeGemeente = gemeente;
         _toonGemeenteSuggesties = false;
 
-        // Automatisch de aanslagvoet laden voor 2026
         var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
         if (aanslagvoet.HasValue)
         {
@@ -400,8 +677,26 @@ else
         }
     }
 
-    private void Bereken()
+    private async Task Bereken()
     {
-        AangifteStateService.Bereken();
+        if (_isBerekenen)
+        {
+            return;
+        }
+
+        _isBerekenen = true;
+        StateHasChanged();
+
+        try
+        {
+            await Task.Yield();
+            AangifteStateService.Bereken();
+        }
+        finally
+        {
+            _isBerekenen = false;
+        }
     }
+
+    private sealed record WorkflowStep(string Key, string Title, string Description);
 }

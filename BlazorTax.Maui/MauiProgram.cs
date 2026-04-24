@@ -1,4 +1,7 @@
-﻿using BlazorTax.Services;
+﻿using BlazorTax.Belastingen;
+using BlazorTax.Belastingen.Validatie;
+using BlazorTax.Services;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorTax.Maui;
@@ -18,6 +21,7 @@ public static class MauiProgram
 		builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddSingleton<IAssetReader, MauiAssetReader>();
 		builder.Services.AddSingleton<IGemeenteAanslagvoetService, GemeenteAanslagvoetService>();
+		builder.Services.AddScoped<IValidator<AangifteState>, AangifteStateValidator>();
 		builder.Services.AddScoped<AangifteStateService>();
 
 #if DEBUG

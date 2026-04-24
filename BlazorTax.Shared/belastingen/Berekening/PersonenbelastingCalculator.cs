@@ -299,7 +299,7 @@ public class BerekeningInput
     public VakXXIData VakXXI { get; init; } = new();
 
     public Gewest Gewest { get; init; } = Gewest.Vlaanderen;
-    public decimal GemeentebelastingPercentage { get; init; } = 7m;
+    public decimal GemeentebelastingPercentage { get; init; } = TaxConstants2026.DefaultGemeentebelastingPercentage;
     public TypeBeroep TypeBeroep { get; init; } = TypeBeroep.Werknemer;
 
     /// <summary>Netto beroepsinkomen partner (voor huwelijksquotiënt).</summary>

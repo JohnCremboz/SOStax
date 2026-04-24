@@ -255,6 +255,21 @@ code {
     line-height: 1.5;
 }
 
+.workflow-stepper .btn {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.workflow-vak {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1rem;
+}
+
+.workflow-vak:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
 /* ── VAK II Gezinslasten ── */
 .vak2-gezin-question {
     display: flex;
@@ -831,21 +846,20 @@ code {
 }
 
 @media print {
-    /* Verberg alles behalve het berekeningsresultaat */
-    body > * {
-        display: none !important;
+    /* Verberg visueel alles en toon enkel het resultaatblok */
+    body * {
+        visibility: hidden !important;
     }
 
-    app, #app {
-        display: block !important;
-    }
-
-    app > *, #app > * {
-        display: none !important;
+    .berekening-resultaat,
+    .berekening-resultaat * {
+        visibility: visible !important;
     }
 
     .berekening-resultaat {
-        display: block !important;
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 100%;
         border: none !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -859,19 +873,8 @@ code {
         display: block !important;
     }
 
-    /* Zorg dat tabelrijen niet gesplitst worden over pagina's */
     tr {
         page-break-inside: avoid;
-    }
-
-    /* Verberg navigatie, tabs, instellingen */
-    .vak-tabs,
-    .vak-panel,
-    .vak-nav-footer,
-    .berekening-settings,
-    nav,
-    header {
-        display: none !important;
     }
 }
 

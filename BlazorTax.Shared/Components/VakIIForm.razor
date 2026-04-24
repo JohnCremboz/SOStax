@@ -13,8 +13,8 @@
         <div class="vak2-row">
             <label class="vak2-check-label">
                 <input type="radio" name="burgerlijkestaat" class="vak2-radio"
-                       value="1001" checked="@(Data.BurgerlijkeStaat == "1001")"
-                       @onchange="@(() => { Data.BurgerlijkeStaat = "1001"; ResetGehuwd(); ResetWeduwnaar(); })" />
+                       value="@BurgerlijkeStaatCodes.Ongehuwd" checked="@(Data.BurgerlijkeStaat == BurgerlijkeStaatCodes.Ongehuwd)"
+                       @onchange="@(() => { Data.BurgerlijkeStaat = BurgerlijkeStaatCodes.Ongehuwd; ResetGehuwd(); ResetWeduwnaar(); })" />
                 <span class="vak2-code">1001-66</span>
                 <span>ongehuwd en niet wettelijk samenwonend</span>
             </label>
@@ -27,12 +27,12 @@
         <div class="vak2-row">
             <label class="vak2-check-label">
                 <input type="radio" name="burgerlijkestaat" class="vak2-radio"
-                       value="1002" checked="@(Data.BurgerlijkeStaat == "1002")"
-                       @onchange="@(() => { Data.BurgerlijkeStaat = "1002"; ResetWeduwnaar(); })" />
+                       value="@BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend" checked="@(Data.BurgerlijkeStaat == BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend)"
+                       @onchange="@(() => { Data.BurgerlijkeStaat = BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend; ResetWeduwnaar(); })" />
                 <span class="vak2-code">1002-65</span>
                 <span>gehuwd of wettelijk samenwonend &hellip;</span>
             </label>
-            @if (Data.BurgerlijkeStaat == "1002")
+            @if (Data.BurgerlijkeStaat == BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend)
             {
                 <div class="vak2-subgroup">
                     <div class="vak2-subgroup-hint">
@@ -77,17 +77,20 @@
         <div class="vak2-row">
             <label class="vak2-check-label">
                 <input type="radio" name="burgerlijkestaat" class="vak2-radio"
-                       value="1010" checked="@(Data.BurgerlijkeStaat == "1010")"
-                       @onchange="@(() => { Data.BurgerlijkeStaat = "1010"; ResetGehuwd(); })" />
+                       value="@BurgerlijkeStaatCodes.WeduwnaarOfWeduwe" checked="@(Data.BurgerlijkeStaat == BurgerlijkeStaatCodes.WeduwnaarOfWeduwe)"
+                       @onchange="@(() => { Data.BurgerlijkeStaat = BurgerlijkeStaatCodes.WeduwnaarOfWeduwe; ResetGehuwd(); })" />
                 <span class="vak2-code">1010-57</span>
                 <span>weduwnaar, weduwe of daarmee gelijkgesteld (door het overlijden van uw wettelijk samenwonende partner)</span>
             </label>
-            @if (Data.BurgerlijkeStaat == "1010")
+            @if (Data.BurgerlijkeStaat == BurgerlijkeStaatCodes.WeduwnaarOfWeduwe)
             {
                 <div class="vak2-subgroup">
                     <div class="vak2-row vak2-indent1">
                         <label class="vak2-check-label">
-                            <InputCheckbox @bind-Value="Data.Code1011" class="vak2-check" />
+                            <InputCheckbox Value="Data.Code1011"
+                                           ValueChanged="OnCode1011Changed"
+                                           ValueExpression="@(() => Data.Code1011)"
+                                           class="vak2-check" />
                             <span class="vak2-code">1011-56</span>
                             <span>Uw echtgenoot of wettelijk samenwonende partner is overleden in 2025. Voor u en hem of haar:</span>
                         </label>
@@ -97,8 +100,8 @@
                                 <div class="vak2-row vak2-indent2">
                                     <label class="vak2-check-label">
                                         <input type="radio" name="aanslag1011" class="vak2-radio"
-                                               value="1012" checked="@(Data.GemeenschappelijkAanslag == "1012")"
-                                               @onchange="@(() => Data.GemeenschappelijkAanslag = "1012")" />
+                                               value="@GemeenschappelijkAanslagCodes.EenGemeenschappelijkeAanslag" checked="@(Data.GemeenschappelijkAanslag == GemeenschappelijkAanslagCodes.EenGemeenschappelijkeAanslag)"
+                                               @onchange="@(() => Data.GemeenschappelijkAanslag = GemeenschappelijkAanslagCodes.EenGemeenschappelijkeAanslag)" />
                                         <span class="vak2-code">1012-55</span>
                                         <span>kiest u voor één gemeenschappelijke aanslag</span>
                                     </label>
@@ -106,8 +109,8 @@
                                 <div class="vak2-row vak2-indent2">
                                     <label class="vak2-check-label">
                                         <input type="radio" name="aanslag1011" class="vak2-radio"
-                                               value="1013" checked="@(Data.GemeenschappelijkAanslag == "1013")"
-                                               @onchange="@(() => Data.GemeenschappelijkAanslag = "1013")" />
+                                               value="@GemeenschappelijkAanslagCodes.TweeAfzonderlijkeAanslagen" checked="@(Data.GemeenschappelijkAanslag == GemeenschappelijkAanslagCodes.TweeAfzonderlijkeAanslagen)"
+                                               @onchange="@(() => Data.GemeenschappelijkAanslag = GemeenschappelijkAanslagCodes.TweeAfzonderlijkeAanslagen)" />
                                         <span class="vak2-code">1013-54</span>
                                         <span>kiest u voor twee afzonderlijke aanslagen</span>
                                     </label>
@@ -124,7 +127,10 @@
         <div class="vak2-q-label">2.&nbsp; Deze aangifte gaat over:</div>
         <div class="vak2-row">
             <label class="vak2-check-label">
-                <InputCheckbox @bind-Value="Data.Code1022" class="vak2-check" />
+                <InputCheckbox Value="Data.Code1022"
+                               ValueChanged="OnCode1022Changed"
+                               ValueExpression="@(() => Data.Code1022)"
+                               class="vak2-check" />
                 <span class="vak2-code">1022-45</span>
                 <span>een belastingplichtige die <strong>in 2025 overleden</strong> is</span>
             </label>
@@ -151,8 +157,8 @@
                 <div class="vak2-row vak2-indent2">
                     <label class="vak2-check-label">
                         <input type="radio" name="aanslagOverledene" class="vak2-radio"
-                               value="1025" checked="@(Data.GemeenschappelijkAanslagOverledene == "1025")"
-                               @onchange="@(() => Data.GemeenschappelijkAanslagOverledene = "1025")" />
+                               value="@GemeenschappelijkAanslagOverledeneCodes.EenGemeenschappelijkeAanslag" checked="@(Data.GemeenschappelijkAanslagOverledene == GemeenschappelijkAanslagOverledeneCodes.EenGemeenschappelijkeAanslag)"
+                               @onchange="@(() => Data.GemeenschappelijkAanslagOverledene = GemeenschappelijkAanslagOverledeneCodes.EenGemeenschappelijkeAanslag)" />
                         <span class="vak2-code">1025-42</span>
                         <span>kiest u voor één gemeenschappelijke aanslag</span>
                     </label>
@@ -160,8 +166,8 @@
                 <div class="vak2-row vak2-indent2">
                     <label class="vak2-check-label">
                         <input type="radio" name="aanslagOverledene" class="vak2-radio"
-                               value="1026" checked="@(Data.GemeenschappelijkAanslagOverledene == "1026")"
-                               @onchange="@(() => Data.GemeenschappelijkAanslagOverledene = "1026")" />
+                               value="@GemeenschappelijkAanslagOverledeneCodes.TweeAfzonderlijkeAanslagen" checked="@(Data.GemeenschappelijkAanslagOverledene == GemeenschappelijkAanslagOverledeneCodes.TweeAfzonderlijkeAanslagen)"
+                               @onchange="@(() => Data.GemeenschappelijkAanslagOverledene = GemeenschappelijkAanslagOverledeneCodes.TweeAfzonderlijkeAanslagen)" />
                         <span class="vak2-code">1026-41</span>
                         <span>kiest u voor twee afzonderlijke aanslagen</span>
                     </label>
@@ -384,5 +390,25 @@
     {
         Data.Code1011 = false;
         Data.GemeenschappelijkAanslag = string.Empty;
+    }
+
+    private void OnCode1011Changed(bool isChecked)
+    {
+        Data.Code1011 = isChecked;
+        if (!isChecked)
+        {
+            Data.GemeenschappelijkAanslag = string.Empty;
+        }
+    }
+
+    private void OnCode1022Changed(bool isChecked)
+    {
+        Data.Code1022 = isChecked;
+        if (!isChecked)
+        {
+            Data.Code1023 = false;
+            Data.Code1024 = false;
+            Data.GemeenschappelijkAanslagOverledene = string.Empty;
+        }
     }
 }

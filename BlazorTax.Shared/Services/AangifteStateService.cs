@@ -2,16 +2,38 @@ namespace BlazorTax.Services;
 
 using BlazorTax.Belastingen;
 using BlazorTax.Belastingen.Berekening;
+using FluentValidation;
 
 public class AangifteStateService
 {
-    public AangifteState State { get; } = new();
+    private readonly IValidator<AangifteState> _validator;
+    private readonly GezamenlijkeBerekeningCalculator _calculator = new();
+
+    public AangifteStateService(IValidator<AangifteState> validator)
+    {
+        _validator = validator;
+    }
+
+    public AangifteState State { get; private set; } = new();
 
     public GezamenlijkResultaat? LaatsteResultaat { get; private set; }
+    public IReadOnlyList<string> ValidatieFouten { get; private set; } = [];
 
-    public void Bereken()
+    public bool Bereken()
     {
-        var calculator = new GezamenlijkeBerekeningCalculator();
+        var validationResult = _validator.Validate(State);
+        if (!validationResult.IsValid)
+        {
+            ValidatieFouten = validationResult.Errors
+                .Select(error => error.ErrorMessage)
+                .Distinct()
+                .ToArray();
+            LaatsteResultaat = null;
+            return false;
+        }
+
+        ValidatieFouten = [];
+
         var input = new BerekeningInput
         {
             VakII = State.VakII,
@@ -35,6 +57,14 @@ public class AangifteStateService
             NettoInkomenPartner = State.NettoInkomenPartner,
         };
 
-        LaatsteResultaat = calculator.Bereken(input);
+        LaatsteResultaat = _calculator.Bereken(input);
+        return true;
+    }
+
+    public void NieuweAangifte()
+    {
+        State = new AangifteState();
+        LaatsteResultaat = null;
+        ValidatieFouten = [];
     }
 }

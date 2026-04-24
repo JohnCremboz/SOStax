@@ -4,7 +4,7 @@
 public class VakIIData
 {
     // ── Vraag 1: Burgerlijke staat op 1.1.2026 ──────────────────────────────
-    /// "1001" | "1002" | "1010" | ""
+    /// <see cref="BurgerlijkeStaatCodes.Ongehuwd"/> | <see cref="BurgerlijkeStaatCodes.GehuwdOfWettelijkSamenwonend"/> | <see cref="BurgerlijkeStaatCodes.WeduwnaarOfWeduwe"/> | ""
     public string BurgerlijkeStaat { get; set; } = string.Empty;
 
     // Sub-velden bij 1002-65 (gehuwd / wettelijk samenwonend)
@@ -15,14 +15,14 @@ public class VakIIData
 
     // Sub-velden bij 1010-57 (weduwnaar/weduwe)
     public bool Code1011 { get; set; }   // partner overleden in 2025
-    /// "1012" | "1013" | ""
+    /// <see cref="GemeenschappelijkAanslagCodes.EenGemeenschappelijkeAanslag"/> | <see cref="GemeenschappelijkAanslagCodes.TweeAfzonderlijkeAanslagen"/> | ""
     public string GemeenschappelijkAanslag { get; set; } = string.Empty;
 
     // ── Vraag 2: Aangifte voor overledene ────────────────────────────────────
     public bool Code1022 { get; set; }
     public bool Code1023 { get; set; }
     public bool Code1024 { get; set; }
-    /// "1025" | "1026" | ""
+    /// <see cref="GemeenschappelijkAanslagOverledeneCodes.EenGemeenschappelijkeAanslag"/> | <see cref="GemeenschappelijkAanslagOverledeneCodes.TweeAfzonderlijkeAanslagen"/> | ""
     public string GemeenschappelijkAanslagOverledene { get; set; } = string.Empty;
 
     // ── Vraag 3: Internationale organisaties ─────────────────────────────────
@@ -68,4 +68,3 @@ public class VakIIData
     public int? Code1032 { get; set; }   // a) aantal
     public int? Code1033 { get; set; }   // b) met zware handicap
 }
-

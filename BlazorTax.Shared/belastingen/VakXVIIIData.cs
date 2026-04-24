@@ -70,12 +70,12 @@ public class VakXVIIIData
     public string Code2676 { get; set; } = string.Empty;
 
     // ── Feitelijke vereniging ───────────────────────────────────────────────
-    public bool Code1670 { get; set; }   // ja
+    public decimal? Code1670 { get; set; }
     public bool Code1671 { get; set; }   // neen
     public decimal? Code2670 { get; set; }
     public bool Code2671 { get; set; }
-    public bool Code1679 { get; set; }   // buitenlandse oorsprong ja
-    public bool Code1680 { get; set; }   // buitenlandse oorsprong neen
+    public decimal? Code1679 { get; set; }
+    public decimal? Code1680 { get; set; }
     public decimal? Code2679 { get; set; }
     public decimal? Code2680 { get; set; }
 

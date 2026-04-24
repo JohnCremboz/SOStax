@@ -6,6 +6,8 @@ namespace BlazorTax.Belastingen.Berekening;
 /// </summary>
 public static class TaxConstants2026
 {
+    public const decimal DefaultGemeentebelastingPercentage = 7m;
+
     // ── Belastingschijven (art. 130 WIB92) ──────────────────────────────────
     public static readonly (decimal Grens, decimal Vast, decimal Percentage)[] Schijven =
     [
