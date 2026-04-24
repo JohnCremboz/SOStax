@@ -4,7 +4,11 @@
       "Bash(git checkout *)",
       "Bash(git rm *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(dotnet build *)",
+      "WebFetch(domain:fiscosearch.be)",
+      "WebFetch(domain:fin.belgium.be)",
+      "Bash(xargs cat *)"
     ]
   }
 }

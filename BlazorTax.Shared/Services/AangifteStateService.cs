@@ -54,6 +54,7 @@ public class AangifteStateService
             Gewest = State.Gewest,
             GemeentebelastingPercentage = State.GemeentebelastingPercentage,
             TypeBeroep = State.TypeBeroep,
+            TypeBeroepPartner = State.TypeBeroepPartner,
             NettoInkomenPartner = State.NettoInkomenPartner,
         };
 

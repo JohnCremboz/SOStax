@@ -64,9 +64,9 @@ public static class TaxConstants2026
     public const decimal VerhogingJaarHuwelijk = 1_980m;
     public const decimal MaxBestaansmiddelenPartnerHuwelijk = 4_100m;
 
-    // Belastingkrediet kinderen ten laste (bevroren sinds AJ2026)
+    // Belastingkrediet kinderen ten laste (bevroren AJ2025–AJ2026)
     public const decimal MaxBelastingkredietKinderen = 550m;
-    public const decimal MaxBelastingkredietCoOuderschap = 275m;
+    public const decimal MaxBelastingkredietCoOuderschap = 270m;
 
     // ── Forfaitaire beroepskosten ───────────────────────────────────────────
     // Werknemers en winstenbehalers

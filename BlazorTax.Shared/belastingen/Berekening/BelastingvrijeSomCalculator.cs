@@ -37,6 +37,11 @@ public static class BelastingvrijeSomCalculator
         if (isAlleenstaand && (kinderen > 0 || kinderenCoOuder > 0))
             som += TaxConstants2026.VerhogingAlleenstaandeMetKinderen;
 
+        // In het jaar van huwelijk / wettelijke samenwoning kan code 1004
+        // een bijkomende verhoging opleveren als de partner weinig bestaansmiddelen heeft.
+        if (gezinsData.BurgerlijkeStaat == "1002" && gezinsData.Code1003 && gezinsData.Code1004)
+            som += TaxConstants2026.VerhogingJaarHuwelijk;
+
         return Math.Max(som, 0);
     }
 
@@ -102,6 +107,19 @@ public static class BelastingvrijeSomCalculator
         som -= BerekenVerhogingKinderen(effectiefGedeeld) / 2m;
 
         return som;
+    }
+
+    /// <summary>
+    /// Maximaal terugbetaalbaar belastingkrediet voor kinderen ten laste (art. 134 WIB92).
+    /// €550 per effectief kind volledig t.l., €270 per effectief kind co-ouderschap.
+    /// Gehandicapte kinderen tellen dubbel (= 2 effectieve eenheden).
+    /// </summary>
+    public static decimal BerekenMaxKindKrediet(VakIIData gezinsData)
+    {
+        int effectiefVolledig = (gezinsData.Code1030 ?? 0) + (gezinsData.Code1031 ?? 0);
+        int effectiefCoOuder  = (gezinsData.Code1036 ?? 0) + (gezinsData.Code1037 ?? 0);
+        return effectiefVolledig * TaxConstants2026.MaxBelastingkredietKinderen
+             + effectiefCoOuder  * TaxConstants2026.MaxBelastingkredietCoOuderschap;
     }
 
     /// <summary>Berekent de verhoging van de belastingvrije som voor N kinderen.</summary>

@@ -110,6 +110,9 @@ public class PartnerInkomen
     public decimal Deel2Bedrijfsvoorheffing { get; init; }
     public decimal Deel2RoerendeVoorheffing { get; init; }
 
+    // ── Voorafbetalingen (Vak XII) ───────────────────────────────────────
+    public decimal Voorafbetalingen { get; init; }
+
     // ── Gewestelijke verminderingen (Vak IX) ─────────────────────────────
     // Geïntegreerde woonbonus (2016–2019)
     public decimal GeintWoonbonusInteresten { get; init; }
@@ -138,13 +141,14 @@ public class PartnerInkomen
         VakXVData? vakXV = null, VakXVIData? vakXVI = null,
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
-        VakXXIData? vakXXI = null, VakIXData? vakIX = null)
+        VakXXIData? vakXXI = null, VakIXData? vakIX = null,
+        VakXIIData? vakXII = null)
     {
         return new PartnerInkomen
         {
             Label = "Belastingplichtige",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = vakIV.Code1250 + (vakIV.Code1247 ?? 0),
+            BrutoLoon = vakIV.Total1250 + (vakIV.Code1247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
                                                + (vakIV.Code1308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code1254 ?? 0,
@@ -169,7 +173,7 @@ public class PartnerInkomen
 
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code1258 ?? 0,
-            Bedrijfsvoorheffing = vakIV.Code1286 + vakV.Code1225,
+            Bedrijfsvoorheffing = vakIV.Total1286 + vakV.Code1225,
             BijzondereBijdrageSZ = vakIV.Code1287 ?? 0,
             WerkbonusCode284 = vakIV.Code1284 ?? 0,
             WerkbonusCode360 = vakIV.Code1360 ?? 0,
@@ -235,6 +239,9 @@ public class PartnerInkomen
             Deel2Bedrijfsvoorheffing = vakXIX?.Code1758 ?? 0,
             Deel2RoerendeVoorheffing = vakXIX?.Code1756 ?? 0,
 
+            // ── Voorafbetalingen (Vak XII) ───────────────────────────
+            Voorafbetalingen = vakXII?.Code1570 ?? 0,
+
             // ── Gewestelijke verminderingen (Vak IX) ─────────────────
             GeintWoonbonusInteresten = (vakIX?.Code3138 ?? 0),
             GeintWoonbonusKapitaal = (vakIX?.Code3355 ?? 0) + (vakIX?.Code3356 ?? 0),
@@ -258,13 +265,14 @@ public class PartnerInkomen
         VakXVData? vakXV = null, VakXVIData? vakXVI = null,
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
-        VakXXIData? vakXXI = null, VakIXData? vakIX = null)
+        VakXXIData? vakXXI = null, VakIXData? vakIX = null,
+        VakXIIData? vakXII = null)
     {
         return new PartnerInkomen
         {
             Label = "Partner",
             // ── Deel 1: Beroep ──────────────────────────────────────
-            BrutoLoon = vakIV.Code2250 + (vakIV.Code2247 ?? 0),
+            BrutoLoon = vakIV.Total2250 + (vakIV.Code2247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
                                                + (vakIV.Code2308 ?? 0),
             WoonWerkVerkeerTotaal = vakIV.Code2254 ?? 0,
@@ -289,7 +297,7 @@ public class PartnerInkomen
 
             // Kosten & voorheffingen
             WerkelijkeKosten = vakIV.Code2258 ?? 0,
-            Bedrijfsvoorheffing = vakIV.Code2286 + vakV.Code2225,
+            Bedrijfsvoorheffing = vakIV.Total2286 + vakV.Code2225,
             BijzondereBijdrageSZ = vakIV.Code2287 ?? 0,
             WerkbonusCode284 = vakIV.Code2284 ?? 0,
             WerkbonusCode360 = vakIV.Code2360 ?? 0,
@@ -352,6 +360,9 @@ public class PartnerInkomen
             // ── Deel 2: Voorheffingen zelfstandigen (Vak XIX) ───────
             Deel2Bedrijfsvoorheffing = vakXIX?.Code2758 ?? 0,
             Deel2RoerendeVoorheffing = vakXIX?.Code2756 ?? 0,
+
+            // ── Voorafbetalingen (Vak XII) ───────────────────────────
+            Voorafbetalingen = vakXII?.Code2570 ?? 0,
 
             // ── Gewestelijke verminderingen (Vak IX) ─────────────────
             GeintWoonbonusInteresten = (vakIX?.Code4138 ?? 0),

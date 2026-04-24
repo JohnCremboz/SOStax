@@ -61,7 +61,9 @@ public class PersonenbelastingCalculator
         r.DetailRegels.Add(new("Netto belastbaar inkomen", r.NettoBelastbaarInkomen, true));
 
         // ── 4. Huwelijksquotiënt ────────────────────────────────────────────
-        bool isGehuwd = input.VakII.BurgerlijkeStaat == "1002";
+        bool isGehuwd = input.VakII.BurgerlijkeStaat == "1002"
+                     && !input.VakII.Code1003
+                     && !input.VakII.Code1018;
         r.HuwelijksquotientOvergedragen = HuwelijksquotientCalculator.Bereken(
             r.NettoBelastbaarInkomen, input.NettoInkomenPartner, isGehuwd);
 
@@ -301,6 +303,7 @@ public class BerekeningInput
     public Gewest Gewest { get; init; } = Gewest.Vlaanderen;
     public decimal GemeentebelastingPercentage { get; init; } = TaxConstants2026.DefaultGemeentebelastingPercentage;
     public TypeBeroep TypeBeroep { get; init; } = TypeBeroep.Werknemer;
+    public TypeBeroep TypeBeroepPartner { get; init; } = TypeBeroep.Werknemer;
 
     /// <summary>Netto beroepsinkomen partner (voor huwelijksquotiënt).</summary>
     public decimal NettoInkomenPartner { get; init; }

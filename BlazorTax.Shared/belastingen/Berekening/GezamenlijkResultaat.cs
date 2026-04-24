@@ -79,6 +79,7 @@ public class PartnerResultaat
     // Voorheffingen & kredieten
     public decimal Bedrijfsvoorheffing { get; set; }
     public decimal BelastingkredietWerkbonus { get; set; }
+    public decimal BelastingkredietKinderen { get; set; }
     public decimal SaldoFederaalNaBVEnKredieten { get; set; }
     public decimal SaldoGewestelijk { get; set; }
 

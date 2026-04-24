@@ -13,25 +13,25 @@ public class GezamenlijkeBerekeningCalculator
     /// </summary>
     public GezamenlijkResultaat Bereken(BerekeningInput input)
     {
-        bool isGehuwd = input.VakII.BurgerlijkeStaat == "1002"
+        bool isGehuwd = (input.VakII.BurgerlijkeStaat == "1002" && !input.VakII.Code1003 && !input.VakII.Code1018)
                      || input.VakII.BurgerlijkeStaat == "1010";
 
         // ── 1. Inkomen extraheren per partner ───────────────────────────
         var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(
             input.VakIV, input.VakV, input.VakX,
             input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX);
+            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII);
         var inkomen2 = isGehuwd
             ? PartnerInkomen.ExtractPartner(
                 input.VakIV, input.VakV, input.VakX,
                 input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX)
+                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII)
             : new PartnerInkomen { Label = "Partner" };
 
         // ── 2. Fase 1: bruto → netto per partner ───────────────────────
         var r1 = PartnerBelastingCalculator.Bereken(inkomen1, 0, input.TypeBeroep, input.Gewest);
         var r2 = isGehuwd && inkomen2.HeeftInkomen
-            ? PartnerBelastingCalculator.Bereken(inkomen2, 0, input.TypeBeroep, input.Gewest)
+            ? PartnerBelastingCalculator.Bereken(inkomen2, 0, input.TypeBeroepPartner, input.Gewest)
             : new PartnerResultaat { Label = "Partner" };
 
         // ── 3. Huwelijksquotiënt ────────────────────────────────────────
@@ -93,6 +93,25 @@ public class GezamenlijkeBerekeningCalculator
         if (isGehuwd && inkomen2.HeeftInkomen)
             PartnerBelastingCalculator.BerekenBelasting(r2, inkomen2, vrijeSom2, input.Gewest);
 
+        // ── 5c. Belastingkrediet kinderen (art. 134 WIB92, terugbetaalbaar) ─
+        // Ongebruikte BVS-vermindering voor kinderen → terugbetaalbaar krediet
+        decimal maxKindKrediet = BelastingvrijeSomCalculator.BerekenMaxKindKrediet(input.VakII);
+        if (maxKindKrediet > 0)
+        {
+            decimal bvsKinderen1 = kinderenBijPartner1
+                ? BelastingvrijeSomCalculator.BerekenKinderlasten(input.VakII) : 0;
+            r1.BelastingkredietKinderen = BerekenKindKrediet(
+                r1.Basisbelasting, r1.VerminderingBelastingvrijeSom, vrijeSom1, bvsKinderen1, maxKindKrediet);
+
+            if (isGehuwd && inkomen2.HeeftInkomen)
+            {
+                decimal bvsKinderen2 = !kinderenBijPartner1
+                    ? BelastingvrijeSomCalculator.BerekenKinderlasten(input.VakII) : 0;
+                r2.BelastingkredietKinderen = BerekenKindKrediet(
+                    r2.Basisbelasting, r2.VerminderingBelastingvrijeSom, vrijeSom2, bvsKinderen2, maxKindKrediet);
+            }
+        }
+
         // ── 6. Gecombineerde resultaten ─────────────────────────────────
         var resultaat = new GezamenlijkResultaat
         {
@@ -130,6 +149,8 @@ public class GezamenlijkeBerekeningCalculator
         decimal totaalBV = r1.Bedrijfsvoorheffing + r2.Bedrijfsvoorheffing;
         decimal totaalRV = inkomen1.Deel2RoerendeVoorheffing + inkomen2.Deel2RoerendeVoorheffing;
         decimal totaalWerkbonus = r1.BelastingkredietWerkbonus + r2.BelastingkredietWerkbonus;
+        decimal totaalVoorafbetalingen = inkomen1.Voorafbetalingen + inkomen2.Voorafbetalingen;
+        decimal totaalKindKrediet = r1.BelastingkredietKinderen + r2.BelastingkredietKinderen;
 
         // Totale belasting (inclusief afzonderlijk belastbaar en vermeerdering)
         decimal totaalAfzonderlijk = r1.BelastingAfzonderlijk + r2.BelastingAfzonderlijk;
@@ -142,13 +163,14 @@ public class GezamenlijkeBerekeningCalculator
                                 + totaalVermeerdering;
 
         // Aftrekken
-        decimal totaalAftrek = totaalBV + totaalRV + totaalWerkbonus;
+        decimal totaalAftrek = totaalBV + totaalRV + totaalWerkbonus + totaalVoorafbetalingen + totaalKindKrediet;
 
         resultaat.Eindresultaat = totaleBelasting - totaalAftrek;
 
         // ── 7. Detailregels opbouwen ────────────────────────────────────
         BouwDetailRegels(resultaat, r1, r2, inkomen1, inkomen2, input, hqBedrag,
-            kinderenBijPartner1, vrijeSom1, vrijeSom2, totaalBV, totaalRV, totaalWerkbonus);
+            kinderenBijPartner1, vrijeSom1, vrijeSom2, totaalBV, totaalRV, totaalWerkbonus,
+            totaalVoorafbetalingen, totaalKindKrediet);
 
         return resultaat;
     }
@@ -178,6 +200,17 @@ public class GezamenlijkeBerekeningCalculator
         return 731.38m; // afgebouwd maximum
     }
 
+    private static decimal BerekenKindKrediet(
+        decimal basisbelasting, decimal verminderingBVS,
+        decimal vrijeSomTotaal, decimal vrijeSomKinderen, decimal maxKrediet)
+    {
+        if (vrijeSomKinderen <= 0 || maxKrediet <= 0) return 0;
+        decimal verminderingKinderen = BelastingschijvenCalculator.BerekenVerminderingVrijeSom(vrijeSomTotaal)
+                                     - BelastingschijvenCalculator.BerekenVerminderingVrijeSom(vrijeSomTotaal - vrijeSomKinderen);
+        decimal ongebruikt = Math.Max(verminderingBVS - basisbelasting, 0);
+        return Math.Round(Math.Min(Math.Min(ongebruikt, verminderingKinderen), maxKrediet), 2);
+    }
+
     private static void BouwDetailRegels(
         GezamenlijkResultaat resultaat,
         PartnerResultaat r1, PartnerResultaat r2,
@@ -186,7 +219,8 @@ public class GezamenlijkeBerekeningCalculator
         decimal hqBedrag,
         bool kinderenBijPartner1,
         decimal vrijeSom1, decimal vrijeSom2,
-        decimal totaalBV, decimal totaalRV, decimal totaalWerkbonus)
+        decimal totaalBV, decimal totaalRV, decimal totaalWerkbonus,
+        decimal totaalVoorafbetalingen, decimal totaalKindKrediet)
     {
         var regels = resultaat.DetailRegels;
 
@@ -300,6 +334,10 @@ public class GezamenlijkeBerekeningCalculator
             regels.Add(new("Roerende voorheffing", -totaalRV));
         if (totaalWerkbonus > 0)
             regels.Add(new("Belastingkrediet werkbonus", -totaalWerkbonus));
+        if (totaalVoorafbetalingen > 0)
+            regels.Add(new("Voorafbetalingen", -totaalVoorafbetalingen));
+        if (totaalKindKrediet > 0)
+            regels.Add(new("Belastingkrediet kinderen", -totaalKindKrediet));
 
         regels.Add(new(
             resultaat.Eindresultaat >= 0 ? "Te betalen" : "Terug te krijgen",

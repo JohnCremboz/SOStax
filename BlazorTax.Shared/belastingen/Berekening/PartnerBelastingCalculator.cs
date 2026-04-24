@@ -187,9 +187,9 @@ public static class PartnerBelastingCalculator
         // ── 4. Afzonderlijk belastbaar (flat rates) ─────────────────
         r.Afzonderlijk10Pct = inkomen.Afzonderlijk10Pct;
         r.Afzonderlijk12_5Pct = inkomen.Afzonderlijk12_5Pct;
-        r.Afzonderlijk16_5Pct = inkomen.Afzonderlijk16_5Pct
-                               + inkomen.DiverseInkomsten16_5Pct;
-        r.Afzonderlijk33Pct = inkomen.Afzonderlijk33Pct
+        r.Afzonderlijk16_5Pct += inkomen.Afzonderlijk16_5Pct
+                              + inkomen.DiverseInkomsten16_5Pct;
+        r.Afzonderlijk33Pct += inkomen.Afzonderlijk33Pct
                              + inkomen.DiverseInkomsten33Pct;
 
         r.BelastingAfzonderlijk =
@@ -314,7 +314,7 @@ public static class PartnerBelastingCalculator
         {
             decimal belastingBasis = r.SaldoFederaal + r.SaldoGewestelijk;
             decimal basis106 = belastingBasis * TaxConstants2026.VermeerderingMultiplier;
-            decimal vaCredit = Math.Min(inkomen.Deel2Bedrijfsvoorheffing, basis106);
+            decimal vaCredit = Math.Min(inkomen.Deel2Bedrijfsvoorheffing + inkomen.Voorafbetalingen, basis106);
             decimal vermBruto = Math.Max(basis106 - vaCredit, 0) * TaxConstants2026.VermeerderingPercentage;
             decimal verm = Math.Round(vermBruto * TaxConstants2026.VermeerderingReductie, 2);
 

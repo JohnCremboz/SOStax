@@ -34,5 +34,6 @@ public class AangifteState
     public Gewest Gewest { get; set; } = Gewest.Vlaanderen;
     public decimal GemeentebelastingPercentage { get; set; } = TaxConstants2026.DefaultGemeentebelastingPercentage;
     public TypeBeroep TypeBeroep { get; set; } = TypeBeroep.Werknemer;
+    public TypeBeroep TypeBeroepPartner { get; set; } = TypeBeroep.Werknemer;
     public decimal NettoInkomenPartner { get; set; }
 }
