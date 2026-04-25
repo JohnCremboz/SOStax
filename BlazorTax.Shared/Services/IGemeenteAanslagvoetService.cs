@@ -1,3 +1,5 @@
+using BlazorTax.Belastingen.Berekening;
+
 namespace BlazorTax.Services;
 
 /// <summary>
@@ -28,4 +30,9 @@ public interface IGemeenteAanslagvoetService
     /// Geeft aan of de service is geïnitialiseerd.
     /// </summary>
     bool IsInitialized { get; }
+
+    /// <summary>
+    /// Geeft het gewest terug op basis van de gemeentenaam.
+    /// </summary>
+    Gewest? GetGewest(string gemeenteNaam);
 }

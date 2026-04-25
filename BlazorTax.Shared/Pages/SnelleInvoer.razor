@@ -1,5 +1,9 @@
 @page "/snelle-invoer"
+@using BlazorTax.Belastingen.Berekening
 @inject AangifteStateService AangifteStateService
+@inject IGemeenteAanslagvoetService GemeenteService
+@inject IAssetReader AssetReader
+@inject IJSRuntime JS
 
 <PageTitle>SOStax – Snelle Invoer</PageTitle>
 
@@ -10,3 +14,192 @@
     <h2 class="mb-3">⚡ Snelle Invoer</h2>
     <SnelleInvoerForm State="AangifteStateService.State" />
 </section>
+
+<section class="berekening-settings mt-4 p-3 border rounded">
+    <h3>⚙️ Berekeningsinstellingen</h3>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Gewest</label>
+            <select class="form-select" @bind="AangifteStateService.State.Gewest">
+                <option value="@Gewest.Vlaanderen">Vlaanderen</option>
+                <option value="@Gewest.Wallonie">Wallonië</option>
+                <option value="@Gewest.Brussel">Brussel</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Gemeente</label>
+            <input type="text" class="form-control"
+                   value="@_geselecteerdeGemeente"
+                   @oninput="OnGemeenteInput"
+                   @onfocus="() => { _toonGemeenteSuggesties = true; UpdateGemeenteSuggesties(); }"
+                   @onblur="OnGemeenteBlur"
+                   placeholder="Typ een gemeente..."
+                   autocomplete="off" />
+            @if (_toonGemeenteSuggesties && _gemeenteSuggesties.Count > 0)
+            {
+                <div class="dropdown-menu show" style="max-height: 200px; overflow-y: auto; width: 100%; position: absolute; z-index: 1000;">
+                    @foreach (var gemeente in _gemeenteSuggesties)
+                    {
+                        <button type="button" class="dropdown-item" @onmousedown="() => SelecteerGemeente(gemeente)">
+                            @gemeente
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Gemeentebelasting (%)</label>
+            <input type="number" class="form-control" step="0.01" min="0" max="15"
+                   @bind="AangifteStateService.State.GemeentebelastingPercentage"
+                   readonly="@(!string.IsNullOrEmpty(_geselecteerdeGemeente))"
+                   title="@(_geselecteerdeGemeente != null ? $"Automatisch geladen voor {_geselecteerdeGemeente}" : "Voer handmatig in of selecteer gemeente")" />
+        </div>
+    </div>
+    <div class="mt-3">
+        <button type="button" class="btn btn-primary btn-lg" @onclick="Bereken" disabled="@_isBerekenen">
+            @if (_isBerekenen)
+            {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span>Berekening bezig...</span>
+            }
+            else
+            {
+                <span>🧮 Bereken belasting</span>
+            }
+        </button>
+    </div>
+</section>
+
+@if (AangifteStateService.LaatsteResultaat is not null)
+{
+    <section class="berekening-resultaat mt-4 p-3 border rounded">
+        <div class="d-flex justify-content-between align-items-center mb-2 no-print">
+            <h3 class="mb-0">📊 Berekeningsresultaat</h3>
+            <button class="btn btn-outline-secondary btn-sm" @onclick="PrintResultaat">
+                🖨️ Afdrukken / Opslaan als PDF
+            </button>
+        </div>
+        <div class="d-none print-only print-header">
+            <h3>Belastingberekening AJ 2026</h3>
+            <div class="print-meta">
+                <span>Afgedrukt: @DateTime.Now.ToString("dd/MM/yyyy")</span>
+                <span>Gewest: @(AangifteStateService.State.Gewest switch { Gewest.Wallonie => "Wallonië", Gewest.Brussel => "Brussel", _ => "Vlaanderen" })</span>
+                @if (!string.IsNullOrEmpty(_geselecteerdeGemeente))
+                {
+                    <span>Gemeente: @_geselecteerdeGemeente (@AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %)</span>
+                }
+                else
+                {
+                    <span>Gemeentebelasting: @AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %</span>
+                }
+                <span>@(AangifteStateService.LaatsteResultaat.IsGezamenlijk ? "Gemeenschappelijke aanslag" : "Aanslag alleenstaande")</span>
+            </div>
+        </div>
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Omschrijving</th>
+                    <th class="text-end">Bedrag</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
+                {
+                    <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
+                        <td>@regel.Omschrijving</td>
+                        <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
+                            @regel.Bedrag.ToString("N2") €
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="alert @(AangifteStateService.LaatsteResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
+            @if (AangifteStateService.LaatsteResultaat.Eindresultaat >= 0)
+            {
+                <strong>Te betalen: @AangifteStateService.LaatsteResultaat.Eindresultaat.ToString("N2") €</strong>
+            }
+            else
+            {
+                <strong>Terug te krijgen: @((-AangifteStateService.LaatsteResultaat.Eindresultaat).ToString("N2")) €</strong>
+            }
+        </div>
+    </section>
+}
+
+@code {
+    private string? _geselecteerdeGemeente;
+    private List<string> _gemeenteSuggesties = new();
+    private bool _toonGemeenteSuggesties;
+    private bool _isBerekenen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!GemeenteService.IsInitialized)
+        {
+            await GemeenteService.InitializeAsync(AssetReader);
+        }
+    }
+
+    private void UpdateGemeenteSuggesties()
+    {
+        if (!GemeenteService.IsInitialized) return;
+
+        if (string.IsNullOrWhiteSpace(_geselecteerdeGemeente))
+            _gemeenteSuggesties = GemeenteService.GetGemeenteNamen().Take(10).ToList();
+        else
+            _gemeenteSuggesties = GemeenteService.GetGemeenteNamen()
+                .Where(g => g.Contains(_geselecteerdeGemeente, StringComparison.OrdinalIgnoreCase))
+                .Take(10)
+                .ToList();
+    }
+
+    private void OnGemeenteInput(ChangeEventArgs e)
+    {
+        _geselecteerdeGemeente = e.Value?.ToString();
+        _toonGemeenteSuggesties = true;
+        UpdateGemeenteSuggesties();
+    }
+
+    private async Task OnGemeenteBlur()
+    {
+        await Task.Delay(200);
+        _toonGemeenteSuggesties = false;
+    }
+
+    private void SelecteerGemeente(string gemeente)
+    {
+        _geselecteerdeGemeente = gemeente;
+        _toonGemeenteSuggesties = false;
+
+        var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
+        if (aanslagvoet.HasValue)
+            AangifteStateService.State.GemeentebelastingPercentage = aanslagvoet.Value;
+
+        var gewest = GemeenteService.GetGewest(gemeente);
+        if (gewest.HasValue)
+            AangifteStateService.State.Gewest = gewest.Value;
+    }
+
+    private async Task Bereken()
+    {
+        if (_isBerekenen) return;
+        _isBerekenen = true;
+        StateHasChanged();
+        try
+        {
+            await Task.Yield();
+            AangifteStateService.Bereken();
+        }
+        finally
+        {
+            _isBerekenen = false;
+        }
+    }
+
+    private async Task PrintResultaat()
+    {
+        await JS.InvokeVoidAsync("window.print");
+    }
+}

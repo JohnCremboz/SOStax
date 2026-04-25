@@ -69,6 +69,31 @@ else
     </ol>
 
     <section class="vak-panel">
+        <div class="vak-nav-header mb-3">
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    disabled="@(_activeStepIndex == 0)"
+                    @onclick="VorigeStap">
+                &#8592; Vorige stap
+            </button>
+            <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
+            @if (_activeStepIndex == _workflowSteps.Count - 1)
+            {
+                <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
+                    Nieuwe aangifte
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="btn btn-outline-primary"
+                        @onclick="VolgendeStap">
+                    Volgende stap &#8594;
+                </button>
+            }
+        </div>
+
+        <div @key="_activeStepIndex" class="wizard-step-content">
         @switch (currentStep.Key)
         {
             case "intro":
@@ -110,6 +135,7 @@ else
                 @RenderBerekening()
                 break;
         }
+        </div>
 
         <div class="vak-nav-footer mt-4">
             <button type="button"
@@ -227,19 +253,21 @@ else
         _activeStepIndex = index;
     }
 
-    private void VolgendeStap()
+    private async Task VolgendeStap()
     {
         if (_activeStepIndex < _workflowSteps.Count - 1)
         {
             _activeStepIndex++;
+            await JS.InvokeVoidAsync("window.scrollTo", 0, 0);
         }
     }
 
-    private void VorigeStap()
+    private async Task VorigeStap()
     {
         if (_activeStepIndex > 0)
         {
             _activeStepIndex--;
+            await JS.InvokeVoidAsync("window.scrollTo", 0, 0);
         }
     }
 
@@ -269,16 +297,20 @@ else
         var seq = 10;
         foreach (var vak in vakken)
         {
-            builder.OpenElement(seq++, "article");
-            builder.AddAttribute(seq++, "class", "workflow-vak mb-4");
+            builder.OpenElement(seq++, "details");
+            builder.AddAttribute(seq++, "class", "workflow-vak mb-2");
 
-            builder.OpenElement(seq++, "h3");
-            builder.AddAttribute(seq++, "class", "h5");
+            builder.OpenElement(seq++, "summary");
+            builder.AddAttribute(seq++, "class", "workflow-vak-summary");
             builder.AddContent(seq++, vak.Title);
-            builder.CloseElement();
+            builder.CloseElement(); // summary
 
+            builder.OpenElement(seq++, "div");
+            builder.AddAttribute(seq++, "class", "workflow-vak-body pt-3");
             builder.AddContent(seq++, RenderVakForm(vak));
-            builder.CloseElement();
+            builder.CloseElement(); // div
+
+            builder.CloseElement(); // details
         }
     };
 
@@ -611,7 +643,22 @@ else
                         🖨️ Afdrukken / Opslaan als PDF
                     </button>
                 </div>
-                <h3 class="d-none print-only">Belastingberekening AJ2026</h3>
+                <div class="d-none print-only print-header">
+                    <h3>Belastingberekening AJ 2026</h3>
+                    <div class="print-meta">
+                        <span>Afgedrukt: @DateTime.Now.ToString("dd/MM/yyyy")</span>
+                        <span>Gewest: @(AangifteStateService.State.Gewest switch { Gewest.Wallonie => "Wallonië", Gewest.Brussel => "Brussel", _ => "Vlaanderen" })</span>
+                        @if (!string.IsNullOrEmpty(_geselecteerdeGemeente))
+                        {
+                            <span>Gemeente: @_geselecteerdeGemeente (@AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %)</span>
+                        }
+                        else
+                        {
+                            <span>Gemeentebelasting: @AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %</span>
+                        }
+                        <span>@(AangifteStateService.LaatsteResultaat.IsGezamenlijk ? "Gemeenschappelijke aanslag" : "Aanslag alleenstaande")</span>
+                    </div>
+                </div>
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
@@ -691,9 +738,11 @@ else
 
         var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
         if (aanslagvoet.HasValue)
-        {
             AangifteStateService.State.GemeentebelastingPercentage = aanslagvoet.Value;
-        }
+
+        var gewest = GemeenteService.GetGewest(gemeente);
+        if (gewest.HasValue)
+            AangifteStateService.State.Gewest = gewest.Value;
     }
 
     private async Task Bereken()
