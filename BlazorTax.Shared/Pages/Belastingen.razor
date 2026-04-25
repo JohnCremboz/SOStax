@@ -41,9 +41,15 @@ else
                 <h2 class="mb-1">@currentStep.Title</h2>
                 <p class="text-muted mb-0">Stap @(_activeStepIndex + 1) van @_workflowSteps.Count · @currentStep.Description</p>
             </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
-                <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+            <div class="d-flex gap-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
+                    <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isZelfstandige" @bind="_isZelfstandige" />
+                    <label class="form-check-label" for="isZelfstandige">Zelfstandige (deel 2)</label>
+                </div>
             </div>
         </div>
     </section>
@@ -164,11 +170,17 @@ else
         "VAK X", "VAK XII"
     };
 
+    private static readonly HashSet<string> _zelfstandigenVakken = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
+    };
+
     private readonly List<VakSection> _vakSections = [];
     private string? _errorMessage;
     private int _activeStepIndex;
     private bool _isBerekenen;
     private bool _toonAlleVakken;
+    private bool _isZelfstandige;
 
     private string? _geselecteerdeGemeente;
     private List<string> _gemeenteSuggesties = new();
@@ -238,6 +250,7 @@ else
         _gemeenteSuggesties = [];
         _toonGemeenteSuggesties = false;
         _isBerekenen = false;
+        _isZelfstandige = false;
         _activeStepIndex = 0;
     }
 
@@ -294,6 +307,11 @@ else
         }
 
         if (_gezinsVakken.Contains(vakCode) && !HeeftGezinslasten() && !HeeftVakData(vakCode))
+        {
+            return false;
+        }
+
+        if (_zelfstandigenVakken.Contains(vakCode) && !_isZelfstandige && !HeeftVakData(vakCode))
         {
             return false;
         }
