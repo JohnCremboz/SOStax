@@ -1,6 +1,5 @@
 @page "/belastingen"
 @inject IJSRuntime JS
-@inject IGemeenteAanslagvoetService GemeenteService
 @inject AangifteStateService AangifteStateService
 @using BlazorTax.Belastingen.Berekening
 @using Microsoft.AspNetCore.Components.Rendering
@@ -10,186 +9,185 @@
 <h1>Personenbelasting AJ 2026</h1>
 <p class="text-muted">Begeleide workflow per stap in plaats van tab-navigatie per vak.</p>
 
-@if (AangifteStateService.ValidatieFouten.Count > 0)
-{
-    <div class="alert alert-warning" role="alert">
-        <strong>Controleer uw invoer:</strong>
-        <ul class="mb-0">
-            @foreach (var fout in AangifteStateService.ValidatieFouten)
-            {
-                <li>@fout</li>
-            }
-        </ul>
-    </div>
-}
-else
-{
+@{
     var currentStep = _workflowSteps[_activeStepIndex];
-
-    <section class="workflow-header p-3 border rounded bg-white mb-3">
-        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
-            <div>
-                <h2 class="mb-1">@currentStep.Title</h2>
-                <p class="text-muted mb-0">Stap @(_activeStepIndex + 1) van @_workflowSteps.Count · @currentStep.Description</p>
-            </div>
-            <div class="d-flex gap-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
-                    <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
-                </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="isZelfstandige" @bind="_isZelfstandige" />
-                    <label class="form-check-label" for="isZelfstandige">Zelfstandige (deel 2)</label>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <ol class="workflow-stepper list-unstyled d-flex flex-wrap gap-2 mb-3">
-        @for (var i = 0; i < _workflowSteps.Count; i++)
-        {
-            var step = _workflowSteps[i];
-            <li>
-                <button type="button"
-                        class="btn btn-sm @(i == _activeStepIndex ? "btn-primary" : "btn-outline-secondary")"
-                        @onclick="() => GaNaarStap(i)">
-                    @(i + 1). @step.Title
-                </button>
-            </li>
-        }
-    </ol>
-
-    <section class="vak-panel">
-        <div class="vak-nav-header">
-            <button type="button"
-                    class="btn btn-outline-secondary"
-                    disabled="@(_activeStepIndex == 0)"
-                    @onclick="VorigeStap">
-                &#8592; Vorige stap
-            </button>
-            <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
-            @if (_activeStepIndex == _workflowSteps.Count - 1)
-            {
-                <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
-                    Nieuwe aangifte
-                </button>
-            }
-            else
-            {
-                <button type="button"
-                        class="btn btn-outline-primary"
-                        @onclick="VolgendeStap">
-                    Volgende stap &#8594;
-                </button>
-            }
-        </div>
-
-        <div @key="_activeStepIndex" class="wizard-step-content">
-        @switch (currentStep.Key)
-        {
-            case "intro":
-                <h3>Welkom</h3>
-                <p>Deze wizard begeleidt u stap voor stap door de relevante vakken.</p>
-                <ul>
-                    <li>Start met uw persoonlijke situatie (Vak I &amp; Vak II).</li>
-                    <li>Daarna volgen inkomsten en aftrekken.</li>
-                    <li>Niet-relevante vakken worden automatisch verborgen op basis van Vak II.</li>
-                </ul>
-                break;
-
-            case "persoonlijk":
-                @RenderStepVakken(_persoonlijkeVakken, "Geen persoonlijke vakken gevonden.")
-                break;
-
-            case "inkomsten":
-                @RenderStepVakken(_inkomstenVakken, "Geen inkomensvakken beschikbaar met de huidige filter.")
-                break;
-
-            case "aftrekken":
-                @RenderStepVakken(_aftrekVakken, "Geen aftrekvakken beschikbaar met de huidige filter.")
-                break;
-
-            case "controle":
-                <h3>Controle</h3>
-                <p class="text-muted">Overzicht van ingevulde vakken. Klik op een vak om de details te bekijken.</p>
-                @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
-                {
-                    var velden = GetIngevuldeVelden(GetVakDataObject(vak.Code));
-                    <details class="workflow-vak mb-2">
-                        <summary class="workflow-vak-summary d-flex justify-content-between align-items-center">
-                            <span>@vak.Code — @vak.Title</span>
-                            @if (velden.Count > 0)
-                            {
-                                <span class="badge bg-primary ms-2">@velden.Count ingevuld</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary ms-2">Leeg</span>
-                            }
-                        </summary>
-                        <div class="workflow-vak-body pt-2">
-                            @if (velden.Count > 0)
-                            {
-                                <table class="table table-sm table-bordered mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th style="width:40%">Code</th>
-                                            <th>Waarde</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var (veldCode, veldWaarde) in velden)
-                                        {
-                                            <tr>
-                                                <td class="text-muted">@veldCode</td>
-                                                <td>@veldWaarde</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                            else
-                            {
-                                <p class="text-muted mb-0"><em>Geen gegevens ingevuld voor dit vak.</em></p>
-                            }
-                        </div>
-                    </details>
-                }
-                break;
-
-            case "resultaat":
-                <h3>Berekenen en resultaat</h3>
-                <p class="text-muted">Controleer instellingen en voer daarna de berekening uit.</p>
-                @RenderBerekening()
-                break;
-        }
-        </div>
-
-        <div class="vak-nav-footer mt-4">
-            <button type="button"
-                    class="btn btn-outline-secondary"
-                    disabled="@(_activeStepIndex == 0)"
-                    @onclick="VorigeStap">
-                &#8592; Vorige stap
-            </button>
-            <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
-            @if (_activeStepIndex == _workflowSteps.Count - 1)
-            {
-                <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
-                    Nieuwe aangifte
-                </button>
-            }
-            else
-            {
-                <button type="button"
-                        class="btn btn-outline-primary"
-                        @onclick="VolgendeStap">
-                    Volgende stap &#8594;
-                </button>
-            }
-        </div>
-    </section>
 }
+
+<section class="workflow-header p-3 border rounded bg-white mb-3">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+        <div>
+            <h2 class="mb-1">@currentStep.Title</h2>
+            <p class="text-muted mb-0">Stap @(_activeStepIndex + 1) van @_workflowSteps.Count · @currentStep.Description</p>
+        </div>
+        <div class="d-flex gap-3">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
+                <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="isZelfstandige" @bind="_isZelfstandige" />
+                <label class="form-check-label" for="isZelfstandige">Zelfstandige (deel 2)</label>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ol class="workflow-stepper list-unstyled d-flex flex-wrap gap-2 mb-3">
+    @for (var i = 0; i < _workflowSteps.Count; i++)
+    {
+        var step = _workflowSteps[i];
+        <li>
+            <button type="button"
+                    class="btn btn-sm @(i == _activeStepIndex ? "btn-primary" : "btn-outline-secondary")"
+                    @onclick="() => GaNaarStap(i)">
+                @(i + 1). @step.Title
+            </button>
+        </li>
+    }
+</ol>
+
+<section class="vak-panel">
+    <div class="vak-nav-header">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                disabled="@(_activeStepIndex == 0)"
+                @onclick="VorigeStap">
+            &#8592; Vorige stap
+        </button>
+        <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
+        @if (_activeStepIndex == _workflowSteps.Count - 1)
+        {
+            <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
+                Nieuwe aangifte
+            </button>
+        }
+        else
+        {
+            <button type="button"
+                    class="btn btn-outline-primary"
+                    @onclick="VolgendeStap">
+                Volgende stap &#8594;
+            </button>
+        }
+    </div>
+
+    <div @key="_activeStepIndex" class="wizard-step-content">
+    @switch (currentStep.Key)
+    {
+        case "intro":
+            <h3>Welkom</h3>
+            <p>Deze wizard begeleidt u stap voor stap door de relevante vakken.</p>
+            <ul>
+                <li>Start met uw persoonlijke situatie (Vak I &amp; Vak II).</li>
+                <li>Daarna volgen inkomsten en aftrekken.</li>
+                <li>Niet-relevante vakken worden automatisch verborgen op basis van Vak II.</li>
+            </ul>
+            break;
+
+        case "persoonlijk":
+            @RenderStepVakken(_persoonlijkeVakken, "Geen persoonlijke vakken gevonden.")
+            break;
+
+        case "inkomsten":
+            @RenderStepVakken(_inkomstenVakken, "Geen inkomensvakken beschikbaar met de huidige filter.")
+            break;
+
+        case "aftrekken":
+            @RenderStepVakken(_aftrekVakken, "Geen aftrekvakken beschikbaar met de huidige filter.")
+            break;
+
+        case "controle":
+            <h3>Controle</h3>
+            <p class="text-muted">Overzicht van ingevulde vakken. Klik op een vak om de details te bekijken.</p>
+            @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
+            {
+                var velden = GetIngevuldeVelden(GetVakDataObject(vak.Code));
+                <details class="workflow-vak mb-2">
+                    <summary class="workflow-vak-summary d-flex justify-content-between align-items-center">
+                        <span>@vak.Code — @vak.Title</span>
+                        @if (velden.Count > 0)
+                        {
+                            <span class="badge bg-primary ms-2">@velden.Count ingevuld</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary ms-2">Leeg</span>
+                        }
+                    </summary>
+                    <div class="workflow-vak-body pt-2">
+                        @if (velden.Count > 0)
+                        {
+                            <table class="table table-sm table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:40%">Code</th>
+                                        <th>Waarde</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var (veldCode, veldWaarde) in velden)
+                                    {
+                                        <tr>
+                                            <td class="text-muted">@veldCode</td>
+                                            <td>@veldWaarde</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0"><em>Geen gegevens ingevuld voor dit vak.</em></p>
+                        }
+                    </div>
+                </details>
+            }
+            break;
+
+        case "resultaat":
+            <h3>Berekenen en resultaat</h3>
+            <p class="text-muted">Controleer instellingen en voer daarna de berekening uit.</p>
+            @if (AangifteStateService.ValidatieFouten.Count > 0)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <strong>Controleer uw invoer:</strong>
+                    <ul class="mb-0">
+                        @foreach (var fout in AangifteStateService.ValidatieFouten)
+                        {
+                            <li>@fout</li>
+                        }
+                    </ul>
+                </div>
+            }
+            <BerekeningPaneel @ref="_berekeningPaneel" />
+            break;
+    }
+    </div>
+
+    <div class="vak-nav-footer mt-4">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                disabled="@(_activeStepIndex == 0)"
+                @onclick="VorigeStap">
+            &#8592; Vorige stap
+        </button>
+        <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
+        @if (_activeStepIndex == _workflowSteps.Count - 1)
+        {
+            <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
+                Nieuwe aangifte
+            </button>
+        }
+        else
+        {
+            <button type="button"
+                    class="btn btn-outline-primary"
+                    @onclick="VolgendeStap">
+                Volgende stap &#8594;
+            </button>
+        }
+    </div>
+</section>
 
 @code {
     private static readonly List<WorkflowStep> _workflowSteps =
@@ -211,7 +209,7 @@ else
     private static readonly List<string> _aftrekVakken =
     [
         "VAK VIII", "VAK IX", "VAK X", "VAK XI", "VAK XII", "VAK XIII",
-        "VAK XIV", "VAK XV", "VAK XVI", "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
+        "VAK XIV", "VAK XV", "VAK XVI", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
     ];
 
     private static readonly HashSet<string> _partnerVakken = new(StringComparer.OrdinalIgnoreCase)
@@ -229,24 +227,16 @@ else
         "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
     };
 
-    private static readonly IReadOnlyList<VakSection> _vakSections = VakSectieData.Secties;
+    private static readonly IReadOnlyList<VakSection> _vakSections = VakSectieData.Secties;
 
     private int _activeStepIndex;
-    private bool _isBerekenen;
     private bool _toonAlleVakken;
     private bool _isZelfstandige;
-
-    private string? _geselecteerdeGemeente;
-    private List<string> _gemeenteSuggesties = new();
-    private bool _toonGemeenteSuggesties;
+    private BerekeningPaneel? _berekeningPaneel;
 
     private void GaNaarStap(int index)
     {
-        if (index < 0 || index >= _workflowSteps.Count)
-        {
-            return;
-        }
-
+        if (index < 0 || index >= _workflowSteps.Count) return;
         _activeStepIndex = index;
     }
 
@@ -271,10 +261,8 @@ else
     private void StartNieuweAangifte()
     {
         AangifteStateService.NieuweAangifte();
-        _geselecteerdeGemeente = null;
-        _gemeenteSuggesties = [];
-        _toonGemeenteSuggesties = false;
-        _isBerekenen = false;
+        _berekeningPaneel?.Reset();
+        _toonAlleVakken = false;
         _isZelfstandige = false;
         _activeStepIndex = 0;
     }
@@ -291,23 +279,23 @@ else
             return;
         }
 
-        var seq = 10;
         foreach (var vak in vakken)
         {
-            builder.OpenElement(seq++, "details");
-            builder.AddAttribute(seq++, "class", "workflow-vak mb-2");
+            builder.OpenElement(10, "details");
+            builder.SetKey(vak.Code);
+            builder.AddAttribute(11, "class", "workflow-vak mb-2");
 
-            builder.OpenElement(seq++, "summary");
-            builder.AddAttribute(seq++, "class", "workflow-vak-summary");
-            builder.AddContent(seq++, vak.Title);
-            builder.CloseElement(); // summary
+            builder.OpenElement(12, "summary");
+            builder.AddAttribute(13, "class", "workflow-vak-summary");
+            builder.AddContent(14, vak.Title);
+            builder.CloseElement();
 
-            builder.OpenElement(seq++, "div");
-            builder.AddAttribute(seq++, "class", "workflow-vak-body pt-3");
-            builder.AddContent(seq++, RenderVakForm(vak));
-            builder.CloseElement(); // div
+            builder.OpenElement(15, "div");
+            builder.AddAttribute(16, "class", "workflow-vak-body pt-3");
+            builder.AddContent(17, RenderVakForm(vak));
+            builder.CloseElement();
 
-            builder.CloseElement(); // details
+            builder.CloseElement();
         }
     };
 
@@ -325,25 +313,21 @@ else
 
     private bool ShouldShowVak(string vakCode)
     {
-        if (_toonAlleVakken || string.Equals(vakCode, "VAK I", StringComparison.OrdinalIgnoreCase) || string.Equals(vakCode, "VAK II", StringComparison.OrdinalIgnoreCase))
+        if (_toonAlleVakken
+            || string.Equals(vakCode, "VAK I", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(vakCode, "VAK II", StringComparison.OrdinalIgnoreCase))
         {
             return true;
         }
 
         if (_partnerVakken.Contains(vakCode) && !HeeftPartner() && !HeeftVakData(vakCode))
-        {
             return false;
-        }
 
         if (_gezinsVakken.Contains(vakCode) && !HeeftGezinslasten() && !HeeftVakData(vakCode))
-        {
             return false;
-        }
 
         if (_zelfstandigenVakken.Contains(vakCode) && !_isZelfstandige && !HeeftVakData(vakCode))
-        {
             return false;
-        }
 
         return true;
     }
@@ -396,52 +380,24 @@ else
 
     private static bool HeeftInhoud(object? vakData)
     {
-        if (vakData is null)
-        {
-            return false;
-        }
+        if (vakData is null) return false;
 
         foreach (var property in vakData.GetType().GetProperties())
         {
             var value = property.GetValue(vakData);
-            if (value is null)
-            {
-                continue;
-            }
+            if (value is null) continue;
 
-            if (value is bool boolValue && boolValue)
-            {
-                return true;
-            }
-
-            if (value is string strValue && !string.IsNullOrWhiteSpace(strValue))
-            {
-                return true;
-            }
-
-            if (value is int intValue && intValue != 0)
-            {
-                return true;
-            }
-
-            if (value is decimal decimalValue && decimalValue != 0m)
-            {
-                return true;
-            }
+            if (value is bool boolValue && boolValue) return true;
+            if (value is string strValue && !string.IsNullOrWhiteSpace(strValue)) return true;
+            if (value is int intValue && intValue != 0) return true;
+            if (value is decimal decimalValue && decimalValue != 0m) return true;
 
             if (value is System.Collections.IEnumerable enumerable and not string)
             {
                 foreach (var item in enumerable)
                 {
-                    if (item is decimal amount && amount != 0m)
-                    {
-                        return true;
-                    }
-
-                    if (item is string itemString && !string.IsNullOrWhiteSpace(itemString))
-                    {
-                        return true;
-                    }
+                    if (item is decimal amount && amount != 0m) return true;
+                    if (item is string itemString && !string.IsNullOrWhiteSpace(itemString)) return true;
                 }
             }
         }
@@ -644,212 +600,6 @@ else
                 break;
         }
     };
-
-    private RenderFragment RenderBerekening() => @<div>
-        <section class="berekening-settings mt-4 p-3 border rounded">
-            <h3>⚙️ Berekeningsinstellingen</h3>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Gewest</label>
-                    <select class="form-select" @bind="AangifteStateService.State.Gewest">
-                        <option value="@Gewest.Vlaanderen">Vlaanderen</option>
-                        <option value="@Gewest.Wallonie">Wallonië</option>
-                        <option value="@Gewest.Brussel">Brussel</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Gemeente</label>
-                    <input type="text" class="form-control"
-                           value="@_geselecteerdeGemeente"
-                           @oninput="OnGemeenteInput"
-                           @onfocus="() => { _toonGemeenteSuggesties = true; UpdateGemeenteSuggesties(); }"
-                           @onblur="OnGemeenteBlur"
-                           placeholder="Typ een gemeente..."
-                           autocomplete="off" />
-                    @if (_toonGemeenteSuggesties && _gemeenteSuggesties.Count > 0)
-                    {
-                        <div class="dropdown-menu show" style="max-height: 200px; overflow-y: auto; width: 100%; position: absolute; z-index: 1000;">
-                            @foreach (var gemeente in _gemeenteSuggesties)
-                            {
-                                <button type="button" class="dropdown-item" @onmousedown="() => SelecteerGemeente(gemeente)">
-                                    @gemeente
-                                </button>
-                            }
-                        </div>
-                    }
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Gemeentebelasting (%)</label>
-                    <input type="number" class="form-control" step="0.01" min="0" max="15"
-                           @bind="AangifteStateService.State.GemeentebelastingPercentage"
-                           readonly="@(!string.IsNullOrEmpty(_geselecteerdeGemeente))"
-                           title="@(_geselecteerdeGemeente != null ? $"Automatisch geladen voor {_geselecteerdeGemeente}" : "Voer handmatig in of selecteer gemeente")" />
-                </div>
-            </div>
-            <div class="mt-3">
-                <button type="button" class="btn btn-primary btn-lg" @onclick="Bereken" disabled="@_isBerekenen">
-                    @if (_isBerekenen)
-                    {
-                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        <span>Berekening bezig...</span>
-                    }
-                    else
-                    {
-                        <span>🧮 Bereken belasting</span>
-                    }
-                </button>
-            </div>
-        </section>
-
-        @if (AangifteStateService.LaatsteResultaat is not null)
-        {
-            <section class="berekening-resultaat mt-4 p-3 border rounded">
-                <div class="d-flex justify-content-between align-items-center mb-2 no-print">
-                    <h3 class="mb-0">📊 Berekeningsresultaat</h3>
-                    <button class="btn btn-outline-secondary btn-sm" @onclick="PrintResultaat">
-                        🖨️ Afdrukken / Opslaan als PDF
-                    </button>
-                </div>
-                <div class="d-none print-only print-header">
-                    <h3>Belastingberekening AJ 2026</h3>
-                    <div class="print-meta">
-                        <span>Afgedrukt: @DateTime.Now.ToString("dd/MM/yyyy")</span>
-                        <span>Gewest: @(AangifteStateService.State.Gewest switch { Gewest.Wallonie => "Wallonië", Gewest.Brussel => "Brussel", _ => "Vlaanderen" })</span>
-                        @if (!string.IsNullOrEmpty(_geselecteerdeGemeente))
-                        {
-                            <span>Gemeente: @_geselecteerdeGemeente (@AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %)</span>
-                        }
-                        else
-                        {
-                            <span>Gemeentebelasting: @AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %</span>
-                        }
-                        <span>@(AangifteStateService.LaatsteResultaat.IsGezamenlijk ? "Gemeenschappelijke aanslag" : "Aanslag alleenstaande")</span>
-                    </div>
-                </div>
-                <table class="table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th>Omschrijving</th>
-                            <th class="text-end">Bedrag</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
-                        {
-                            @if (regel.IsHeader)
-                            {
-                                <tr class="table-dark">
-                                    <td colspan="2" class="fw-bold text-uppercase small">@regel.Omschrijving</td>
-                                </tr>
-                            }
-                            else if (regel.IsDetail)
-                            {
-                                <tr class="text-muted">
-                                    <td class="ps-4 small fst-italic">@regel.Omschrijving</td>
-                                    <td class="text-end small fst-italic @(regel.Bedrag < 0 ? "text-success" : "")">
-                                        @regel.Bedrag.ToString("N2") €
-                                    </td>
-                                </tr>
-                            }
-                            else
-                            {
-                                <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
-                                    <td>@regel.Omschrijving</td>
-                                    <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
-                                        @regel.Bedrag.ToString("N2") €
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-
-                <div class="alert @(AangifteStateService.LaatsteResultaat.Eindresultaat >= 0 ? "alert-warning" : "alert-success") fs-4 text-center">
-                    @if (AangifteStateService.LaatsteResultaat.Eindresultaat >= 0)
-                    {
-                        <strong>Te betalen: @AangifteStateService.LaatsteResultaat.Eindresultaat.ToString("N2") €</strong>
-                    }
-                    else
-                    {
-                        <strong>Terug te krijgen: @((-AangifteStateService.LaatsteResultaat.Eindresultaat).ToString("N2")) €</strong>
-                    }
-                </div>
-            </section>
-        }
-    </div>;
-
-    private async Task PrintResultaat()
-    {
-        await JS.InvokeVoidAsync("window.print");
-    }
-
-    private void UpdateGemeenteSuggesties()
-    {
-        if (!GemeenteService.IsInitialized)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_geselecteerdeGemeente))
-        {
-            _gemeenteSuggesties = GemeenteService.GetGemeenteNamen().Take(10).ToList();
-        }
-        else
-        {
-            _gemeenteSuggesties = GemeenteService.GetGemeenteNamen()
-                .Where(g => g.Contains(_geselecteerdeGemeente, StringComparison.OrdinalIgnoreCase))
-                .Take(10)
-                .ToList();
-        }
-    }
-
-    private void OnGemeenteInput(ChangeEventArgs e)
-    {
-        _geselecteerdeGemeente = e.Value?.ToString();
-        _toonGemeenteSuggesties = true;
-        UpdateGemeenteSuggesties();
-    }
-
-    private async Task OnGemeenteBlur()
-    {
-        await Task.Delay(200);
-        _toonGemeenteSuggesties = false;
-    }
-
-    private void SelecteerGemeente(string gemeente)
-    {
-        _geselecteerdeGemeente = gemeente;
-        _toonGemeenteSuggesties = false;
-
-        var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
-        if (aanslagvoet.HasValue)
-            AangifteStateService.State.GemeentebelastingPercentage = aanslagvoet.Value;
-
-        var gewest = GemeenteService.GetGewest(gemeente);
-        if (gewest.HasValue)
-            AangifteStateService.State.Gewest = gewest.Value;
-    }
-
-    private async Task Bereken()
-    {
-        if (_isBerekenen)
-        {
-            return;
-        }
-
-        _isBerekenen = true;
-        StateHasChanged();
-
-        try
-        {
-            await Task.Yield();
-            AangifteStateService.Bereken();
-        }
-        finally
-        {
-            _isBerekenen = false;
-        }
-    }
 
     private sealed record WorkflowStep(string Key, string Title, string Description);
 }
