@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTax", "BlazorTax\BlazorTax.csproj", "{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCalc", "TestCalc\TestCalc.csproj", "{EE739E8B-6196-4C26-BC5B-7248800A2E50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTax.Shared", "BlazorTax.Shared\BlazorTax.Shared.csproj", "{72C4151F-7679-4E4C-A1C7-721D93F06E3D}"
@@ -18,18 +16,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|x64.Build.0 = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Debug|x86.Build.0 = Debug|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|x64.ActiveCfg = Release|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|x64.Build.0 = Release|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|x86.ActiveCfg = Release|Any CPU
-		{CD9C1F3B-9B21-4FA5-81EE-4C99E8410A1F}.Release|x86.Build.0 = Release|Any CPU
 		{EE739E8B-6196-4C26-BC5B-7248800A2E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE739E8B-6196-4C26-BC5B-7248800A2E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE739E8B-6196-4C26-BC5B-7248800A2E50}.Debug|x64.ActiveCfg = Debug|Any CPU
