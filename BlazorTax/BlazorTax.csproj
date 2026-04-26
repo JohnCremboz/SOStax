@@ -16,14 +16,6 @@
         <ProjectReference Include="..\BlazorTax.Shared\BlazorTax.Shared.csproj" />
     </ItemGroup>
 
-    <!-- Copy shared belastingen assets to local wwwroot for dev server -->
-    <Target Name="CopySharedAssets" BeforeTargets="BeforeBuild">
-        <ItemGroup>
-            <SharedAssets Include="..\BlazorTax.Shared\wwwroot\belastingen\**\*.*" />
-        </ItemGroup>
-        <Copy SourceFiles="@(SharedAssets)" 
-              DestinationFolder="wwwroot\belastingen\%(RecursiveDir)" 
-              SkipUnchangedFiles="true" />
-    </Target>
+    <!-- Shared belastingen assets worden niet meer gekopieerd: data is statisch ingebakken in C# -->
 
 </Project>

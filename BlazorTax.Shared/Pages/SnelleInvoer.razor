@@ -2,7 +2,6 @@
 @using BlazorTax.Belastingen.Berekening
 @inject AangifteStateService AangifteStateService
 @inject IGemeenteAanslagvoetService GemeenteService
-@inject IAssetReader AssetReader
 @inject IJSRuntime JS
 
 <PageTitle>SOStax – Snelle Invoer</PageTitle>
@@ -134,13 +133,8 @@
     private bool _toonGemeenteSuggesties;
     private bool _isBerekenen;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (!GemeenteService.IsInitialized)
-        {
-            await GemeenteService.InitializeAsync(AssetReader);
-        }
-    }
+    protected override Task OnInitializedAsync()
+        => Task.CompletedTask;
 
     private void UpdateGemeenteSuggesties()
     {

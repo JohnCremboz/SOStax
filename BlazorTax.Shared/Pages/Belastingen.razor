@@ -1,5 +1,4 @@
 @page "/belastingen"
-@inject IAssetReader AssetReader
 @inject IJSRuntime JS
 @inject IGemeenteAanslagvoetService GemeenteService
 @inject AangifteStateService AangifteStateService
@@ -11,10 +10,6 @@
 <h1>Personenbelasting AJ 2026</h1>
 <p class="text-muted">Begeleide workflow per stap in plaats van tab-navigatie per vak.</p>
 
-@if (!string.IsNullOrWhiteSpace(_errorMessage))
-{
-    <div class="alert alert-danger" role="alert">@_errorMessage</div>
-}
 @if (AangifteStateService.ValidatieFouten.Count > 0)
 {
     <div class="alert alert-warning" role="alert">
@@ -26,10 +21,6 @@
             }
         </ul>
     </div>
-}
-else if (_vakSections.Count == 0)
-{
-    <p>Structuur laden...</p>
 }
 else
 {
@@ -201,8 +192,8 @@ else
         "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
     };
 
-    private readonly List<VakSection> _vakSections = [];
-    private string? _errorMessage;
+    private static readonly IReadOnlyList<VakSection> _vakSections = VakSectieData.Secties;
+
     private int _activeStepIndex;
     private bool _isBerekenen;
     private bool _toonAlleVakken;
@@ -211,37 +202,6 @@ else
     private string? _geselecteerdeGemeente;
     private List<string> _gemeenteSuggesties = new();
     private bool _toonGemeenteSuggesties;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            if (!GemeenteService.IsInitialized)
-            {
-                await GemeenteService.InitializeAsync(AssetReader);
-            }
-
-            var markdown = await AssetReader.GetStringAsync("belastingen/structuur.md");
-            if (markdown.Contains("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
-            {
-                _errorMessage = "De markdown is niet als statisch bestand gevonden (fallback naar index.html).";
-                return;
-            }
-
-            _vakSections.AddRange(VakStructuurParser.ParseSections(markdown)
-                .Where(v => !string.Equals(v.Code, "VAK V C", StringComparison.OrdinalIgnoreCase)));
-
-            if (_vakSections.Count == 0)
-            {
-                _errorMessage = "Geen VAK-secties gevonden in structuur.md.";
-            }
-        }
-        catch (Exception ex)
-        {
-            _ = ex; // details alleen in dev console, niet tonen aan gebruiker
-            _errorMessage = "Structuur kon niet geladen worden. Probeer het later opnieuw.";
-        }
-    }
 
     private void GaNaarStap(int index)
     {
