@@ -95,7 +95,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario1_PensionarisBrussel()
     {
         VakII = new VakIIData { BurgerlijkeStaat = "1001" },
         VakIII = new VakIIIData(),
-        VakIV = new VakIVData { Code1286 = 2886.03m },
+        VakIV = new VakIVData { Fiches1286 = new() { 2886.03m } },
         VakV = new VakVData { Code1228 = 25000m },
         VakVIII = new VakVIIIData(),
         VakIX = new VakIXData(),
@@ -132,8 +132,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario2_WerknemerGent()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Code1250 = 35000m,
-            Code1286 = 8500m,
+            Fiches1250 = new() { 35000m },
+            Fiches1286 = new() { 8500m },
             Code1287 = 250m,
         },
         VakV = new VakVData(),
@@ -177,11 +177,11 @@ static (string, BerekeningInput, TaxCalcRef) Scenario3_GehuwdMenen()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Code1250 = 40193.95m,
-            Code1286 = 8948.90m,
+            Fiches1250 = new() { 40193.95m },
+            Fiches1286 = new() { 8948.90m },
             Code1287 = 324.21m,
-            Code2250 = 21794.78m,
-            Code2286 = 184.66m,
+            Fiches2250 = new() { 21794.78m },
+            Fiches2286 = new() { 184.66m },
             Code2287 = 96.45m,
             Code2284 = 1516.77m,
             Code2360 = 1142.19m,
@@ -232,8 +232,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario4_WerknemerAntwerpen()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Code1250 = 45000m,
-            Code1286 = 12000m,
+            Fiches1250 = new() { 45000m },
+            Fiches1286 = new() { 12000m },
             Code1287 = 400m,
         },
         VakV = new VakVData(),
@@ -322,8 +322,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Code1250 = 40_000m,
-            Code1286 = 10_000m,
+            Fiches1250 = new() { 40_000m },
+            Fiches1286 = new() { 10_000m },
         },
         VakV = new VakVData(),
         VakVIII = new VakVIIIData(),
@@ -379,10 +379,10 @@ static (string, BerekeningInput, TaxCalcRef) Scenario7_PensionarisMenen_1txt()
             Code1228 = 18_821.33m,   // wettelijk pensioen titularis
             Code1229 = 3_087.26m,    // overlevingspensioen titularis
             Code1211 = 3_080.79m,    // andere pensioenen titularis
-            Code1225 = 1_662.44m,    // bedrijfsvoorheffing titularis
+            Fiches1225 = new() { 1_662.44m },    // bedrijfsvoorheffing titularis
             Code2228 = 4_365.33m,    // wettelijk pensioen partner
             Code2211 = 987.06m,      // andere pensioenen partner
-            Code2225 = 29.82m,       // bedrijfsvoorheffing partner
+            Fiches2225 = new() { 29.82m },       // bedrijfsvoorheffing partner
         },
         VakVIII = new VakVIIIData(),
         VakIX = new VakIXData(),
