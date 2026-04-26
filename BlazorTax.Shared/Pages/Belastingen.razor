@@ -60,7 +60,7 @@ else
     </ol>
 
     <section class="vak-panel">
-        <div class="vak-nav-header mb-3">
+        <div class="vak-nav-header">
             <button type="button"
                     class="btn btn-outline-secondary"
                     disabled="@(_activeStepIndex == 0)"
@@ -111,13 +111,50 @@ else
 
             case "controle":
                 <h3>Controle</h3>
-                <p class="text-muted">Overzicht van vakken die momenteel in de workflow zijn opgenomen.</p>
-                <ul class="mb-0">
-                    @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
-                    {
-                        <li>@vak.Code — @vak.Title</li>
-                    }
-                </ul>
+                <p class="text-muted">Overzicht van ingevulde vakken. Klik op een vak om de details te bekijken.</p>
+                @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
+                {
+                    var velden = GetIngevuldeVelden(GetVakDataObject(vak.Code));
+                    <details class="workflow-vak mb-2">
+                        <summary class="workflow-vak-summary d-flex justify-content-between align-items-center">
+                            <span>@vak.Code — @vak.Title</span>
+                            @if (velden.Count > 0)
+                            {
+                                <span class="badge bg-primary ms-2">@velden.Count ingevuld</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary ms-2">Leeg</span>
+                            }
+                        </summary>
+                        <div class="workflow-vak-body pt-2">
+                            @if (velden.Count > 0)
+                            {
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:40%">Code</th>
+                                            <th>Waarde</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var (veldCode, veldWaarde) in velden)
+                                        {
+                                            <tr>
+                                                <td class="text-muted">@veldCode</td>
+                                                <td>@veldWaarde</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0"><em>Geen gegevens ingevuld voor dit vak.</em></p>
+                            }
+                        </div>
+                    </details>
+                }
                 break;
 
             case "resultaat":
@@ -328,37 +365,34 @@ else
             || (vakII.Code1032 ?? 0) > 0;
     }
 
-    private bool HeeftVakData(string vakCode)
-    {
-        object? vakData = vakCode.ToUpperInvariant() switch
-        {
-            "VAK I" => (object?)AangifteStateService.State.VakI,
-            "VAK II" => AangifteStateService.State.VakII,
-            "VAK III" => AangifteStateService.State.VakIII,
-            "VAK IV" => AangifteStateService.State.VakIV,
-            "VAK V" => AangifteStateService.State.VakV,
-            "VAK VI" => AangifteStateService.State.VakVI,
-            "VAK VII" => AangifteStateService.State.VakVII,
-            "VAK VIII" => AangifteStateService.State.VakVIII,
-            "VAK IX" => AangifteStateService.State.VakIX,
-            "VAK X" => AangifteStateService.State.VakX,
-            "VAK XI" => AangifteStateService.State.VakXI,
-            "VAK XII" => AangifteStateService.State.VakXII,
-            "VAK XIII" => AangifteStateService.State.VakXIII,
-            "VAK XIV" => AangifteStateService.State.VakXIV,
-            "VAK XV" => AangifteStateService.State.VakXV,
-            "VAK XVI" => AangifteStateService.State.VakXVI,
-            "VAK XVII" => AangifteStateService.State.VakXVII,
-            "VAK XVIII" => AangifteStateService.State.VakXVIII,
-            "VAK XIX" => AangifteStateService.State.VakXIX,
-            "VAK XX" => AangifteStateService.State.VakXX,
-            "VAK XXI" => AangifteStateService.State.VakXXI,
-            "VAK XXII" => AangifteStateService.State.VakXXII,
-            _ => null
-        };
+    private bool HeeftVakData(string vakCode) => HeeftInhoud(GetVakDataObject(vakCode));
 
-        return HeeftInhoud(vakData);
-    }
+    private object? GetVakDataObject(string vakCode) => vakCode.ToUpperInvariant() switch
+    {
+        "VAK I" => (object?)AangifteStateService.State.VakI,
+        "VAK II" => AangifteStateService.State.VakII,
+        "VAK III" => AangifteStateService.State.VakIII,
+        "VAK IV" => AangifteStateService.State.VakIV,
+        "VAK V" => AangifteStateService.State.VakV,
+        "VAK VI" => AangifteStateService.State.VakVI,
+        "VAK VII" => AangifteStateService.State.VakVII,
+        "VAK VIII" => AangifteStateService.State.VakVIII,
+        "VAK IX" => AangifteStateService.State.VakIX,
+        "VAK X" => AangifteStateService.State.VakX,
+        "VAK XI" => AangifteStateService.State.VakXI,
+        "VAK XII" => AangifteStateService.State.VakXII,
+        "VAK XIII" => AangifteStateService.State.VakXIII,
+        "VAK XIV" => AangifteStateService.State.VakXIV,
+        "VAK XV" => AangifteStateService.State.VakXV,
+        "VAK XVI" => AangifteStateService.State.VakXVI,
+        "VAK XVII" => AangifteStateService.State.VakXVII,
+        "VAK XVIII" => AangifteStateService.State.VakXVIII,
+        "VAK XIX" => AangifteStateService.State.VakXIX,
+        "VAK XX" => AangifteStateService.State.VakXX,
+        "VAK XXI" => AangifteStateService.State.VakXXI,
+        "VAK XXII" => AangifteStateService.State.VakXXII,
+        _ => null
+    };
 
     private static bool HeeftInhoud(object? vakData)
     {
@@ -413,6 +447,79 @@ else
         }
 
         return false;
+    }
+
+    private static readonly Dictionary<Type, System.Reflection.PropertyInfo[]> _propertyCache = new();
+
+    private static System.Reflection.PropertyInfo[] GetCachedProperties(Type type)
+    {
+        if (!_propertyCache.TryGetValue(type, out var props))
+        {
+            props = type.GetProperties();
+            _propertyCache[type] = props;
+        }
+        return props;
+    }
+
+    private static List<(string Code, string Waarde)> GetIngevuldeVelden(object? vakData)
+    {
+        var result = new List<(string, string)>();
+        if (vakData is null) return result;
+
+        foreach (var property in GetCachedProperties(vakData.GetType()))
+        {
+            var value = property.GetValue(vakData);
+            if (value is null) continue;
+
+            if (value is bool boolValue)
+            {
+                if (boolValue) result.Add((property.Name, "✓"));
+                continue;
+            }
+
+            if (value is string strValue)
+            {
+                if (!string.IsNullOrWhiteSpace(strValue)) result.Add((property.Name, strValue));
+                continue;
+            }
+
+            if (value is int intValue)
+            {
+                if (intValue != 0) result.Add((property.Name, intValue.ToString()));
+                continue;
+            }
+
+            if (value is decimal decimalValue)
+            {
+                if (decimalValue != 0m) result.Add((property.Name, decimalValue.ToString("N2") + " €"));
+                continue;
+            }
+
+            if (value is System.Collections.IEnumerable enumerable and not string)
+            {
+                var i = 1;
+                foreach (var item in enumerable)
+                {
+                    if (item is null) continue;
+                    foreach (var subProp in GetCachedProperties(item.GetType()))
+                    {
+                        var subVal = subProp.GetValue(item);
+                        string? display = subVal switch
+                        {
+                            decimal d when d != 0m => d.ToString("N2") + " €",
+                            string s when !string.IsNullOrWhiteSpace(s) => s,
+                            int n when n != 0 => n.ToString(),
+                            _ => null
+                        };
+                        if (display is not null)
+                            result.Add(($"{property.Name}[{i}].{subProp.Name}", display));
+                    }
+                    i++;
+                }
+            }
+        }
+
+        return result;
     }
 
     private RenderFragment RenderVakForm(VakSection section) => builder =>

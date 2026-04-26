@@ -8,16 +8,16 @@ namespace BlazorTax.Services;
 /// </summary>
 public class GemeenteAanslagvoetService : IGemeenteAanslagvoetService
 {
-    private readonly Dictionary<string, Dictionary<int, decimal>> _aanslagvoeten
-        = GemeenteAanslagvoetData.Aanslagvoeten;
+    private readonly Dictionary<string, decimal> _aanslagvoeten
+        = GemeenteAanslagvoetData.Aanslagvoeten2026;
 
-    private readonly List<string> _gemeenteNamen;
+    private readonly IReadOnlyList<string> _gemeenteNamen;
 
     public bool IsInitialized { get; private set; }
 
     public GemeenteAanslagvoetService()
     {
-        _gemeenteNamen = [.. _aanslagvoeten.Keys.Order(StringComparer.OrdinalIgnoreCase)];
+        _gemeenteNamen = _aanslagvoeten.Keys.Order(StringComparer.OrdinalIgnoreCase).ToList().AsReadOnly();
         IsInitialized = true;
     }
 
@@ -30,14 +30,13 @@ public class GemeenteAanslagvoetService : IGemeenteAanslagvoetService
         if (string.IsNullOrWhiteSpace(gemeenteNaam))
             return null;
 
-        if (_aanslagvoeten.TryGetValue(gemeenteNaam, out var perJaar) &&
-            perJaar.TryGetValue(jaar, out var voet))
+        if (_aanslagvoeten.TryGetValue(gemeenteNaam, out var voet))
             return voet;
 
         return null;
     }
 
-    public IReadOnlyList<string> GetGemeenteNamen() => _gemeenteNamen.AsReadOnly();
+    public IReadOnlyList<string> GetGemeenteNamen() => _gemeenteNamen;
 
     public Gewest? GetGewest(string gemeenteNaam)
     {
@@ -65,7 +64,7 @@ public class GemeenteAanslagvoetService : IGemeenteAanslagvoetService
     public IReadOnlyList<string> ZoekGemeenten(string zoekterm)
     {
         if (string.IsNullOrWhiteSpace(zoekterm))
-            return _gemeenteNamen.AsReadOnly();
+            return _gemeenteNamen;
 
         if (zoekterm.Length > 100)
             return Array.Empty<string>();

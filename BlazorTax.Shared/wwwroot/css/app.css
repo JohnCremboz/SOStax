@@ -626,6 +626,15 @@ code {
     border-top: 1px solid #dee2e6;
 }
 
+.vak-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
 .vak-nav-counter {
     font-size: 0.85rem;
     color: #6c757d;
@@ -939,6 +948,19 @@ code {
 }
 
 @media print {
+    /* Verberg navigatie en layout-chrome expliciet */
+    .sidebar,
+    .top-row,
+    nav,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Reset flex-layout zodat main de volle breedte krijgt */
+    .page {
+        display: block !important;
+    }
+
     /* Verberg visueel alles en toon enkel het resultaatblok */
     body * {
         visibility: hidden !important;
@@ -949,17 +971,15 @@ code {
         visibility: visible !important;
     }
 
+    /* position: fixed is altijd relatief aan de pagina, ook bij afdrukken */
     .berekening-resultaat {
-        position: absolute;
-        inset: 0 auto auto 0;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         border: none !important;
         padding: 1rem 2rem !important;
         margin: 0 !important;
-    }
-
-    .no-print {
-        display: none !important;
     }
 
     .print-only {
