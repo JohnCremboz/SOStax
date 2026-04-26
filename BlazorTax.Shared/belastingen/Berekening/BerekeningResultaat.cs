@@ -80,4 +80,12 @@ public class BerekeningResultaat
 }
 
 /// <summary>Eén regel in de detailopbouw van de berekening.</summary>
-public record BerekeningRegel(string Omschrijving, decimal Bedrag, bool IsSubtotaal = false);
+/// <param name="IsSubtotaal">Vet weergegeven tussenresultaat.</param>
+/// <param name="IsHeader">Sectiehoofding (persoon/blok-scheiding), geen bedrag.</param>
+/// <param name="IsDetail">Ingesprongen sub-regel ter verduidelijking.</param>
+public record BerekeningRegel(
+    string Omschrijving,
+    decimal Bedrag,
+    bool IsSubtotaal = false,
+    bool IsHeader = false,
+    bool IsDetail = false);

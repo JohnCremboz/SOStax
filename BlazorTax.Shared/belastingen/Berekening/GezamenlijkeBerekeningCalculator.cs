@@ -88,10 +88,17 @@ public class GezamenlijkeBerekeningCalculator
         }
 
         // ── 5b. Fase 2: belasting berekenen per partner ─────────────────
-        PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest);
+        var bvsComp1 = isGehuwd
+            ? BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, true, kinderenBijPartner1)
+            : BelastingvrijeSomCalculator.BerekenComponentenAlleenstaand(input.VakII);
+
+        PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest, bvsComp1);
 
         if (isGehuwd && inkomen2.HeeftInkomen)
-            PartnerBelastingCalculator.BerekenBelasting(r2, inkomen2, vrijeSom2, input.Gewest);
+        {
+            var bvsComp2 = BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, false, !kinderenBijPartner1);
+            PartnerBelastingCalculator.BerekenBelasting(r2, inkomen2, vrijeSom2, input.Gewest, bvsComp2);
+        }
 
         // ── 5c. Belastingkrediet kinderen (art. 134 WIB92, terugbetaalbaar) ─
         // Ongebruikte BVS-vermindering voor kinderen → terugbetaalbaar krediet
@@ -226,7 +233,7 @@ public class GezamenlijkeBerekeningCalculator
 
         if (resultaat.IsGezamenlijk)
         {
-            regels.Add(new("═══ BELASTINGPLICHTIGE ═══", 0, true));
+            regels.Add(new("BELASTINGPLICHTIGE", 0, IsHeader: true));
             regels.Add(new("Bruto inkomen", r1.BrutoTotaal));
             regels.Add(new("Beroepskosten", -r1.Beroepskosten));
 
@@ -248,23 +255,40 @@ public class GezamenlijkeBerekeningCalculator
             regels.Add(new("Netto belastbaar", r1.NettoBelastbaarInkomen, true));
 
             if (hqBedrag > 0 && r1.HuwelijksquotientAfgestaan > 0)
-                regels.Add(new("HQ afgestaan", -r1.HuwelijksquotientAfgestaan));
+                regels.Add(new("Huwelijksquotiënt afgestaan", -r1.HuwelijksquotientAfgestaan));
             if (hqBedrag > 0 && r1.HuwelijksquotientOntvangen > 0)
-                regels.Add(new("HQ ontvangen", r1.HuwelijksquotientOntvangen));
+                regels.Add(new("Huwelijksquotiënt ontvangen", r1.HuwelijksquotientOntvangen));
+            if (hqBedrag > 0)
+                regels.Add(new("Netto belastbaar na HQ", r1.NettoBelastbaarNaHQ, true));
 
             regels.Add(new("Basisbelasting", r1.Basisbelasting));
+            regels.AddRange(BelastingschijvenCalculator.BerekenSchijvenDetail(r1.NettoBelastbaarNaHQ));
+            var bvsComp1 = kinderenBijPartner1
+                ? BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, true, true)
+                : BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, true, false);
             regels.Add(new($"Belastingvrije som ({vrijeSom1:N0})", -r1.VerminderingBelastingvrijeSom));
+            regels.AddRange(bvsComp1);
             regels.Add(new("Om te slane", r1.OmTeSlane, true));
             if (r1.VerminderingVervangingsinkomen > 0)
                 regels.Add(new("Verm. vervangingsinkomen", -r1.VerminderingVervangingsinkomen));
-            regels.Add(new("Federaal", r1.SaldoFederaal));
+            regels.Add(new("Gereduceerde belasting Staat", r1.GereduceerdeStaat));
+            if (r1.FederaleVerminderingen > 0)
+            {
+                regels.Add(new("Federale verminderingen", -r1.FederaleVerminderingen));
+                regels.AddRange(PartnerBelastingCalculator.BerekenFederaleVerminderingenDetail(ink1));
+            }
+            regels.Add(new("Federaal saldo", r1.SaldoFederaal, true));
+            regels.Add(new($"Gewestelijke opcentiemen ({input.Gewest})", r1.GewestelijkeOpcentiemen));
             if (r1.GewestelijkeVerminderingen > 0)
+            {
                 regels.Add(new("Gewest. verminderingen", -r1.GewestelijkeVerminderingen));
-            regels.Add(new("Gewestelijk", r1.SaldoGewestelijk));
+                regels.AddRange(GewestelijkeVerminderingenCalculator.BerekenDetail(ink1, input.Gewest, r1.NettoBelastbaarInkomen));
+            }
+            regels.Add(new("Gewestelijk saldo", r1.SaldoGewestelijk, true));
             if (r1.Vermeerdering > 0)
                 regels.Add(new("Vermeerdering (geen VA)", r1.Vermeerdering));
 
-            regels.Add(new("═══ PARTNER ═══", 0, true));
+            regels.Add(new("PARTNER", 0, IsHeader: true));
             regels.Add(new("Bruto inkomen", r2.BrutoTotaal));
             regels.Add(new("Beroepskosten", -r2.Beroepskosten));
 
@@ -286,23 +310,40 @@ public class GezamenlijkeBerekeningCalculator
             regels.Add(new("Netto belastbaar", r2.NettoBelastbaarInkomen, true));
 
             if (hqBedrag > 0 && r2.HuwelijksquotientAfgestaan > 0)
-                regels.Add(new("HQ afgestaan", -r2.HuwelijksquotientAfgestaan));
+                regels.Add(new("Huwelijksquotiënt afgestaan", -r2.HuwelijksquotientAfgestaan));
             if (hqBedrag > 0 && r2.HuwelijksquotientOntvangen > 0)
-                regels.Add(new("HQ ontvangen", r2.HuwelijksquotientOntvangen));
+                regels.Add(new("Huwelijksquotiënt ontvangen", r2.HuwelijksquotientOntvangen));
+            if (hqBedrag > 0)
+                regels.Add(new("Netto belastbaar na HQ", r2.NettoBelastbaarNaHQ, true));
 
             regels.Add(new("Basisbelasting", r2.Basisbelasting));
+            regels.AddRange(BelastingschijvenCalculator.BerekenSchijvenDetail(r2.NettoBelastbaarNaHQ));
+            var bvsComp2 = !kinderenBijPartner1
+                ? BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, false, true)
+                : BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, false, false);
             regels.Add(new($"Belastingvrije som ({vrijeSom2:N0})", -r2.VerminderingBelastingvrijeSom));
+            regels.AddRange(bvsComp2);
             regels.Add(new("Om te slane", r2.OmTeSlane, true));
             if (r2.VerminderingVervangingsinkomen > 0)
                 regels.Add(new("Verm. vervangingsinkomen", -r2.VerminderingVervangingsinkomen));
-            regels.Add(new("Federaal", r2.SaldoFederaal));
+            regels.Add(new("Gereduceerde belasting Staat", r2.GereduceerdeStaat));
+            if (r2.FederaleVerminderingen > 0)
+            {
+                regels.Add(new("Federale verminderingen", -r2.FederaleVerminderingen));
+                regels.AddRange(PartnerBelastingCalculator.BerekenFederaleVerminderingenDetail(ink2));
+            }
+            regels.Add(new("Federaal saldo", r2.SaldoFederaal, true));
+            regels.Add(new($"Gewestelijke opcentiemen ({input.Gewest})", r2.GewestelijkeOpcentiemen));
             if (r2.GewestelijkeVerminderingen > 0)
+            {
                 regels.Add(new("Gewest. verminderingen", -r2.GewestelijkeVerminderingen));
-            regels.Add(new("Gewestelijk", r2.SaldoGewestelijk));
+                regels.AddRange(GewestelijkeVerminderingenCalculator.BerekenDetail(ink2, input.Gewest, r2.NettoBelastbaarInkomen));
+            }
+            regels.Add(new("Gewestelijk saldo", r2.SaldoGewestelijk, true));
             if (r2.Vermeerdering > 0)
                 regels.Add(new("Vermeerdering (geen VA)", r2.Vermeerdering));
 
-            regels.Add(new("═══ GECOMBINEERD ═══", 0, true));
+            regels.Add(new("GECOMBINEERD", 0, IsHeader: true));
         }
         else
         {

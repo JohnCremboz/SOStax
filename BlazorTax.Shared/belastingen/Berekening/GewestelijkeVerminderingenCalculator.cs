@@ -58,6 +58,48 @@ public static class GewestelijkeVerminderingenCalculator
     }
 
     /// <summary>
+    /// Retourneert de gewestelijke verminderingen als ingesprongen detail-regels.
+    /// Dezelfde logica als <see cref="Bereken"/>, maar per component opgesplitst.
+    /// </summary>
+    public static List<BerekeningRegel> BerekenDetail(
+        PartnerInkomen inkomen, Gewest gewest, decimal nettoInkomen)
+    {
+        var regels = new List<BerekeningRegel>();
+
+        decimal geintKorf = inkomen.GeintWoonbonusInteresten
+                          + inkomen.GeintWoonbonusKapitaal
+                          + inkomen.GeintWoonbonusPremies;
+        if (geintKorf > 0)
+        {
+            decimal maxKorf = BerekenMaxGeintWoonbonus(inkomen, gewest);
+            decimal effectief = Math.Min(geintKorf, maxKorf);
+            regels.Add(new($"  Geïnt. woonbonus (40% × {effectief:N2} €)",
+                -(effectief * TaxConstants2026.GeintWoonbonusPercentage), IsDetail: true));
+        }
+
+        decimal wbKorf = inkomen.WoonbonusInteresten + inkomen.WoonbonusPremies;
+        if (wbKorf > 0)
+        {
+            decimal maxKorf = BerekenMaxWoonbonus2005(gewest);
+            decimal effectief = Math.Min(wbKorf, maxKorf);
+            regels.Add(new($"  Gewest. woonbonus (40% × {effectief:N2} €)",
+                -(effectief * TaxConstants2026.WoonbonusPercentage), IsDetail: true));
+        }
+
+        decimal bouwsparenKorf = inkomen.BouwsparenKapitaal + inkomen.BouwsparenPremies;
+        if (bouwsparenKorf > 0)
+        {
+            decimal zesProcentPlafond = nettoInkomen * 0.06m + 176_400m;
+            decimal maxKorf = Math.Min(TaxConstants2026.BouwsparenMaxKorf, zesProcentPlafond);
+            decimal effectief = Math.Min(bouwsparenKorf, maxKorf);
+            regels.Add(new($"  Bouwsparen (30% × {effectief:N2} €)",
+                -(effectief * TaxConstants2026.BouwsparenPercentage), IsDetail: true));
+        }
+
+        return regels;
+    }
+
+    /// <summary>
     /// Max korf geïntegreerde woonbonus: basisbedrag + verhoging eerste 10 jaar + extra ≥3 kinderen.
     /// </summary>
     private static decimal BerekenMaxGeintWoonbonus(PartnerInkomen inkomen, Gewest gewest)

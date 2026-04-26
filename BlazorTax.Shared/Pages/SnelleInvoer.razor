@@ -104,12 +104,30 @@
             <tbody>
                 @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
                 {
-                    <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
-                        <td>@regel.Omschrijving</td>
-                        <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
-                            @regel.Bedrag.ToString("N2") €
-                        </td>
-                    </tr>
+                    @if (regel.IsHeader)
+                    {
+                        <tr class="table-dark">
+                            <td colspan="2" class="fw-bold text-uppercase small">@regel.Omschrijving</td>
+                        </tr>
+                    }
+                    else if (regel.IsDetail)
+                    {
+                        <tr class="text-muted">
+                            <td class="ps-4 small fst-italic">@regel.Omschrijving</td>
+                            <td class="text-end small fst-italic @(regel.Bedrag < 0 ? "text-success" : "")">
+                                @regel.Bedrag.ToString("N2") €
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
+                            <td>@regel.Omschrijving</td>
+                            <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
+                                @regel.Bedrag.ToString("N2") €
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

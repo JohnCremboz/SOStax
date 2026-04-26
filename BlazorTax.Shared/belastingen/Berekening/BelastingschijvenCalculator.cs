@@ -13,6 +13,27 @@ public static class BelastingschijvenCalculator
     public static decimal BerekenVerminderingVrijeSom(decimal belastingvrijeSom)
         => BerekenViaBarema(belastingvrijeSom, TaxConstants2026.BaremaVrijeSom);
 
+    /// <summary>
+    /// Retourneert de belastingschijf-uitsplitsing als detail-regels (voor weergave).
+    /// </summary>
+    public static List<BerekeningRegel> BerekenSchijvenDetail(decimal belastbaarInkomen)
+    {
+        var regels = new List<BerekeningRegel>();
+        if (belastbaarInkomen <= 0) return regels;
+
+        decimal vorige = 0;
+        foreach (var (grens, vast, percentage) in TaxConstants2026.Schijven)
+        {
+            decimal schijfBedrag = Math.Min(belastbaarInkomen, grens) - vorige;
+            if (schijfBedrag <= 0) break;
+            int pct = (int)(percentage * 100);
+            regels.Add(new($"  {pct}% × {schijfBedrag:N2} €", schijfBedrag * percentage, IsDetail: true));
+            if (belastbaarInkomen <= grens) break;
+            vorige = grens;
+        }
+        return regels;
+    }
+
     /// <summary>Generieke berekening via een progressief barema.</summary>
     public static decimal BerekenViaBarema(
         decimal bedrag,

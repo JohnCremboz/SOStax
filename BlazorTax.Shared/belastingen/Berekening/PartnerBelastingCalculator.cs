@@ -226,16 +226,20 @@ public static class PartnerBelastingCalculator
         PartnerResultaat r,
         PartnerInkomen inkomen,
         decimal belastingvrijeSom,
-        Gewest gewest)
+        Gewest gewest,
+        IReadOnlyList<BerekeningRegel>? bvsComponenten = null)
     {
         // ── 4. Basisbelasting (progressief) ─────────────────────────────
         r.Basisbelasting = BelastingschijvenCalculator.BerekenBelasting(r.NettoBelastbaarNaHQ);
         r.DetailRegels.Add(new("Basisbelasting", r.Basisbelasting));
+        r.DetailRegels.AddRange(BelastingschijvenCalculator.BerekenSchijvenDetail(r.NettoBelastbaarNaHQ));
 
         // ── 5. Belastingvrije som ───────────────────────────────────────
         r.BelastingvrijeSom = belastingvrijeSom;
         r.VerminderingBelastingvrijeSom = BelastingschijvenCalculator.BerekenVerminderingVrijeSom(belastingvrijeSom);
         r.DetailRegels.Add(new($"Belastingvrije som ({belastingvrijeSom:N0})", -r.VerminderingBelastingvrijeSom));
+        if (bvsComponenten != null && bvsComponenten.Count > 0)
+            r.DetailRegels.AddRange(bvsComponenten);
 
         r.OmTeSlane = Math.Max(r.Basisbelasting - r.VerminderingBelastingvrijeSom, 0);
         r.DetailRegels.Add(new("Om te slane belasting", r.OmTeSlane, true));
@@ -294,7 +298,10 @@ public static class PartnerBelastingCalculator
         r.FederaleVerminderingen = BerekenFederaleVerminderingen(inkomen);
 
         if (r.FederaleVerminderingen > 0)
+        {
             r.DetailRegels.Add(new("Federale verminderingen", -r.FederaleVerminderingen));
+            r.DetailRegels.AddRange(BerekenFederaleVerminderingenDetail(inkomen));
+        }
 
         r.SaldoFederaal = Math.Max(r.GereduceerdeStaat - r.FederaleVerminderingen, 0);
 
@@ -303,7 +310,11 @@ public static class PartnerBelastingCalculator
             inkomen, gewest, r.NettoBelastbaarInkomen);
 
         if (r.GewestelijkeVerminderingen > 0)
+        {
             r.DetailRegels.Add(new("Gewestelijke verminderingen", -r.GewestelijkeVerminderingen));
+            r.DetailRegels.AddRange(GewestelijkeVerminderingenCalculator.BerekenDetail(
+                inkomen, gewest, r.NettoBelastbaarInkomen));
+        }
 
         r.SaldoGewestelijk = Math.Max(r.GewestelijkeOpcentiemen - r.GewestelijkeVerminderingen, 0);
 
@@ -380,5 +391,48 @@ public static class PartnerBelastingCalculator
         }
 
         return totaal;
+    }
+
+    /// <summary>
+    /// Retourneert de federale verminderingen als ingesprongen detail-regels per component.
+    /// </summary>
+    public static List<BerekeningRegel> BerekenFederaleVerminderingenDetail(PartnerInkomen inkomen)
+    {
+        var regels = new List<BerekeningRegel>();
+
+        if (inkomen.Kinderopvang > 0)
+            regels.Add(new($"  Kinderopvang (45% × {inkomen.Kinderopvang:N2} €)",
+                -(inkomen.Kinderopvang * 0.45m), IsDetail: true));
+
+        if (inkomen.Pensioensparen > 0)
+        {
+            if (inkomen.Pensioensparen <= TaxConstants2026.MaxPensioensparen30)
+                regels.Add(new($"  Pensioensparen (30% × {inkomen.Pensioensparen:N2} €)",
+                    -(inkomen.Pensioensparen * 0.30m), IsDetail: true));
+            else
+                regels.Add(new($"  Pensioensparen (25% × {Math.Min(inkomen.Pensioensparen, TaxConstants2026.MaxPensioensparen25):N2} €)",
+                    -(Math.Min(inkomen.Pensioensparen, TaxConstants2026.MaxPensioensparen25) * 0.25m), IsDetail: true));
+        }
+
+        if (inkomen.Giften >= TaxConstants2026.MinGift)
+        {
+            decimal giftenBasis = Math.Min(inkomen.Giften, TaxConstants2026.MaxGift);
+            regels.Add(new($"  Giften (30% × {giftenBasis:N2} €)",
+                -(giftenBasis * TaxConstants2026.PercentageGiften), IsDetail: true));
+        }
+
+        if (inkomen.OverwerktoeslagCode1234 > 0)
+            regels.Add(new($"  Overwerktoeslag ({TaxConstants2026.OverwerktoeslagVerminderingPercentage:P2} × {inkomen.OverwerktoeslagCode1234:N2} €)",
+                -(inkomen.OverwerktoeslagCode1234 * TaxConstants2026.OverwerktoeslagVerminderingPercentage), IsDetail: true));
+
+        decimal fedLT = inkomen.FederaalLTKapitaal + inkomen.FederaalLTPremies;
+        if (fedLT > 0)
+        {
+            decimal effectief = Math.Min(fedLT, TaxConstants2026.MaxLangetermijnsparenFederaalAbsoluut);
+            regels.Add(new($"  Langetermijnsparen (30% × {effectief:N2} €)",
+                -(effectief * 0.30m), IsDetail: true));
+        }
+
+        return regels;
     }
 }

@@ -136,4 +136,93 @@ public static class BelastingvrijeSomCalculator
         int extra = aantal - (tabel.Length - 1);
         return basis + extra * TaxConstants2026.VerhogingPerKindBoven4;
     }
+
+    /// <summary>
+    /// Retourneert de opbouw van de belastingvrije som als ingesprongen detail-regels.
+    /// Gebruik voor een partner in een gemeenschappelijke aanslag.
+    /// </summary>
+    public static List<BerekeningRegel> BerekenComponentenPartner(
+        VakIIData gezinsData, bool isBelastingplichtige, bool ontvangtKinderen)
+    {
+        var regels = new List<BerekeningRegel>();
+        regels.Add(new("  Basisbedrag", TaxConstants2026.BelastingvrijeSomBasis, IsDetail: true));
+
+        bool handicap = isBelastingplichtige ? gezinsData.Code1028 : gezinsData.Code2028;
+        if (handicap)
+            regels.Add(new("  Handicap", TaxConstants2026.VerhogingHandicapBelastingplichtige, IsDetail: true));
+
+        if (ontvangtKinderen)
+            regels.AddRange(BerekenKinderenComponenten(gezinsData));
+
+        return regels;
+    }
+
+    /// <summary>
+    /// Retourneert de opbouw van de belastingvrije som als ingesprongen detail-regels.
+    /// Gebruik voor een alleenstaande aangifte.
+    /// </summary>
+    public static List<BerekeningRegel> BerekenComponentenAlleenstaand(VakIIData gezinsData)
+    {
+        var regels = new List<BerekeningRegel>();
+        regels.Add(new("  Basisbedrag", TaxConstants2026.BelastingvrijeSomBasis, IsDetail: true));
+
+        if (gezinsData.Code1028)
+            regels.Add(new("  Handicap (kolom 1)", TaxConstants2026.VerhogingHandicapBelastingplichtige, IsDetail: true));
+        if (gezinsData.Code2028)
+            regels.Add(new("  Handicap (kolom 2)", TaxConstants2026.VerhogingHandicapBelastingplichtige, IsDetail: true));
+
+        regels.AddRange(BerekenKinderenComponenten(gezinsData));
+
+        bool isAlleenstaand = gezinsData.BurgerlijkeStaat == "1001";
+        int kinderen = gezinsData.Code1030 ?? 0;
+        int kinderenCoOuder = gezinsData.Code1036 ?? 0;
+        if (isAlleenstaand && (kinderen > 0 || kinderenCoOuder > 0))
+            regels.Add(new("  Toeslag alleenstaande ouder", TaxConstants2026.VerhogingAlleenstaandeMetKinderen, IsDetail: true));
+
+        return regels;
+    }
+
+    private static List<BerekeningRegel> BerekenKinderenComponenten(VakIIData gezinsData)
+    {
+        var regels = new List<BerekeningRegel>();
+
+        int kinderen = gezinsData.Code1030 ?? 0;
+        int kinderenH = gezinsData.Code1031 ?? 0;
+        int effectief = kinderen + kinderenH;
+        if (effectief > 0)
+        {
+            decimal bedrag = BerekenVerhogingKinderen(effectief);
+            string label = kinderenH > 0
+                ? $"  {effectief} kinderen t.l. (incl. {kinderenH} gehandicapt)"
+                : effectief == 1 ? "  1 kind t.l." : $"  {effectief} kinderen t.l.";
+            regels.Add(new(label, bedrag, IsDetail: true));
+        }
+
+        int j3 = (gezinsData.Code1038 ?? 0) + (gezinsData.Code1039 ?? 0);
+        if (j3 > 0)
+            regels.Add(new($"  Toeslag <3 jaar ({j3}×{TaxConstants2026.ToeslagKindJongerDan3:N0} €)",
+                j3 * TaxConstants2026.ToeslagKindJongerDan3, IsDetail: true));
+
+        int coOuder = (gezinsData.Code1036 ?? 0) + (gezinsData.Code1037 ?? 0);
+        if (coOuder > 0)
+            regels.Add(new($"  Co-ouderschap ({coOuder}×½)",
+                BerekenVerhogingKinderen(coOuder) / 2m, IsDetail: true));
+
+        int asc = gezinsData.Code1027 ?? 0;
+        if (asc > 0)
+            regels.Add(new($"  Zorgbehoevende ascendenten ({asc}×)",
+                asc * TaxConstants2026.VerhogingAscendentZorgbehoevend, IsDetail: true));
+
+        int andere = gezinsData.Code1032 ?? 0;
+        if (andere > 0)
+            regels.Add(new($"  Andere personen t.l. ({andere}×)",
+                andere * TaxConstants2026.VerhogingAnderePersonenTenLaste, IsDetail: true));
+
+        int andereH = gezinsData.Code1033 ?? 0;
+        if (andereH > 0)
+            regels.Add(new($"  Gehandicapte andere t.l. ({andereH}×)",
+                andereH * TaxConstants2026.VerhogingHandicapBelastingplichtige, IsDetail: true));
+
+        return regels;
+    }
 }
