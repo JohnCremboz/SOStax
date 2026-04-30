@@ -1,4 +1,5 @@
 @inject IAssetReader AssetReader
+@inject IJSRuntime JS
 @using System.Reflection
 @using System.Globalization
 
@@ -13,14 +14,15 @@
                placeholder="bijv. 1250"
                @bind="_code"
                @bind:event="oninput"
-               @onkeydown="HandleKeyDown" />
+               @onkeydown="HandleKeyDown"
+               @ref="_codeInput" />
         <label class="snelle-invoer-label">Waarde :</label>
         <input type="text"
                class="form-control snelle-invoer-waarde"
                @bind="_waarde"
                @bind:event="oninput"
                @onkeydown="HandleKeyDown" />
-        <button type="button" class="btn btn-primary" @onclick="Toevoegen">TOEVOEGEN</button>
+        <button type="button" class="btn btn-primary" @onclick="ToevoegenAsync">TOEVOEGEN</button>
     </div>
 
     @if (!string.IsNullOrEmpty(_foutmelding))
@@ -59,6 +61,7 @@
 @code {
     [Parameter] public AangifteState State { get; set; } = default!;
 
+    private ElementReference _codeInput;
     private string _code = string.Empty;
     private string _waarde = string.Empty;
     private string _foutmelding = string.Empty;
@@ -140,7 +143,7 @@
         }
     }
 
-    private void Toevoegen()
+    private async Task ToevoegenAsync()
     {
         _foutmelding = string.Empty;
         var code = _code.Trim();
@@ -149,12 +152,14 @@
         if (string.IsNullOrWhiteSpace(code))
         {
             _foutmelding = "Vul een code in.";
+            await _codeInput.FocusAsync();
             return;
         }
 
         if (!TrySetWaarde(code, waarde))
         {
             _foutmelding = $"Code '{code}' niet gevonden of ongeldige waarde '{waarde}'.";
+            await _codeInput.FocusAsync();
             return;
         }
 
@@ -181,6 +186,7 @@
         _entries.Add(new SnelleInvoerEntry(gevondenCode, omschrijving, waarde));
         _code = string.Empty;
         _waarde = string.Empty;
+        await _codeInput.FocusAsync();
     }
 
     private void Valideren()
@@ -204,11 +210,11 @@
         }
     }
 
-    private void HandleKeyDown(KeyboardEventArgs e)
+    private async Task HandleKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
-            Toevoegen();
+            await ToevoegenAsync();
         }
     }
 

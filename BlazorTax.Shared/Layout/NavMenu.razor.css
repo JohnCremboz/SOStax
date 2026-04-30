@@ -43,7 +43,7 @@
 }
 
     .nav-item:first-of-type {
-        padding-top: 1rem;
+        padding-top: 0;
     }
 
     .nav-item:last-of-type {

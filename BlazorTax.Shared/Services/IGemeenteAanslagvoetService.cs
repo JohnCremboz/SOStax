@@ -1,3 +1,5 @@
+using BlazorTax.Belastingen.Berekening;
+
 namespace BlazorTax.Services;
 
 /// <summary>
@@ -6,10 +8,10 @@ namespace BlazorTax.Services;
 public interface IGemeenteAanslagvoetService
 {
     /// <summary>
-    /// Laadt de gemeentelijke aanslagvoeten uit het CSV-bestand.
+    /// Initialiseert de service. Data is statisch ingebakken; deze methode is een no-op
+    /// maar blijft in de interface voor achterwaartse compatibiliteit.
     /// </summary>
-    /// <param name="assetReader">De asset reader om het CSV bestand te laden</param>
-    Task InitializeAsync(IAssetReader assetReader);
+    Task InitializeAsync(IAssetReader? assetReader = null);
 
     /// <summary>
     /// Haalt de aanslagvoet op voor een specifieke gemeente en jaar.
@@ -28,4 +30,9 @@ public interface IGemeenteAanslagvoetService
     /// Geeft aan of de service is geïnitialiseerd.
     /// </summary>
     bool IsInitialized { get; }
+
+    /// <summary>
+    /// Geeft het gewest terug op basis van de gemeentenaam.
+    /// </summary>
+    Gewest? GetGewest(string gemeenteNaam);
 }

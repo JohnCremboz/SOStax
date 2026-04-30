@@ -1,5 +1,4 @@
 @page "/belastingen"
-@inject IAssetReader AssetReader
 @inject IJSRuntime JS
 @inject IGemeenteAanslagvoetService GemeenteService
 @inject AangifteStateService AangifteStateService
@@ -11,10 +10,6 @@
 <h1>Personenbelasting AJ 2026</h1>
 <p class="text-muted">Begeleide workflow per stap in plaats van tab-navigatie per vak.</p>
 
-@if (!string.IsNullOrWhiteSpace(_errorMessage))
-{
-    <div class="alert alert-danger" role="alert">@_errorMessage</div>
-}
 @if (AangifteStateService.ValidatieFouten.Count > 0)
 {
     <div class="alert alert-warning" role="alert">
@@ -27,10 +22,6 @@
         </ul>
     </div>
 }
-else if (_vakSections.Count == 0)
-{
-    <p>Structuur laden...</p>
-}
 else
 {
     var currentStep = _workflowSteps[_activeStepIndex];
@@ -41,9 +32,15 @@ else
                 <h2 class="mb-1">@currentStep.Title</h2>
                 <p class="text-muted mb-0">Stap @(_activeStepIndex + 1) van @_workflowSteps.Count · @currentStep.Description</p>
             </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
-                <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+            <div class="d-flex gap-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="toonAlleVakken" @bind="_toonAlleVakken" />
+                    <label class="form-check-label" for="toonAlleVakken">Toon alle vakken</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isZelfstandige" @bind="_isZelfstandige" />
+                    <label class="form-check-label" for="isZelfstandige">Zelfstandige (deel 2)</label>
+                </div>
             </div>
         </div>
     </section>
@@ -63,6 +60,31 @@ else
     </ol>
 
     <section class="vak-panel">
+        <div class="vak-nav-header">
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    disabled="@(_activeStepIndex == 0)"
+                    @onclick="VorigeStap">
+                &#8592; Vorige stap
+            </button>
+            <span class="vak-nav-counter">@(_activeStepIndex + 1) / @_workflowSteps.Count</span>
+            @if (_activeStepIndex == _workflowSteps.Count - 1)
+            {
+                <button type="button" class="btn btn-primary" @onclick="StartNieuweAangifte">
+                    Nieuwe aangifte
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="btn btn-outline-primary"
+                        @onclick="VolgendeStap">
+                    Volgende stap &#8594;
+                </button>
+            }
+        </div>
+
+        <div @key="_activeStepIndex" class="wizard-step-content">
         @switch (currentStep.Key)
         {
             case "intro":
@@ -89,13 +111,50 @@ else
 
             case "controle":
                 <h3>Controle</h3>
-                <p class="text-muted">Overzicht van vakken die momenteel in de workflow zijn opgenomen.</p>
-                <ul class="mb-0">
-                    @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
-                    {
-                        <li>@vak.Code — @vak.Title</li>
-                    }
-                </ul>
+                <p class="text-muted">Overzicht van ingevulde vakken. Klik op een vak om de details te bekijken.</p>
+                @foreach (var vak in GetWorkflowVakSections(_persoonlijkeVakken.Concat(_inkomstenVakken).Concat(_aftrekVakken).ToList()))
+                {
+                    var velden = GetIngevuldeVelden(GetVakDataObject(vak.Code));
+                    <details class="workflow-vak mb-2">
+                        <summary class="workflow-vak-summary d-flex justify-content-between align-items-center">
+                            <span>@vak.Code — @vak.Title</span>
+                            @if (velden.Count > 0)
+                            {
+                                <span class="badge bg-primary ms-2">@velden.Count ingevuld</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary ms-2">Leeg</span>
+                            }
+                        </summary>
+                        <div class="workflow-vak-body pt-2">
+                            @if (velden.Count > 0)
+                            {
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:40%">Code</th>
+                                            <th>Waarde</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var (veldCode, veldWaarde) in velden)
+                                        {
+                                            <tr>
+                                                <td class="text-muted">@veldCode</td>
+                                                <td>@veldWaarde</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0"><em>Geen gegevens ingevuld voor dit vak.</em></p>
+                            }
+                        </div>
+                    </details>
+                }
                 break;
 
             case "resultaat":
@@ -104,6 +163,7 @@ else
                 @RenderBerekening()
                 break;
         }
+        </div>
 
         <div class="vak-nav-footer mt-4">
             <button type="button"
@@ -164,46 +224,21 @@ else
         "VAK X", "VAK XII"
     };
 
-    private readonly List<VakSection> _vakSections = [];
-    private string? _errorMessage;
+    private static readonly HashSet<string> _zelfstandigenVakken = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "VAK XVII", "VAK XVIII", "VAK XIX", "VAK XX", "VAK XXI", "VAK XXII"
+    };
+
+    private static readonly IReadOnlyList<VakSection> _vakSections = VakSectieData.Secties;
+
     private int _activeStepIndex;
     private bool _isBerekenen;
     private bool _toonAlleVakken;
+    private bool _isZelfstandige;
 
     private string? _geselecteerdeGemeente;
     private List<string> _gemeenteSuggesties = new();
     private bool _toonGemeenteSuggesties;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            if (!GemeenteService.IsInitialized)
-            {
-                await GemeenteService.InitializeAsync(AssetReader);
-            }
-
-            var markdown = await AssetReader.GetStringAsync("belastingen/structuur.md");
-            if (markdown.Contains("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
-            {
-                _errorMessage = "De markdown is niet als statisch bestand gevonden (fallback naar index.html).";
-                return;
-            }
-
-            _vakSections.AddRange(VakStructuurParser.ParseSections(markdown)
-                .Where(v => !string.Equals(v.Code, "VAK V C", StringComparison.OrdinalIgnoreCase)));
-
-            if (_vakSections.Count == 0)
-            {
-                _errorMessage = "Geen VAK-secties gevonden in structuur.md.";
-            }
-        }
-        catch (Exception ex)
-        {
-            _ = ex; // details alleen in dev console, niet tonen aan gebruiker
-            _errorMessage = "Structuur kon niet geladen worden. Probeer het later opnieuw.";
-        }
-    }
 
     private void GaNaarStap(int index)
     {
@@ -215,19 +250,21 @@ else
         _activeStepIndex = index;
     }
 
-    private void VolgendeStap()
+    private async Task VolgendeStap()
     {
         if (_activeStepIndex < _workflowSteps.Count - 1)
         {
             _activeStepIndex++;
+            await JS.InvokeVoidAsync("window.scrollTo", 0, 0);
         }
     }
 
-    private void VorigeStap()
+    private async Task VorigeStap()
     {
         if (_activeStepIndex > 0)
         {
             _activeStepIndex--;
+            await JS.InvokeVoidAsync("window.scrollTo", 0, 0);
         }
     }
 
@@ -238,6 +275,7 @@ else
         _gemeenteSuggesties = [];
         _toonGemeenteSuggesties = false;
         _isBerekenen = false;
+        _isZelfstandige = false;
         _activeStepIndex = 0;
     }
 
@@ -256,16 +294,20 @@ else
         var seq = 10;
         foreach (var vak in vakken)
         {
-            builder.OpenElement(seq++, "article");
-            builder.AddAttribute(seq++, "class", "workflow-vak mb-4");
+            builder.OpenElement(seq++, "details");
+            builder.AddAttribute(seq++, "class", "workflow-vak mb-2");
 
-            builder.OpenElement(seq++, "h3");
-            builder.AddAttribute(seq++, "class", "h5");
+            builder.OpenElement(seq++, "summary");
+            builder.AddAttribute(seq++, "class", "workflow-vak-summary");
             builder.AddContent(seq++, vak.Title);
-            builder.CloseElement();
+            builder.CloseElement(); // summary
 
+            builder.OpenElement(seq++, "div");
+            builder.AddAttribute(seq++, "class", "workflow-vak-body pt-3");
             builder.AddContent(seq++, RenderVakForm(vak));
-            builder.CloseElement();
+            builder.CloseElement(); // div
+
+            builder.CloseElement(); // details
         }
     };
 
@@ -298,6 +340,11 @@ else
             return false;
         }
 
+        if (_zelfstandigenVakken.Contains(vakCode) && !_isZelfstandige && !HeeftVakData(vakCode))
+        {
+            return false;
+        }
+
         return true;
     }
 
@@ -318,37 +365,34 @@ else
             || (vakII.Code1032 ?? 0) > 0;
     }
 
-    private bool HeeftVakData(string vakCode)
-    {
-        object? vakData = vakCode.ToUpperInvariant() switch
-        {
-            "VAK I" => (object?)AangifteStateService.State.VakI,
-            "VAK II" => AangifteStateService.State.VakII,
-            "VAK III" => AangifteStateService.State.VakIII,
-            "VAK IV" => AangifteStateService.State.VakIV,
-            "VAK V" => AangifteStateService.State.VakV,
-            "VAK VI" => AangifteStateService.State.VakVI,
-            "VAK VII" => AangifteStateService.State.VakVII,
-            "VAK VIII" => AangifteStateService.State.VakVIII,
-            "VAK IX" => AangifteStateService.State.VakIX,
-            "VAK X" => AangifteStateService.State.VakX,
-            "VAK XI" => AangifteStateService.State.VakXI,
-            "VAK XII" => AangifteStateService.State.VakXII,
-            "VAK XIII" => AangifteStateService.State.VakXIII,
-            "VAK XIV" => AangifteStateService.State.VakXIV,
-            "VAK XV" => AangifteStateService.State.VakXV,
-            "VAK XVI" => AangifteStateService.State.VakXVI,
-            "VAK XVII" => AangifteStateService.State.VakXVII,
-            "VAK XVIII" => AangifteStateService.State.VakXVIII,
-            "VAK XIX" => AangifteStateService.State.VakXIX,
-            "VAK XX" => AangifteStateService.State.VakXX,
-            "VAK XXI" => AangifteStateService.State.VakXXI,
-            "VAK XXII" => AangifteStateService.State.VakXXII,
-            _ => null
-        };
+    private bool HeeftVakData(string vakCode) => HeeftInhoud(GetVakDataObject(vakCode));
 
-        return HeeftInhoud(vakData);
-    }
+    private object? GetVakDataObject(string vakCode) => vakCode.ToUpperInvariant() switch
+    {
+        "VAK I" => (object?)AangifteStateService.State.VakI,
+        "VAK II" => AangifteStateService.State.VakII,
+        "VAK III" => AangifteStateService.State.VakIII,
+        "VAK IV" => AangifteStateService.State.VakIV,
+        "VAK V" => AangifteStateService.State.VakV,
+        "VAK VI" => AangifteStateService.State.VakVI,
+        "VAK VII" => AangifteStateService.State.VakVII,
+        "VAK VIII" => AangifteStateService.State.VakVIII,
+        "VAK IX" => AangifteStateService.State.VakIX,
+        "VAK X" => AangifteStateService.State.VakX,
+        "VAK XI" => AangifteStateService.State.VakXI,
+        "VAK XII" => AangifteStateService.State.VakXII,
+        "VAK XIII" => AangifteStateService.State.VakXIII,
+        "VAK XIV" => AangifteStateService.State.VakXIV,
+        "VAK XV" => AangifteStateService.State.VakXV,
+        "VAK XVI" => AangifteStateService.State.VakXVI,
+        "VAK XVII" => AangifteStateService.State.VakXVII,
+        "VAK XVIII" => AangifteStateService.State.VakXVIII,
+        "VAK XIX" => AangifteStateService.State.VakXIX,
+        "VAK XX" => AangifteStateService.State.VakXX,
+        "VAK XXI" => AangifteStateService.State.VakXXI,
+        "VAK XXII" => AangifteStateService.State.VakXXII,
+        _ => null
+    };
 
     private static bool HeeftInhoud(object? vakData)
     {
@@ -403,6 +447,79 @@ else
         }
 
         return false;
+    }
+
+    private static readonly Dictionary<Type, System.Reflection.PropertyInfo[]> _propertyCache = new();
+
+    private static System.Reflection.PropertyInfo[] GetCachedProperties(Type type)
+    {
+        if (!_propertyCache.TryGetValue(type, out var props))
+        {
+            props = type.GetProperties();
+            _propertyCache[type] = props;
+        }
+        return props;
+    }
+
+    private static List<(string Code, string Waarde)> GetIngevuldeVelden(object? vakData)
+    {
+        var result = new List<(string, string)>();
+        if (vakData is null) return result;
+
+        foreach (var property in GetCachedProperties(vakData.GetType()))
+        {
+            var value = property.GetValue(vakData);
+            if (value is null) continue;
+
+            if (value is bool boolValue)
+            {
+                if (boolValue) result.Add((property.Name, "✓"));
+                continue;
+            }
+
+            if (value is string strValue)
+            {
+                if (!string.IsNullOrWhiteSpace(strValue)) result.Add((property.Name, strValue));
+                continue;
+            }
+
+            if (value is int intValue)
+            {
+                if (intValue != 0) result.Add((property.Name, intValue.ToString()));
+                continue;
+            }
+
+            if (value is decimal decimalValue)
+            {
+                if (decimalValue != 0m) result.Add((property.Name, decimalValue.ToString("N2") + " €"));
+                continue;
+            }
+
+            if (value is System.Collections.IEnumerable enumerable and not string)
+            {
+                var i = 1;
+                foreach (var item in enumerable)
+                {
+                    if (item is null) continue;
+                    foreach (var subProp in GetCachedProperties(item.GetType()))
+                    {
+                        var subVal = subProp.GetValue(item);
+                        string? display = subVal switch
+                        {
+                            decimal d when d != 0m => d.ToString("N2") + " €",
+                            string s when !string.IsNullOrWhiteSpace(s) => s,
+                            int n when n != 0 => n.ToString(),
+                            _ => null
+                        };
+                        if (display is not null)
+                            result.Add(($"{property.Name}[{i}].{subProp.Name}", display));
+                    }
+                    i++;
+                }
+            }
+        }
+
+        return result;
     }
 
     private RenderFragment RenderVakForm(VakSection section) => builder =>
@@ -593,7 +710,22 @@ else
                         🖨️ Afdrukken / Opslaan als PDF
                     </button>
                 </div>
-                <h3 class="d-none print-only">Belastingberekening AJ2026</h3>
+                <div class="d-none print-only print-header">
+                    <h3>Belastingberekening AJ 2026</h3>
+                    <div class="print-meta">
+                        <span>Afgedrukt: @DateTime.Now.ToString("dd/MM/yyyy")</span>
+                        <span>Gewest: @(AangifteStateService.State.Gewest switch { Gewest.Wallonie => "Wallonië", Gewest.Brussel => "Brussel", _ => "Vlaanderen" })</span>
+                        @if (!string.IsNullOrEmpty(_geselecteerdeGemeente))
+                        {
+                            <span>Gemeente: @_geselecteerdeGemeente (@AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %)</span>
+                        }
+                        else
+                        {
+                            <span>Gemeentebelasting: @AangifteStateService.LaatsteResultaat.GemeentebelastingPercentage.ToString("N2") %</span>
+                        }
+                        <span>@(AangifteStateService.LaatsteResultaat.IsGezamenlijk ? "Gemeenschappelijke aanslag" : "Aanslag alleenstaande")</span>
+                    </div>
+                </div>
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
@@ -604,12 +736,30 @@ else
                     <tbody>
                         @foreach (var regel in AangifteStateService.LaatsteResultaat.DetailRegels)
                         {
-                            <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
-                                <td>@regel.Omschrijving</td>
-                                <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
-                                    @regel.Bedrag.ToString("N2") €
-                                </td>
-                            </tr>
+                            @if (regel.IsHeader)
+                            {
+                                <tr class="table-dark">
+                                    <td colspan="2" class="fw-bold text-uppercase small">@regel.Omschrijving</td>
+                                </tr>
+                            }
+                            else if (regel.IsDetail)
+                            {
+                                <tr class="text-muted">
+                                    <td class="ps-4 small fst-italic">@regel.Omschrijving</td>
+                                    <td class="text-end small fst-italic @(regel.Bedrag < 0 ? "text-success" : "")">
+                                        @regel.Bedrag.ToString("N2") €
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="@(regel.IsSubtotaal ? "table-active fw-bold" : "")">
+                                    <td>@regel.Omschrijving</td>
+                                    <td class="text-end @(regel.Bedrag < 0 ? "text-success" : "")">
+                                        @regel.Bedrag.ToString("N2") €
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -673,9 +823,11 @@ else
 
         var aanslagvoet = GemeenteService.GetAanslagvoet(gemeente, 2026);
         if (aanslagvoet.HasValue)
-        {
             AangifteStateService.State.GemeentebelastingPercentage = aanslagvoet.Value;
-        }
+
+        var gewest = GemeenteService.GetGewest(gemeente);
+        if (gewest.HasValue)
+            AangifteStateService.State.Gewest = gewest.Value;
     }
 
     private async Task Bereken()
