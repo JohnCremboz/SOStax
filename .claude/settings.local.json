@@ -27,7 +27,8 @@
       "WebFetch(domain:www.attentia.be)",
       "WebFetch(domain:www.hetacv.be)",
       "WebFetch(domain:www.moore.be)",
-      "WebFetch(domain:www.axxi.be)"
+      "WebFetch(domain:www.axxi.be)",
+      "Bash(git config *)"
     ]
   }
 }
