@@ -89,14 +89,7 @@ public static class GewestelijkeVerminderingenCalculator
                 -(effectief * TaxConstants2026.GeintWoonbonusPercentage), IsDetail: true));
         }
 
-        decimal wbKorf = inkomen.WoonbonusInteresten + inkomen.WoonbonusPremies;
-        if (wbKorf > 0)
-        {
-            decimal maxKorf = BerekenMaxWoonbonus2005(gewest);
-            decimal effectief = Math.Min(wbKorf, maxKorf);
-            regels.Add(new($"  Gewest. woonbonus (40% × {effectief:N2} €)",
-                -(effectief * TaxConstants2026.WoonbonusPercentage), IsDetail: true));
-        }
+        // Woonbonus 2005–2013: AFGESCHAFT vanaf AJ2026 (wet 18.12.2025)
 
         decimal bouwsparenKorf = inkomen.BouwsparenKapitaal + inkomen.BouwsparenPremies;
         if (bouwsparenKorf > 0)
