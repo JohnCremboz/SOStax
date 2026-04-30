@@ -38,6 +38,7 @@ public class AangifteStateService
         {
             VakII = State.VakII,
             VakIII = State.VakIII,
+            VakVI = State.VakVI,
             VakIV = State.VakIV,
             VakV = State.VakV,
             VakVIII = State.VakVIII,
