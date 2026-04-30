@@ -1,0 +1,12 @@
+.tdcatbg {
+    background-color: #FF9900
+}
+
+.title {
+    padding-left: 10px;
+    background: url(../images/csscit_bloc.gif) no-repeat left top;
+}
+
+p {
+    font-size: medium !important;
+}
