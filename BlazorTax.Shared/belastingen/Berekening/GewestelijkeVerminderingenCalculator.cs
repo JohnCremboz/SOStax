@@ -2,9 +2,13 @@ namespace BlazorTax.Belastingen.Berekening;
 
 /// <summary>
 /// Berekent de gewestelijke belastingverminderingen (Vak IX).
-/// Deze verminderingen worden afgetrokken van de gewestelijke opcentiemen.
-/// Ondersteunt: geïntegreerde woonbonus (Vl 2016-2019), gewestelijke woonbonus
-/// (Vl 2005-2015), bouwsparen/langetermijnsparen, en federaal langetermijnsparen.
+/// AJ2026: federale vastgoedfiscaliteit grondig hertekend (wet 18.12.2025):
+///   – Gewestelijke woonbonus 2015 (Rubriek 2a): blijft van toepassing
+///   – Federale woonbonus 2005–2013 (Rubriek 2b): AFGESCHAFT
+///   – Bijkomende interestaftrek 1986–2005 (Rubriek 4): AFGESCHAFT
+///   – Bouwsparen (Rubriek 6/7): OVERGANG naar lange termijnsparen (30%, max €2.350)
+///     Kapitaalaflossingen (Code3355/3356) en premies (Code3351/3352) blijven aftrekbaar
+///     als lange termijnsparen — begrensd tot €50.000 aanvangsbedrag (overgangsregel).
 /// </summary>
 public static class GewestelijkeVerminderingenCalculator
 {
@@ -17,10 +21,9 @@ public static class GewestelijkeVerminderingenCalculator
         decimal totaal = 0;
 
         // ── 1. Geïntegreerde woonbonus (Vlaanderen, leningen 2016–2019) ──
-        // 40% op interesten + kapitaalaflossingen + premies, tot max korf
-        decimal geintKorf = inkomen.GeintWoonbonusInteresten
-                          + inkomen.GeintWoonbonusKapitaal
-                          + inkomen.GeintWoonbonusPremies;
+        // 40% op interesten+kapitaalaflossingen (Code3334) + premies (Code3335), tot max korf
+        // In AJ2026 zijn alle 2016-2019 leningen <10 jaar → verhoging altijd van toepassing
+        decimal geintKorf = inkomen.GeintWoonbonusInteresten + inkomen.GeintWoonbonusPremies;
 
         if (geintKorf > 0)
         {
@@ -29,20 +32,29 @@ public static class GewestelijkeVerminderingenCalculator
             totaal += effectief * TaxConstants2026.GeintWoonbonusPercentage;
         }
 
-        // ── 2. Gewestelijke woonbonus (Vlaanderen, leningen 2005–2015) ───
-        // 40% op interesten + premies schuldsaldoverzekering, tot max korf
-        decimal wbKorf = inkomen.WoonbonusInteresten + inkomen.WoonbonusPremies;
-
-        if (wbKorf > 0)
+        // ── 2a. Gewestelijke woonbonus — leningen 2015 ───────────────────
+        // 40% op interesten+kapitaalaflossingen+premies (Code3360+3361), max korf €1.520
+        // In AJ2026 zijn leningen 2015 exact 10 jaar oud → geen verhoging meer
+        if (inkomen.WoonbonusKorf2015 > 0)
         {
-            decimal maxKorf = BerekenMaxWoonbonus2005(gewest);
-            decimal effectief = Math.Min(wbKorf, maxKorf);
+            decimal effectief = Math.Min(inkomen.WoonbonusKorf2015, TaxConstants2026.WoonbonusBasis2015);
             totaal += effectief * TaxConstants2026.WoonbonusPercentage;
         }
 
-        // ── 3. Bouwsparen / langetermijnsparen gewestelijk (30%) ─────────
-        // Kapitaalaflossingen + premies levensverzekering, max €2.350
-        // begrensd op 6% netto beroepsinkomen + €176.400 (plafond AJ2026)
+        // ── 2b. Federale woonbonus leningen 2005–2013 ────────────────────
+        // AFGESCHAFT vanaf AJ2026 (wet 18.12.2025). WoonbonusKorf2005_2014 wordt niet meer gebruikt.
+        // Overgangsregel: kapitaalaflossingen → lange termijnsparen (zie Rubriek 6/7 hieronder).
+
+        // ── Bijkomende interestaftrek leningen 1986–2005 (Rubriek 4) ─────
+        // AFGESCHAFT vanaf AJ2026 (wet 18.12.2025). Woonbonus1986Interesten wordt niet meer gebruikt.
+
+        // ── Lange termijnsparen (incl. overgang bouwsparen AJ2026) ───────
+        // Kapitaalaflossingen (Code3355/3356/3358) + premies (Code3351/3352/3353/3354): 30%, max korf €2.350
+        // Overgangsregel (wet 18.12.2025): voormalige bouwspaarkapitaal (Code3355/3356) en bouwspaarpremies
+        // (Code3351/3352) komen nu in aanmerking als lange termijnsparen, begrensd tot de eerste schijf
+        // van €50.000 (basisbedrag) van het aanvangsbedrag van de lening.
+        // Vereenvoudiging: het aanvangsbedrag is niet in de aangifte opgenomen — de korf (max €2.350)
+        // beperkt het voordeel. Gebruiker is verantwoordelijk voor de €50.000-grens.
         decimal bouwsparenKorf = inkomen.BouwsparenKapitaal + inkomen.BouwsparenPremies;
 
         if (bouwsparenKorf > 0)
@@ -77,14 +89,7 @@ public static class GewestelijkeVerminderingenCalculator
                 -(effectief * TaxConstants2026.GeintWoonbonusPercentage), IsDetail: true));
         }
 
-        decimal wbKorf = inkomen.WoonbonusInteresten + inkomen.WoonbonusPremies;
-        if (wbKorf > 0)
-        {
-            decimal maxKorf = BerekenMaxWoonbonus2005(gewest);
-            decimal effectief = Math.Min(wbKorf, maxKorf);
-            regels.Add(new($"  Gewest. woonbonus (40% × {effectief:N2} €)",
-                -(effectief * TaxConstants2026.WoonbonusPercentage), IsDetail: true));
-        }
+        // Woonbonus 2005–2013: AFGESCHAFT vanaf AJ2026 (wet 18.12.2025)
 
         decimal bouwsparenKorf = inkomen.BouwsparenKapitaal + inkomen.BouwsparenPremies;
         if (bouwsparenKorf > 0)
@@ -108,6 +113,7 @@ public static class GewestelijkeVerminderingenCalculator
         decimal max = TaxConstants2026.GeintWoonbonusBasis;
 
         // Verhoging eerste 10 jaar na afsluiten lening
+        // GeintWoonbonusDatumLening is null voor Rubriek 1 → neem verhoging mee (2016-2019 < 10j in AJ2026)
         if (!string.IsNullOrEmpty(inkomen.GeintWoonbonusDatumLening))
         {
             if (TryParseDatumLening(inkomen.GeintWoonbonusDatumLening, out int jaarLening))
@@ -133,21 +139,6 @@ public static class GewestelijkeVerminderingenCalculator
             max += TaxConstants2026.GeintWoonbonusExtraKinderen;
 
         return max;
-    }
-
-    /// <summary>
-    /// Max korf gewestelijke woonbonus 2005-2015.
-    /// Basis: €2.280 (2005-2014) of €1.520 (2015).
-    /// Verhoging eerste 10 jaar: €760. Extra ≥3 kinderen: €80.
-    /// NB: in AJ2026 zijn alle leningen 2005-2014 ouder dan 10 jaar → geen verhoging meer.
-    /// Leningen 2015 zijn exact 10 jaar → geen verhoging meer.
-    /// </summary>
-    private static decimal BerekenMaxWoonbonus2005(Gewest gewest)
-    {
-        // In AJ2026, alle oude woonbonus-leningen zijn ≥10 jaar oud
-        // → geen verhoging meer. Basisbedrag volstaat.
-        // Conservatief: gebruik het hoogste basisbedrag
-        return TaxConstants2026.WoonbonusBasis2005_2014;
     }
 
     /// <summary>

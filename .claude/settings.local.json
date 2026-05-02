@@ -9,7 +9,27 @@
       "WebFetch(domain:fiscosearch.be)",
       "WebFetch(domain:fin.belgium.be)",
       "Bash(xargs cat *)",
-      "Bash(gh pr *)"
+      "Bash(gh pr *)",
+      "WebFetch(domain:data-onderwijs.vlaanderen.be)",
+      "Bash(pdftotext \"/home/gertjan/.claude/projects/-run-media-gertjan-78F685A0F6855EEE-Users-gertj-sostax/tool-results/webfetch-1777558289130-5qyl81.pdf\" -)",
+      "Bash(pdftotext -layout \"/home/gertjan/.claude/projects/-run-media-gertjan-78F685A0F6855EEE-Users-gertj-sostax/beb1ee92-609d-4b44-be3c-df16fdeeb4ac/tool-results/webfetch-1777558289130-5qyl81.pdf\" -)",
+      "Bash(pdftotext -layout \"/home/gertjan/.claire/projects/-run-media-gertjan-78F685A0F6855EEE-Users-gertj-sostax/beb1ee92-609d-4b44-be3c-df16fdeeb4ac/tool-results/webfetch-1777558289130-5qyl81.pdf\" -)",
+      "Bash(pdfinfo /home/gertjan/.claude/projects/-run-media-gertjan-78F685A0F6855EEE-Users-gertj-sostax/beb1ee92-609d-4b44-be3c-df16fdeeb4ac/tool-results/webfetch-1777558289130-5qyl81.pdf)",
+      "Bash(pdftotext -layout /home/gertjan/.claude/projects/-run-media-gertjan-78F685A0F6855EEE-Users-gertj-sostax/beb1ee92-609d-4b44-be3c-df16fdeeb4ac/tool-results/webfetch-1777558289130-5qyl81.pdf -)",
+      "WebFetch(domain:financien.belgium.be)",
+      "WebFetch(domain:www.securex.be)",
+      "WebFetch(domain:www.belgium.be)",
+      "WebFetch(domain:www.sdworx.be)",
+      "WebFetch(domain:www.practicali.be)",
+      "WebFetch(domain:accto.be)",
+      "WebSearch",
+      "WebFetch(domain:www.socialsecurity.be)",
+      "WebFetch(domain:www.creafisc.be)",
+      "WebFetch(domain:www.attentia.be)",
+      "WebFetch(domain:www.hetacv.be)",
+      "WebFetch(domain:www.moore.be)",
+      "WebFetch(domain:www.axxi.be)",
+      "Bash(git config *)"
     ]
   }
 }
