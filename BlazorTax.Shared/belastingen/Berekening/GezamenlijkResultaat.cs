@@ -6,6 +6,7 @@ public class PartnerResultaat
     public string Label { get; set; } = "";
 
     // Bruto
+    public decimal BrutoOnroerendInkomen { get; set; }
     public decimal BrutoBeroepsinkomen { get; set; }
     public decimal BrutoPensioeninkomen { get; set; }
     public decimal BrutoVervangingsinkomen { get; set; }
@@ -18,10 +19,18 @@ public class PartnerResultaat
     public decimal BrutoMeewerkend { get; set; }
     public decimal BrutoDiverseGezamenlijk { get; set; }
 
+    // Onroerend inkomen
+    public decimal BrutoOnroerendInkomen { get; set; }
+
+    // Onderhoudsgeld (Vak VI)
+    public decimal BrutoOnderhoudsgeld { get; set; }
+
     // Kosten
     public decimal Beroepskosten { get; set; }
     public bool ForfaitaireBeroepskosten { get; set; }
     public decimal VorigeVerliezen { get; set; }
+    public decimal FlexiJobVrijstelling { get; set; }
+    public decimal NietRecurrentVrijstelling { get; set; }
 
     // Deel 2 kosten
     public decimal BedrijfsleiderKosten { get; set; }
@@ -67,6 +76,7 @@ public class PartnerResultaat
     public decimal Afzonderlijk10Pct { get; set; }
     public decimal Afzonderlijk12_5Pct { get; set; }
     public decimal Afzonderlijk16_5Pct { get; set; }
+    public decimal Afzonderlijk20Pct { get; set; }    // deeleconomie na 50% kostenforfait
     public decimal Afzonderlijk33Pct { get; set; }
     public decimal BelastingAfzonderlijk { get; set; }
 

@@ -1,0 +1,22 @@
+select {
+    font-size: x-small;
+    color: #000000;
+}
+
+input {
+    font-size: inherit;
+    color: #000000;
+}
+
+textarea {
+    font-size: x-small;
+    color: #000000;
+}
+
+TD {
+    font-size: medium;
+}
+
+.unit {
+    color: #483D8B;
+}

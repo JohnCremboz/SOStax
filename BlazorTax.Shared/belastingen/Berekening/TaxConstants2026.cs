@@ -146,6 +146,8 @@ public static class TaxConstants2026
     // ── Onroerende inkomsten ────────────────────────────────────────────────
     public const decimal IndexatiecoeffKI = 2.2446m;
     public const decimal Revalorisatiecoeff = 5.63m;
+    /// <summary>Vermenigvuldigingsfactor voor verhuur aan particulieren / niet verhuurd (art. 7 WIB92).</summary>
+    public const decimal KIVermenigvuldigingsfactor = 1.4m;
 
     // ── Belastingverminderingen (federaal) ──────────────────────────────────
     public const decimal MaxPensioensparen30 = 1_050m;
@@ -157,12 +159,17 @@ public static class TaxConstants2026
     public const decimal PercentageGiften = 0.30m; // verlaagd van 45% naar 30% vanaf AJ2026
 
     // ── Vrijstellingen ──────────────────────────────────────────────────────
-    public const decimal VrijstellingWoonWerkverkeerAndere = 490m; // bevroren AJ2026
+    public const decimal VrijstellingWoonWerkverkeerAndere = 490m; // bevroren AJ2026 (niet geïndexeerd)
+    /// <summary>AJ2026: indexeerbaar basisbedrag €8.955, geïndexeerd voor IJ2025: €18.000 (Circ. 2026/C/4).</summary>
     public const decimal VrijstellingFlexijobNietGepensioneerd = 18_000m;
     public const decimal VrijstellingBrandweerVrijwilligers = 7_540m;
     public const decimal VrijstellingNietRecurrent = 3_622m;
-    public const decimal MaxVrijstellingSpaardepositos = 1_020m; // bevroren
-    public const decimal VrijstellingDividenden = 833m; // bevroren
+    public const decimal MaxVrijstellingSpaardepositos = 1_020m; // bevroren AJ2026–2030
+    public const decimal VrijstellingDividenden = 833m; // bevroren AJ2026–2030
+
+    // ── Onderhoudsgeld ──────────────────────────────────────────────────────
+    /// <summary>AJ2026 (inkomsten 2025): 70% van ontvangen onderhoudsgeld is belastbaar (art. 90 §1 3° WIB92).</summary>
+    public const decimal OnderhoudsgeldBelastbaarPercentage = 0.70m;
 
     // ── Gewestelijke belastingverminderingen ────────────────────────────────
     // Alle bedragen bevroren door indexatiestop AJ2026–AJ2030
@@ -181,9 +188,12 @@ public static class TaxConstants2026
     public const decimal WoonbonusExtraKinderen = 80m;
     public const decimal WoonbonusPercentage = 0.40m;
 
-    // Bouwsparen / langetermijnsparen gewestelijk (leningen vóór 2005): 30%
+    // Lange termijnsparen gewestelijk (incl. overgang bouwsparen AJ2026): 30%, max korf €2.350
+    // Overgangsregel (wet 18.12.2025): voormalige bouwsparen/woonbonus-kapitaal kwalificeert als
+    // lange termijnsparen, begrensd tot eerste schijf van €50.000 basisbedrag van het aanvangsbedrag.
     public const decimal BouwsparenMaxKorf = 2_350m;
     public const decimal BouwsparenPercentage = 0.30m;
+    public const decimal LangeTermijnSparenOvergangMaxLening = 50_000m; // drempel overgangsregel
 
     // Chèque habitat (Wallonië, leningen 2016–2019) — basisvermindering
     public const decimal ChequeHabitatBasis = 1_520m;
@@ -196,10 +206,12 @@ public static class TaxConstants2026
     public const decimal Tarief10Procent = 0.10m;       // stopzetting 60+ / gedwongen
     public const decimal Tarief12_5Procent = 0.125m;    // Europese landbouwsubsidies
     public const decimal Tarief16_5Procent = 0.165m;    // meerwaarden ≥5j, achterstallen, COVID
+    public const decimal Tarief20Procent = 0.20m;       // deeleconomie (na 50% kostenforfait)
     public const decimal Tarief33Procent = 0.33m;       // meerwaarden <5j, immaterieel, scheidsrechters
 
     // ── Deel 2: drempels en plafonds ────────────────────────────────────────
     public const decimal DrempelDeeleconomie = 7_700m;  // 2025 (was €7.460 in 2024)
+    public const decimal DeeleconomieKostenForfait = 0.50m;  // 50% forfaitaire kosten (art. 97 WIB92)
     public const decimal MaxFietsvergoedingVrijstelling = 3_610m;
     public const decimal MaxPensioenBijdrageIndividueel = 3_010m;
     public const decimal MaxVrijstellingBijkomendPersoneel = 20_100m;

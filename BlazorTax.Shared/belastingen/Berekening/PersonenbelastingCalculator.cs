@@ -215,18 +215,36 @@ public class PersonenbelastingCalculator
 
     private static decimal BerekenOnroerendInkomen(VakIIIData vak)
     {
-        // Geïndexeerd KI voor niet-verhuurd/particulieren
-        decimal ki = ((vak.Code1106 ?? 0) + (vak.Code2106 ?? 0)
-                    + (vak.Code1107 ?? 0) + (vak.Code2107 ?? 0)
-                    + (vak.Code1108 ?? 0) + (vak.Code2108 ?? 0))
-                    * TaxConstants2026.IndexatiecoeffKI;
+        decimal totaal = 0m;
 
-        // Brutohuur (andere verhuur)
-        decimal huur = (vak.Code1110 ?? 0) + (vak.Code2110 ?? 0)
-                     + (vak.Code1113 ?? 0) + (vak.Code2113 ?? 0)
-                     + (vak.Code1116 ?? 0) + (vak.Code2116 ?? 0);
+        // Geïndexeerd KI × 1,4 voor niet-verhuurd / verhuur particulieren / pacht
+        foreach (var ki in new[] { vak.Code1106, vak.Code2106, vak.Code1107, vak.Code2107, vak.Code1108, vak.Code2108 })
+        {
+            if ((ki ?? 0) > 0)
+            {
+                var geindexeerdKI = Math.Round(ki!.Value * TaxConstants2026.IndexatiecoeffKI, 0, MidpointRounding.AwayFromZero);
+                totaal += geindexeerdKI * TaxConstants2026.KIVermenigvuldigingsfactor;
+            }
+        }
 
-        return ki + huur;
+        // Andere omstandigheden (professioneel gebruik huurder): brutohuur − forfait
+        var huurParen = new[] {
+            (vak.Code1109, vak.Code1110), (vak.Code2109, vak.Code2110),
+            (vak.Code1112, vak.Code1113), (vak.Code2112, vak.Code2113),
+            (vak.Code1115, vak.Code1116), (vak.Code2115, vak.Code2116),
+        };
+        foreach (var (ki, brutohuur) in huurParen)
+        {
+            if ((brutohuur ?? 0) <= 0) continue;
+            var huur = brutohuur!.Value;
+            var geindexeerdKI = (ki ?? 0) > 0
+                ? Math.Round(ki!.Value * TaxConstants2026.IndexatiecoeffKI, 0, MidpointRounding.AwayFromZero)
+                : 0m;
+            var maxForfait = 2m / 3m * geindexeerdKI * TaxConstants2026.KIVermenigvuldigingsfactor;
+            totaal += huur - Math.Min(huur * 0.40m, maxForfait);
+        }
+
+        return totaal;
     }
 
     private static decimal BerekenBedrijfsvoorheffing(VakIVData vakIV, VakVData vakV)
@@ -284,6 +302,7 @@ public class BerekeningInput
 {
     public required VakIIData VakII { get; init; }
     public required VakIIIData VakIII { get; init; }
+    public VakVIData VakVI { get; init; } = new();
     public required VakIVData VakIV { get; init; }
     public required VakVData VakV { get; init; }
     public required VakVIIIData VakVIII { get; init; }

@@ -17,6 +17,7 @@ var scenarios = new (string Naam, BerekeningInput Input, TaxCalcRef Ref)[]
     Scenario5_BedrijfsleiderBrussel(),
     Scenario6_WerknemerWoonbonus(),
     Scenario7_PensionarisMenen_1txt(),
+    Scenario8_TaxOnWeb_AJ2026_Echt(),
 };
 
 foreach (var (naam, input, taxCalcRef) in scenarios)
@@ -95,7 +96,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario1_PensionarisBrussel()
     {
         VakII = new VakIIData { BurgerlijkeStaat = "1001" },
         VakIII = new VakIIIData(),
-        VakIV = new VakIVData { Fiches1286 = new() { 2886.03m } },
+        VakIV = new VakIVData { Fiches1286 = [2886.03m] },
         VakV = new VakVData { Code1228 = 25000m },
         VakVIII = new VakVIIIData(),
         VakIX = new VakIXData(),
@@ -132,8 +133,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario2_WerknemerGent()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Fiches1250 = new() { 35000m },
-            Fiches1286 = new() { 8500m },
+            Fiches1250 = [35000m],
+            Fiches1286 = [8500m],
             Code1287 = 250m,
         },
         VakV = new VakVData(),
@@ -177,11 +178,11 @@ static (string, BerekeningInput, TaxCalcRef) Scenario3_GehuwdMenen()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Fiches1250 = new() { 40193.95m },
-            Fiches1286 = new() { 8948.90m },
+            Fiches1250 = [40193.95m],
+            Fiches1286 = [8948.90m],
             Code1287 = 324.21m,
-            Fiches2250 = new() { 21794.78m },
-            Fiches2286 = new() { 184.66m },
+            Fiches2250 = [21794.78m],
+            Fiches2286 = [184.66m],
             Code2287 = 96.45m,
             Code2284 = 1516.77m,
             Code2360 = 1142.19m,
@@ -232,8 +233,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario4_WerknemerAntwerpen()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Fiches1250 = new() { 45000m },
-            Fiches1286 = new() { 12000m },
+            Fiches1250 = [45000m],
+            Fiches1286 = [12000m],
             Code1287 = 400m,
         },
         VakV = new VakVData(),
@@ -322,8 +323,8 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
         VakIII = new VakIIIData(),
         VakIV = new VakIVData
         {
-            Fiches1250 = new() { 40_000m },
-            Fiches1286 = new() { 10_000m },
+            Fiches1250 = [40_000m],
+            Fiches1286 = [10_000m],
         },
         VakV = new VakVData(),
         VakVIII = new VakVIIIData(),
@@ -379,10 +380,10 @@ static (string, BerekeningInput, TaxCalcRef) Scenario7_PensionarisMenen_1txt()
             Code1228 = 18_821.33m,   // wettelijk pensioen titularis
             Code1229 = 3_087.26m,    // overlevingspensioen titularis
             Code1211 = 3_080.79m,    // andere pensioenen titularis
-            Fiches1225 = new() { 1_662.44m },    // bedrijfsvoorheffing titularis
+            Fiches1225 = [1_662.44m], // bedrijfsvoorheffing titularis
             Code2228 = 4_365.33m,    // wettelijk pensioen partner
             Code2211 = 987.06m,      // andere pensioenen partner
-            Fiches2225 = new() { 29.82m },       // bedrijfsvoorheffing partner
+            Fiches2225 = [29.82m],    // bedrijfsvoorheffing partner
         },
         VakVIII = new VakVIIIData(),
         VakIX = new VakIXData(),
@@ -415,6 +416,76 @@ static (string, BerekeningInput, TaxCalcRef) Scenario7_PensionarisMenen_1txt()
     };
 
     return ("7: Pensionaarskoppel Menen (1.txt, AJ2024 referentie)", input, taxCalc);
+}
+
+static (string, BerekeningInput, TaxCalcRef) Scenario8_TaxOnWeb_AJ2026_Echt()
+{
+    // Echte aangifte AJ2026 — Tax-on-Web berekening dd. 30/04/2026
+    // Gehuwd, 3 kinderen (1 gehandicapt), Vlaanderen, gemeente 8%
+    // Officieel resultaat: 6.548,62 terug
+    var input = new BerekeningInput
+    {
+        VakII = new VakIIData
+        {
+            BurgerlijkeStaat = "1002",
+            Code1030 = 3,
+            Code1031 = 1,
+        },
+        VakIII = new VakIIIData
+        {
+            Code1106 = 0.96m,
+            Code2106 = 0.96m,
+        },
+        VakIV = new VakIVData
+        {
+            Fiches1250 = [41_236.23m],
+            Code1254 = 1_968.00m,
+            Code1255 = 1_968.00m,
+            Fiches1286 = [9_125.21m],
+            Code1287 = 339.85m,
+            Code1290 = true,
+            Fiches2250 = [24_012.94m],
+            Code2284 = 1_145.40m,
+            Fiches2286 = [756.05m],
+            Code2287 = 95.92m,
+            Code2360 = 1_364.58m,
+        },
+        VakV = new VakVData(),
+        VakVIII = new VakVIIIData(),
+        VakIX = new VakIXData(),
+        VakX = new VakXData
+        {
+            Code1384 = 154.75m,
+            Code2361 = 1_050.00m,
+        },
+        VakXII = new VakXIIData(),
+        Gewest = Gewest.Vlaanderen,
+        GemeentebelastingPercentage = 8.0m,
+        TypeBeroep = TypeBeroep.Werknemer,
+    };
+
+    // Officiële Tax-on-Web referentiewaarden (AJ2026, IPP_EX_2026 V_1.7.0):
+    var taxCalc = new TaxCalcRef
+    {
+        NettoBP           = 35_309.03m,  // 41.236,23 - 5.930 forfait + 2,80 KI
+        NettoPartner      = 18_085.74m,  // 24.012,94 - 5.930 forfait + 2,80 KI
+        BasisbelastingBP  = 12_001.06m,
+        BasisbelastingP   =  4_786.30m,
+        VermVrijeSomBP    =  9_674.50m,  // BVS = 10.910 + 11.440 (3k) + 7.070 (1 hand.)
+        VermVrijeSomP     =  2_727.50m,  // BVS = 10.910
+        OmTeSlaneBP       =  2_326.56m,
+        OmTeSlaneP        =  2_058.80m,
+        HoofdsomBP        =  2_326.56m,
+        GereduceerdeBP    =  1_745.92m,  // × 75,043%
+        GereduceerdeP     =  1_544.99m,  // × 75,043%
+        OpcentiemenBP     =    580.64m,  // × 33,257%
+        OpcentiemenP      =    513.82m,  // × 33,257%
+        Gemeentebelasting =    320.06m,  // 4.000,73 × 8%
+        BBSZVerschuldigd  =    544.16m,  // op gezamenlijk 53.394,77
+        Eindresultaat     = -6_548.62m,  // terug
+    };
+
+    return ("8: Tax-on-Web AJ2026 echt (gehuwd, 3k, Vlaanderen 8%)", input, taxCalc);
 }
 
 class TaxCalcRef

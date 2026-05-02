@@ -20,12 +20,12 @@ public class GezamenlijkeBerekeningCalculator
         var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(
             input.VakIV, input.VakV, input.VakX,
             input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII);
+            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII, input.VakIII, input.VakVI);
         var inkomen2 = isGehuwd
             ? PartnerInkomen.ExtractPartner(
                 input.VakIV, input.VakV, input.VakX,
                 input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII)
+                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII, input.VakIII, input.VakVI)
             : new PartnerInkomen { Label = "Partner" };
 
         // ── 2. Fase 1: bruto → netto per partner ───────────────────────
@@ -136,16 +136,15 @@ public class GezamenlijkeBerekeningCalculator
         resultaat.BasisGemeentebelasting = resultaat.TotaalSaldoFederaal + resultaat.TotaalSaldoGewestelijk;
         resultaat.Gemeentebelasting = resultaat.BasisGemeentebelasting * input.GemeentebelastingPercentage / 100m;
 
-        // BBSZ per persoon (AJ2026: single-proof hervorming)
+        // BBSZ op gezinsinkomen (AJ2026: single-proof pas geldig vanaf inkomstenjaar 2028)
         // Alleen verschuldigd als er beroeps- of vervangingsinkomen is (niet bij enkel pensioen)
         decimal bbszIngehouden = inkomen1.BijzondereBijdrageSZ + inkomen2.BijzondereBijdrageSZ;
 
         bool bp1HeeftBeroep = inkomen1.BrutoBeroepsinkomen > 0 || inkomen1.BrutoVervangingsinkomen > 0;
         bool bp2HeeftBeroep = inkomen2.BrutoBeroepsinkomen > 0 || inkomen2.BrutoVervangingsinkomen > 0;
 
-        decimal bbszBP = bp1HeeftBeroep ? BerekenBBSZPerPersoon(r1.NettoBelastbaarInkomen) : 0;
-        decimal bbszPartner = bp2HeeftBeroep ? BerekenBBSZPerPersoon(r2.NettoBelastbaarInkomen) : 0;
-        decimal bbszVerschuldigd = bbszBP + bbszPartner;
+        bool heeftBeroep = bp1HeeftBeroep || bp2HeeftBeroep;
+        decimal bbszVerschuldigd = heeftBeroep ? BerekenBBSZOpGezinsinkomen(r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen) : 0;
 
         resultaat.BBSZGezamenlijkInkomen = r1.NettoBelastbaarInkomen + r2.NettoBelastbaarInkomen;
         resultaat.BBSZVerschuldigd = bbszVerschuldigd;
@@ -183,28 +182,17 @@ public class GezamenlijkeBerekeningCalculator
     }
 
     /// <summary>
-    /// Berekent de BBSZ per persoon (AJ2026: single-proof hervorming).
-    /// Barema gebaseerd op het individuele netto belastbaar inkomen.
+    /// Berekent de BBSZ op het gezinsinkomen (AJ2026 barema, single-proof pas vanaf AJ2029).
     /// </summary>
-    private static decimal BerekenBBSZPerPersoon(decimal nettoInkomen)
+    private static decimal BerekenBBSZOpGezinsinkomen(decimal gezinsinkomen)
     {
-        // AJ2026 BBSZ-barema per persoon (single-proof)
-        if (nettoInkomen <= 18_592.02m) return 0;
-        if (nettoInkomen <= 21_070.96m)
-            return (nettoInkomen - 18_592.02m) * 0.09m;
-        if (nettoInkomen <= 60_161.85m)
-        {
-            decimal basis = (21_070.96m - 18_592.02m) * 0.09m; // ~223.10
-            return basis + (nettoInkomen - 21_070.96m) * 0.013m;
-        }
-        // Hogere schijven (afbouw single-proof)
-        if (nettoInkomen <= 62_027.14m)
-        {
-            return 731.14m + (nettoInkomen - 60_161.85m) * 0.0111m;
-        }
-        if (nettoInkomen <= 80_654.70m)
-            return 752.14m; // vast bedrag
-        return 731.38m; // afgebouwd maximum
+        // Barema ongewijzigd (niet geïndexeerd), mini-taxshift 2022: eerste schijf van 9% naar 5%
+        if (gezinsinkomen <= 18_592.02m) return 0;
+        if (gezinsinkomen <= 21_070.96m)
+            return Math.Round((gezinsinkomen - 18_592.02m) * 0.05m, 2);
+        if (gezinsinkomen <= 60_161.85m)
+            return Math.Round(223.10m + (gezinsinkomen - 21_070.96m) * 0.013m, 2);
+        return 731.28m;
     }
 
     private static decimal BerekenKindKrediet(
