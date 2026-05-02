@@ -330,11 +330,9 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
         VakVIII = new VakVIIIData(),
         VakIX = new VakIXData
         {
-            Code3138 = 1_800m,       // interesten geïntegreerde woonbonus
-            Code3355 = 800m,         // kapitaalaflossingen hypothecair
-            Code3351 = 400m,         // premie levensverzekering collectief
-            Code3140 = "15/03/2018", // datum lening
-            Code3142 = 1,            // 1 kind bij lening
+            Code3334 = 1_800m + 800m, // geïntegreerde woonbonus: interesten + kapitaalaflossingen
+            Code3335 = 400m,          // premies levensverzekering
+            Code3330 = 1,             // 1 kind ten laste bij afsluiting lening
         },
         VakX = new VakXData { Code1361 = 1_050m },  // pensioensparen
         VakXII = new VakXIIData(),
@@ -343,22 +341,19 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
         TypeBeroep = TypeBeroep.Werknemer,
     };
 
-    // Handmatige berekening:
-    // Bruto: 40.000 → forfait 30% = 5.930 (max) → netto 34.070
-    // Basisbelasting: 9.643,50
-    // Vrije som 10.910 → vermindering 2.727,50
-    // Om te slane: 6.916,00
-    // Hoofdsom: 6.916,00 (geen vervangingsinkomen)
-    // Gereduceerde Staat: 6.916 × (1 - 0,24957) = 5.190,03
-    // Opcentiemen: 5.190,03 × 0,33257 = 1.725,71
-    // Federale verminderingen: pensioensparen 1050 × 30% = 315
-    // Gewestelijke verminderingen: min(3000, 2280) × 40% = 912
-    // SaldoFederaal: 5.190,03 - 315 = 4.875,03
-    // SaldoGewestelijk: max(1.725,71 - 912, 0) = 813,71
-    // Gemeentebelasting: (4.875,03 + 813,71) × 7% = 398,21
-    // BBSZ: op netto 34.070 → bijdrage ±399
-    // Totaal: 4.875,03 + 813,71 + 398,21 + 399 = 6.485,95
-    // BV: 10.000 → Eindresultaat = 6.485,95 - 10.000 = -3.514,05
+    // Handmatige berekening (AJ2026):
+    // Bruto: 40.000 → forfait 5.930 (max) → netto 34.070
+    // Basisbelasting: 11.443,50 | Vrije som 10.910 → vermindering 2.727,50
+    // Om te slane: 8.716,00 | Gereduceerde Staat: 6.540,75 | Opcentiemen: 2.175,26
+    // Federale verminderingen: pensioensparen 1.050 × 30% = 315
+    // Gewestelijke verminderingen: min(2.600+400, 2.280) × 40% = 2.280 × 40% = 912
+    //   (max korf = 1.520 + 760 verhoging eerste 10j: 2025-2018=7j < 10j)
+    // SaldoFederaal: 6.540,75 - 315 = 6.225,75
+    // SaldoGewestelijk: 2.175,26 - 912 = 1.263,26
+    // Gemeentebelasting: (6.225,75 + 1.263,26) × 7% = 524,23
+    // BBSZ: 123,95 + (34.070 - 21.070,96) × 1,3% = 292,94
+    // Totale belasting: 6.225,75 + 1.263,26 + 524,23 + 292,94 = 8.306,18
+    // BV: 10.000 → Eindresultaat = 8.306,18 - 10.000 = -1.693,82
     var taxCalc = new TaxCalcRef();
 
     return ("6: Werknemer Vlaanderen + geïntegreerde woonbonus (lening 2018)", input, taxCalc);

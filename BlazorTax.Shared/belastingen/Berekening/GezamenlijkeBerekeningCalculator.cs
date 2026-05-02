@@ -187,12 +187,14 @@ public class GezamenlijkeBerekeningCalculator
     private static decimal BerekenBBSZOpGezinsinkomen(decimal gezinsinkomen)
     {
         // Barema ongewijzigd (niet geïndexeerd), mini-taxshift 2022: eerste schijf van 9% naar 5%
+        // Cumulatief aan 21.070,96: (21.070,96 - 18.592,02) × 5% = 123,95 (was 223,10 vóór taxshift)
+        // Maximum boven 60.161,85: 123,95 + (60.161,85 - 21.070,96) × 1,3% = 632,13
         if (gezinsinkomen <= 18_592.02m) return 0;
         if (gezinsinkomen <= 21_070.96m)
             return Math.Round((gezinsinkomen - 18_592.02m) * 0.05m, 2);
         if (gezinsinkomen <= 60_161.85m)
-            return Math.Round(223.10m + (gezinsinkomen - 21_070.96m) * 0.013m, 2);
-        return 731.28m;
+            return Math.Round(123.95m + (gezinsinkomen - 21_070.96m) * 0.013m, 2);
+        return 632.13m;
     }
 
     private static decimal BerekenKindKrediet(
