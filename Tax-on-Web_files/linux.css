@@ -1,0 +1,91 @@
+BODY {
+	FONT-SIZE: medium
+}
+
+TD {
+	FONT-SIZE: medium;  LINE-HEIGHT: 140%
+}
+
+P {
+	FONT-SIZE: medium
+}
+
+A:active {
+	COLOR: #3333cc
+}
+
+A:link {
+	COLOR: #3333cc
+}
+
+A:visited {
+	COLOR: #3333cc
+}
+
+A:hover {
+	COLOR: #3333cc
+}
+
+.title {
+	FONT-SIZE: medium;
+}
+
+.subtitle {
+	FONT-SIZE: medium;
+}
+
+.subtitletaxbox {
+	FONT-SIZE: medium;
+}
+
+SELECT {
+	FONT-SIZE: medium; COLOR: #000000;
+}
+
+.link1 {
+	FONT-SIZE: medium;
+}
+
+A.link1:active {
+	FONT-SIZE: medium;
+}
+
+A.link1:link {
+	FONT-SIZE: medium;
+}
+
+A.link1:visited {
+	FONT-SIZE: medium;
+}
+
+A.link1:hover {
+	FONT-SIZE: medium;
+}
+
+.link2 {
+	FONT-SIZE: medium;
+}
+
+A.link2:active {
+	FONT-SIZE: medium;
+}
+
+A.link2:link {
+	FONT-SIZE: medium;
+}
+
+A.link2:visited {
+	FONT-SIZE: medium;
+}
+
+A.link2:hover {
+	FONT-SIZE: medium;
+}
+
+SELECT {
+	FONT-SIZE: medium; COLOR: #000000;
+}
+
+.unit {
+	FONT-SIZE: medium; COLOR: #483D8B;
+}

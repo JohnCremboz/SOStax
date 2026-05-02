@@ -60,6 +60,56 @@ public static class PartnerBelastingCalculator
         }
         // Achterstallen ziekte/invaliditeit (Code1268/2268): afzonderlijk, geen forfait toegepast
         r.AfzonderlijkGemiddeldNetto += inkomen.ZiekteAchterstallen;
+        // Onderhoudsgeld terugwerkende kracht (Code1193/2193): afzonderlijk aan gemiddeld tarief
+        r.AfzonderlijkGemiddeldNetto += inkomen.OnderhoudsgeldAfzonderlijk;
+
+        // ── 2d. Flexi-job vrijstelling (art. 38 §1 al.1 23° WIB92) ─────────
+        // Gepensioneerden: volledige vrijstelling. Niet-gepensioneerden: plafond €18.000.
+        // Gepensioneerde = ontvanger van een wettelijk pensioen of overlevingspensioen.
+        if (inkomen.FlexiJob > 0)
+        {
+            bool isGepensioneerde = inkomen.WettelijkPensioen > 0 || inkomen.Overlevingspensioen > 0;
+            decimal brutoVrijstelling = isGepensioneerde
+                ? inkomen.FlexiJob
+                : Math.Min(inkomen.FlexiJob, TaxConstants2026.VrijstellingFlexijobNietGepensioneerd);
+
+            // De beroepskosten worden proportioneel toegerekend aan de vrijgestelde inkomsten.
+            decimal nettoVrijstelling = brutoVrijstelling;
+            if (r.BrutoBeroepsinkomen > 0 && r.Beroepskosten > 0)
+            {
+                decimal kostenRatio = r.Beroepskosten / r.BrutoBeroepsinkomen;
+                nettoVrijstelling = Math.Round(brutoVrijstelling * (1m - kostenRatio), 2);
+            }
+
+            nettoVrijstelling = Math.Min(nettoVrijstelling, nettoDeel1);
+            r.FlexiJobVrijstelling = nettoVrijstelling;
+            if (nettoVrijstelling > 0)
+            {
+                nettoDeel1 -= nettoVrijstelling;
+                r.DetailRegels.Add(new("Flexi-job vrijstelling", -nettoVrijstelling));
+            }
+        }
+
+        // ── 2e. Niet-recurrente resultaatsgebonden voordelen vrijstelling (art. 38 §1 24° WIB92) ──
+        // Vrijgesteld tot €3.622 (AJ2026). Beroepskosten proportioneel toegerekend aan vrijgesteld deel.
+        if (inkomen.NietRecurrentVoordelen > 0)
+        {
+            decimal brutoVrijstellingNR = Math.Min(inkomen.NietRecurrentVoordelen, TaxConstants2026.VrijstellingNietRecurrent);
+            decimal nettoVrijstellingNR = brutoVrijstellingNR;
+            if (r.BrutoBeroepsinkomen > 0 && r.Beroepskosten > 0)
+            {
+                decimal kostenRatio = r.Beroepskosten / r.BrutoBeroepsinkomen;
+                nettoVrijstellingNR = Math.Round(brutoVrijstellingNR * (1m - kostenRatio), 2);
+            }
+
+            nettoVrijstellingNR = Math.Min(nettoVrijstellingNR, nettoDeel1);
+            r.NietRecurrentVrijstelling = nettoVrijstellingNR;
+            if (nettoVrijstellingNR > 0)
+            {
+                nettoDeel1 -= nettoVrijstellingNR;
+                r.DetailRegels.Add(new("Vrijstelling niet-recurrente voordelen", -nettoVrijstellingNR));
+            }
+        }
 
         // ── 3. Deel 2: gezamenlijk belastbare inkomsten ─────────────
         decimal nettoDeel2 = 0;
@@ -184,6 +234,14 @@ public static class PartnerBelastingCalculator
             r.DetailRegels.Add(new("Diverse inkomsten (gezamenlijk)", r.BrutoDiverseGezamenlijk));
         }
 
+        // Onderhoudsgeld regelmatig + fictief jaarbedrag (Code1192+1194/2192+2194): gezamenlijk belastbaar
+        if (inkomen.OnderhoudsgeldGezamenlijk > 0)
+        {
+            r.BrutoOnderhoudsgeld = inkomen.OnderhoudsgeldGezamenlijk;
+            nettoDeel2 += inkomen.OnderhoudsgeldGezamenlijk;
+            r.DetailRegels.Add(new("Onderhoudsgeld (70% belastbaar)", inkomen.OnderhoudsgeldGezamenlijk));
+        }
+
         // ── 4. Afzonderlijk belastbaar (flat rates) ─────────────────
         r.Afzonderlijk10Pct = inkomen.Afzonderlijk10Pct;
         r.Afzonderlijk12_5Pct = inkomen.Afzonderlijk12_5Pct;
@@ -192,15 +250,23 @@ public static class PartnerBelastingCalculator
         r.Afzonderlijk33Pct += inkomen.Afzonderlijk33Pct
                              + inkomen.DiverseInkomsten33Pct;
 
+        // Deeleconomie (Code1200/2200): 50% forfaitaire kosten → netto belast aan 20% afzonderlijk
+        if (inkomen.Deeleconomie > 0)
+            r.Afzonderlijk20Pct = Math.Round(inkomen.Deeleconomie * (1m - TaxConstants2026.DeeleconomieKostenForfait), 2);
+
         r.BelastingAfzonderlijk =
             r.Afzonderlijk10Pct * TaxConstants2026.Tarief10Procent
             + r.Afzonderlijk12_5Pct * TaxConstants2026.Tarief12_5Procent
             + r.Afzonderlijk16_5Pct * TaxConstants2026.Tarief16_5Procent
+            + r.Afzonderlijk20Pct * TaxConstants2026.Tarief20Procent
             + r.Afzonderlijk33Pct * TaxConstants2026.Tarief33Procent;
 
         if (r.BelastingAfzonderlijk > 0)
         {
             r.DetailRegels.Add(new("Afzonderlijk belastbaar", r.BelastingAfzonderlijk));
+            if (r.Afzonderlijk20Pct > 0)
+                r.DetailRegels.Add(new($"  20% deeleconomie op {r.Afzonderlijk20Pct:N2}",
+                    r.Afzonderlijk20Pct * TaxConstants2026.Tarief20Procent));
             if (r.Afzonderlijk16_5Pct > 0)
                 r.DetailRegels.Add(new($"  16,5% op {r.Afzonderlijk16_5Pct:N2}",
                     r.Afzonderlijk16_5Pct * TaxConstants2026.Tarief16_5Procent));
@@ -209,12 +275,14 @@ public static class PartnerBelastingCalculator
                     r.Afzonderlijk33Pct * TaxConstants2026.Tarief33Procent));
         }
 
-        // ── 5. Netto belastbaar inkomen (Onroerend + Deel 1 + Deel 2 gezamenlijk) ─
-        r.BrutoOnroerendInkomen = inkomen.BrutoOnroerendInkomen;
+        // ── 5. Netto belastbaar inkomen (Deel 1 + Deel 2 gezamenlijk + onroerend) ─
         r.BrutoTotaal = inkomen.BrutoTotaal;
-        if (r.BrutoOnroerendInkomen > 0)
-            r.DetailRegels.Add(new("Onroerend inkomen (KI)", r.BrutoOnroerendInkomen));
-        r.NettoBelastbaarInkomen = nettoDeel1 + nettoDeel2 + r.BrutoOnroerendInkomen;
+        if (inkomen.OnroerendInkomen > 0)
+        {
+            r.BrutoOnroerendInkomen = inkomen.OnroerendInkomen;
+            r.DetailRegels.Add(new("Onroerend belastbaar inkomen", inkomen.OnroerendInkomen));
+        }
+        r.NettoBelastbaarInkomen = nettoDeel1 + nettoDeel2 + inkomen.OnroerendInkomen;
         r.NettoBelastbaarNaHQ = r.NettoBelastbaarInkomen;
         r.DetailRegels.Add(new("Netto belastbaar", r.NettoBelastbaarInkomen, true));
 
