@@ -20,12 +20,12 @@ public class GezamenlijkeBerekeningCalculator
         var inkomen1 = PartnerInkomen.ExtractBelastingplichtige(
             input.VakIV, input.VakV, input.VakX,
             input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII);
+            input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII, input.VakIII);
         var inkomen2 = isGehuwd
             ? PartnerInkomen.ExtractPartner(
                 input.VakIV, input.VakV, input.VakX,
                 input.VakXV, input.VakXVI, input.VakXVII, input.VakXVIII,
-                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII)
+                input.VakXIX, input.VakXX, input.VakXXI, input.VakIX, input.VakXII, input.VakIII)
             : new PartnerInkomen { Label = "Partner" };
 
         // ── 2. Fase 1: bruto → netto per partner ───────────────────────

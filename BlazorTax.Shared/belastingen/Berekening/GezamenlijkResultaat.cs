@@ -6,6 +6,7 @@ public class PartnerResultaat
     public string Label { get; set; } = "";
 
     // Bruto
+    public decimal BrutoOnroerendInkomen { get; set; }
     public decimal BrutoBeroepsinkomen { get; set; }
     public decimal BrutoPensioeninkomen { get; set; }
     public decimal BrutoVervangingsinkomen { get; set; }

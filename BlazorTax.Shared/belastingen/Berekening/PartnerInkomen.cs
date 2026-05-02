@@ -7,6 +7,9 @@ public class PartnerInkomen
 {
     public string Label { get; init; } = "Belastingplichtige";
 
+    // ── Onroerend inkomen (Vak III) ─────────────────────────────────────
+    public decimal BrutoOnroerendInkomen { get; init; }
+
     // ── Deel 1: Beroepsinkomen ──────────────────────────────────────────
     public decimal BrutoLoon { get; init; }
     public decimal WoonWerkVerkeerTotaal { get; init; }
@@ -142,11 +145,15 @@ public class PartnerInkomen
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
         VakXXIData? vakXXI = null, VakIXData? vakIX = null,
-        VakXIIData? vakXII = null)
+        VakXIIData? vakXII = null, VakIIIData? vakIII = null)
     {
         return new PartnerInkomen
         {
             Label = "Belastingplichtige",
+            BrutoOnroerendInkomen =
+                ((vakIII?.Code1106 ?? 0) + (vakIII?.Code1107 ?? 0) + (vakIII?.Code1108 ?? 0))
+                    * TaxConstants2026.IndexatiecoeffKI
+                + (vakIII?.Code1110 ?? 0) + (vakIII?.Code1113 ?? 0) + (vakIII?.Code1116 ?? 0),
             // ── Deel 1: Beroep ──────────────────────────────────────
             BrutoLoon = vakIV.Total1250 + (vakIV.Code1247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code1251 ?? 0) + (vakIV.Code1252 ?? 0)
@@ -266,11 +273,15 @@ public class PartnerInkomen
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
         VakXXIData? vakXXI = null, VakIXData? vakIX = null,
-        VakXIIData? vakXII = null)
+        VakXIIData? vakXII = null, VakIIIData? vakIII = null)
     {
         return new PartnerInkomen
         {
             Label = "Partner",
+            BrutoOnroerendInkomen =
+                ((vakIII?.Code2106 ?? 0) + (vakIII?.Code2107 ?? 0) + (vakIII?.Code2108 ?? 0))
+                    * TaxConstants2026.IndexatiecoeffKI
+                + (vakIII?.Code2110 ?? 0) + (vakIII?.Code2113 ?? 0) + (vakIII?.Code2116 ?? 0),
             // ── Deel 1: Beroep ──────────────────────────────────────
             BrutoLoon = vakIV.Total2250 + (vakIV.Code2247 ?? 0),
             AfzonderlijkGemiddeldTariefBruto = (vakIV.Code2251 ?? 0) + (vakIV.Code2252 ?? 0)
@@ -425,8 +436,8 @@ public class PartnerInkomen
         + BatenMeerwaarden16_5 + BatenMeerwaarden33
         + DiverseInkomsten16_5Pct + DiverseInkomsten33Pct;
 
-    /// <summary>Totaal bruto inkomen over alle categorieën (Deel 1 + Deel 2 gezamenlijk).</summary>
-    public decimal BrutoTotaal => BrutoTotaalDeel1 + BrutoTotaalDeel2Gezamenlijk;
+    /// <summary>Totaal bruto inkomen over alle categorieën (Deel 1 + Deel 2 gezamenlijk + onroerend).</summary>
+    public decimal BrutoTotaal => BrutoTotaalDeel1 + BrutoTotaalDeel2Gezamenlijk + BrutoOnroerendInkomen;
 
     /// <summary>Heeft deze partner enig inkomen?</summary>
     public bool HeeftInkomen => BrutoTotaal > 0 || BrutoTotaalDeel2Afzonderlijk > 0;
