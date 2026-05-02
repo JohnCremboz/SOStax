@@ -139,6 +139,57 @@ a:hover, .btn-link:hover {
     }
 }
 
+/* ── Pagina-layout ──────────────────────────────────────────────────────────── */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, var(--sostax-red-dark) 0%, var(--sostax-red) 100%);
+    color: white;
+}
+
+.top-row {
+    background-color: var(--sostax-grey-100);
+    border-bottom: 1px solid var(--sostax-grey-300);
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.nav-scrollable {
+    overflow-y: auto;
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 220px;
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .main {
+        flex: 1;
+        overflow-x: hidden;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+}
+
 .content {
     padding-top: 1.25rem;
 }
