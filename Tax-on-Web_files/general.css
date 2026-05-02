@@ -1,0 +1,564 @@
+BODY {
+    color: #060709;
+}
+
+TD, TH {
+    color: #4b5155;
+}
+
+P {
+    color: inherit;
+}
+
+A:active {
+    color: #3333cc
+}
+
+A:link {
+    color: #3333cc
+}
+
+A:visited {
+    color: #3333cc
+}
+
+A:hover {
+    color: #3333cc
+}
+
+.title {
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-weight: bold;
+    color: #555555;
+}
+
+.subtitletaxbox {
+    font-weight: bold;
+    color: #636563;
+}
+
+.subtitletaxboxred {
+    font-weight: bold;
+    color: #C60C08;
+}
+
+.datetaxbox {
+    font-weight: bold;
+    color: #C60C08;
+}
+
+.footnote {
+    font-weight: normal;
+    color: #C60C08;
+    font-style: italic;
+}
+
+.font-red {
+    color: #C60C08;
+}
+
+.font-white-on-red {
+    color: #FFFFFF;
+    background-color: #C60C08;
+}
+
+.rctaxbox {
+    color: #C60C08;
+}
+
+.thirdtitle, .thirdtitlebullet {
+    font-weight: bold
+}
+
+.link1 {
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none
+}
+
+A.link1:active {
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none
+}
+
+A.link1:link {
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none
+}
+
+A.link1:visited {
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none
+}
+
+A.link1:hover {
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none
+}
+
+.link2 {
+    color: #4b5155;
+    line-height: 150%;
+    text-decoration: none
+}
+
+A.link2:active {
+    color: #4b5155;
+    line-height: 150%;
+    text-decoration: none
+}
+
+A.link2:link {
+    color: #4b5155;
+    line-height: 150%;
+    text-decoration: none
+}
+
+A.link2:visited {
+    color: #4b5155;
+    line-height: 150%;
+    text-decoration: none
+}
+
+A.link2:hover {
+    color: #4b5155;
+    line-height: 150%;
+    text-decoration: none
+}
+
+CAPTION, .caption {
+    font-weight: normal;
+    color: #666666;
+    font-style: italic
+}
+
+.footer {
+    color: #4b5155;
+    line-height: 100%
+}
+
+.tabletext {
+    background-color: #E5E9F4;
+    padding: 10px
+}
+
+.lightblue {
+    background-color: #E5E9F4
+}
+
+.blueicon {
+    background-color: #EFEFF7
+}
+
+.brief {
+    font-weight: normal;
+    color: #4A6DA5;
+}
+
+.commenttaxbox {
+    font-weight: normal;
+    color: #9C9A9C;
+}
+
+.darkcell {
+    padding: 10px;
+    background-color: #E5E9F4;
+    background-image: url(../images/spacer.gif);
+    margin-top: 5px
+}
+
+.capitals {
+    text-transform: uppercase
+}
+
+.normal {
+    color: #4b5155;
+    line-height: 100%
+}
+
+.darkbackground {
+    background-color: #666666
+}
+
+.greybackground {
+    background-color: #9C9A9E
+}
+
+hr {
+    color: #666666;
+    height: 1px
+}
+
+.faq_title_1 {
+    padding-left: 0px;
+    font-weight: bold;
+    color: #4b5155;
+    font-size: 140%;
+}
+
+.faq_title_2 {
+    left: 0px;
+    position: relative;
+    font-weight: bold;
+    color: #4b5155;
+    font-size: 130%;
+}
+
+.faq_title_3 {
+    left: 0px;
+    position: relative;
+    font-weight: bold;
+    font-size: 120%;
+    color: #FF3300
+}
+
+.faq_title_4 {
+    left: 0px;
+    position: relative;
+    font-size: 120%;
+    color: #4b5155;
+}
+
+.faq_title_5 {
+    left: 0px;
+    position: relative;
+    font-weight: bold;
+    font-size: 110%;
+    color: #FF3300;
+}
+
+.faq_style_1 {
+    padding-left: 0px;
+    font-weight: bold;
+    color: #4b5155;
+}
+
+.faq_style_2 {
+    padding-left: 0px;
+    font-size: 130%;
+}
+
+.faq_style_3 {
+    padding-left: 0px;
+    font-size: 120%;
+}
+
+.faq_style_4 {
+    padding-left: 0px;
+    font-size: 120%;
+}
+
+.faq_style_5 {
+    padding-left: 0px;
+    font-size: 110%;
+}
+
+.faq_indent_1 {
+    left: 0px;
+    position: relative
+}
+
+.faq_indent_2 {
+    left: 0px;
+    position: relative
+}
+
+.faq_indent_3 {
+    left: 0px;
+    position: relative
+}
+
+.faq_indent_4 {
+    left: 0px;
+    position: relative
+}
+
+.faq_indent_5 {
+    left: 0px;
+    position: relative
+}
+
+.navbar-default-primary {
+    font-size: medium;
+    color: #fff
+}
+
+.navbar-default-primary .navbar-nav > .active > a, .navbar-default-primary .navbar-nav > .active > a:focus, .navbar-default-primary .navbar-nav > .active > a:hover {
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, .175);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .175);
+    border: 1px solid #b1b4b6;
+    background-color: #6d6d6d;
+}
+
+.navbar-default-primary > ul > li > a:hover {
+    background-color: rgba(102, 170, 224, 1);
+}
+
+.navbar-default-primary > ul > li > a {
+    height: 65px;
+}
+
+.navbar-default-primary > ul > li > a {
+    background-color: rgba(3, 130, 154, 1);
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.checkboxes {
+    padding: 5px;
+}
+
+/* Added for Table: kinderen ten laste */
+.TableUnderTitle {width:100%; margin-bottom:30px}
+.PopUPLimited {width:734px; background-color:#fff}
+.SimpleTableCONT {border-bottom: 4px solid #CA5050; margin-top:15px; margin-bottom:30px;}
+.SimpleTableCONT td {padding:3px 2px 3px 10px; height:26px;}
+.specificSize {width:1000px !important;}
+.specificSizeHippoScherm1 {width: 1250px !important;}
+.specificSizeLife {width:300px !important;}
+.STC_header {background-color:#CA5050; text-transform:uppercase; letter-spacing:1px; color:#fff !important; font-size:9px; height:26px}
+.STC_header td {color:#fff !important; padding:3px 2px 3px 20px; text-align:left; font-weight:bold}
+.Child_header {background-image:url(../images/TitleIcon_Child.gif); background-position: 8px 4px; background-repeat: no-repeat; width:18px;}
+.STC_RightAlignedCol {text-align:right !important; padding-right:8px !important}
+.alternate_01 {background-color:#FFF}
+.alternate_02 {background-color:#F2F4F9}
+.TitleBorder {border-top: 1px solid #000 !important}
+
+.PACPopUP {width:930px; background-color:#fff}
+.PACTableCONT {width:1000px; border-bottom: 4px solid #CA5050; margin-top:15px; margin-bottom:15px}
+.PACTableCONT>tbody>tr>td {padding:3px 2px 3px 10px; height:26px}
+
+.NotIdemAmount {color: #CC0000 !important; font-weight:bold}
+.AcceptAlt1 {background-color:#ECF2E9; text-align:center; width: 62px}
+.AcceptAlt2 {background-color:#F7FCEF; text-align:center; width: 62px}
+
+.descriptionTooltip {
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+.LittleTd{width:120px;}
+.MediumTd{width:150px}
+.LargeTD{width:300px;}
+
+#ConfirmContainer {
+    position: relative;
+    top: -25px;
+    width:515px;
+    z-index:1;
+}
+#ConfirmContainer .BGZone01 {
+    background-image: url(../images/BG_zone01.jpg);
+    background-repeat: no-repeat;
+    background-position: left top;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: top;
+    padding-top: 0px;
+    padding-right: 7px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    background-color: #E5E9F4;
+}
+#ConfirmContainer .Table_InBox {
+    background-color: #FFFFFF;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+    height: 60px;
+    background-image: url(../images/BG_TableInbox.jpg);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+#ConfirmContainer .Table_InBox_double {
+    background-color: #FFFFFF;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+    height: 60px;
+    background-image: url(../images/BG_TableInbox_double.jpg);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+#ConfirmContainer .BGZone02 {
+    background-image: url(../images/BG3_TableInbox.jpg);
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 110px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: top;
+    padding-right: 7px;
+    background-color: #E5E9F4;
+}
+#ConfirmContainer .Runningtext_InBox {
+    padding-left: 105px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+    height: 40px;
+}
+#ConfirmContainer .Runningtext_InBox A:link {
+    text-decoration: underline;
+    cursor: hand;
+}
+#ConfirmContainer .RedSelection {
+    font-weight: bold;
+    color: #FF0000;
+}
+#ConfirmContainer .Bold {
+    font-weight: bold;
+}
+#ConfirmContainer .Title_InBox {
+    font-size: 16px;
+    padding-left: 110px;
+    letter-spacing: 1px;
+    height: 30px;
+    text-align: left;
+    vertical-align: middle;
+    padding-top: 12px;
+    padding-right: 5px;
+    padding-bottom: 15px;
+    color: #003399;
+}
+#ConfirmContainer .FrameTable_InBox {
+    padding-left: 29px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    padding-right: 15px;
+    height: 60px;
+}
+#ConfirmContainer .LabelTableInBox {
+    font-size: 10px;
+    text-align: right;
+    padding-right: 5px;
+    vertical-align: top;
+    padding-top: 1px;
+    padding-bottom: 3px;
+    width: 40%;
+}
+#ConfirmContainer .fieldTableInBox {
+    text-align: left;
+    vertical-align: top;
+    font-size: 11px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    width: 40%;
+}
+#ConfirmContainer .Frame2Table_InBox {
+    padding-left: 29px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    padding-right: 15px;
+    height: 50px;
+}
+#ConfirmContainer .Topmessage {
+    font-style: italic;
+    padding-bottom: 10px;
+}
+#ConfirmContainer .checkbox {
+    padding-top: 10px;
+    padding-left: 5px;
+}
+#ConfirmContainer .Table2_InBox {
+    background-color: #FFFFFF;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+    height: 200px;
+    background-image: url(../images/BG4_TableInbox.jpg);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+#ConfirmContainer .field2TableInBox {
+    text-align: right;
+    vertical-align: middle;
+    font-size: 11px;
+    padding-top: 3px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    padding-left: 3px;
+    width: 90%;
+    color: #006600;
+}
+#ConfirmContainer .Table3_InBox {
+    background-color: #FFFFFF;
+    background-image: url(../images/tree.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+#ConfirmContainer .field3TableInBox {
+    text-align: left;
+    font-size: 11px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    color: #006600;
+}
+#ConfirmContainer .Runningtext {
+    padding-left: 0px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+    height: 60px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+#ConfirmContainer .Title {
+    font-size: 12px;
+    padding-left: 0px;
+    letter-spacing: 1px;
+    text-align: left;
+    vertical-align: middle;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 4px;
+    color: #003399;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    background-image: none;
+}
+
+#ConfirmContainer .BGZone02Closer {
+    background-image: url(../images/BG3_TableInbox_Part2.jpg);
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 23px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: top;
+}
+#ConfirmContainer .Runningtext_InBox2 {
+    padding-left: 105px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+}
+#ConfirmContainer .Runningtext_InBox2 A:link {
+    text-decoration: underline;
+    cursor: hand;
+}
+
+.redSpan {
+    color: #ff0000;
+}

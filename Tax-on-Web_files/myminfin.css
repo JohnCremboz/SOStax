@@ -1,0 +1,144 @@
+.meg-main .meg-content .meg-portlets {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: rgba(255, 255, 255, 1)
+}
+
+.meg-main .meg-content .meg-portlets h4 {
+    margin-bottom: .5em
+}
+
+.meg-main .meg-content .meg-portlets .portlet-borderless-container {
+    background: none
+}
+
+.meg-main .meg-content .meg-portlets .container-responsive-table {
+    width: 100%;
+    overflow-x: auto
+}
+
+.meg-main .meg-content .meg-portlets table {
+    width: 100%;
+}
+
+.meg-main .meg-content .meg-portlets table tr th, .meg-main .meg-content .meg-portlets table tr td {
+    padding: 10px
+}
+
+.meg-main .meg-content .meg-portlets table tr th {
+    border: 2px solid #dadee7;
+    text-align: center
+}
+
+.meg-main .meg-content .meg-portlets table tr th:first-child {
+    border-left: 0
+}
+
+.meg-main .meg-content .meg-portlets table tr th:last-child {
+    border-right: 0
+}
+
+.meg-main .meg-content .meg-portlets table tr td {
+    font-size: medium !important;
+    border-left: 2px solid #dadee7;
+    border-right: 2px solid #dadee7;
+}
+
+.meg-title {
+    border-bottom: 2px solid #dadee7;
+}
+
+.meg-main .meg-content .meg-portlets table tr td:first-child {
+    border-left: 0
+}
+
+.meg-main .meg-content .meg-portlets table tr td:last-child {
+    border-right: 0
+}
+
+.meg-main .meg-content .meg-portlets label.required:after {
+    content: " *";
+    color: #f00
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet {
+    width: 100%;
+    border-radius: 10px;
+    border: #d6dbe1 1px solid
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title {
+    height: 38px;
+    padding-left: 20px;
+    padding-top: 10px;
+    border-bottom: #d6dbe1 1px solid;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-msg-title {
+    color: #1a88ff;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: #d6dbe1 1px solid;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title h4, .meg-main .meg-content .meg-portlets .meg-portlet-title h5, .meg-main .meg-content .meg-portlets .meg-portlet-title h6 {
+    font-weight: bold;
+    margin: 0
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title > span {
+    display: inline-block
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title > span .icon-cog {
+    font-size: initial
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title > span .portlet-topper-toolbar {
+    margin: 0;
+    padding: 0
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title .meg-liferay-portlet-controls {
+    float: right;
+    margin-right: 2em
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title .floatRight {
+    float: right
+}
+
+.meg-main .meg-content .meg-portlets .meg-portlet-title .floatRight .collapseIcon {
+    margin-right: 10px
+}
+
+.meg-portlet-title {
+    height: 75px !important;
+    position: relative;
+}
+
+.meg-portlet-title h4 {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.calculResult table tr td {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+}
+
+.icon_wizard {
+    width: 15px;
+    height: 15px;
+    border: 0;
+    margin-right: 5px;
+    margin-top: -3px;
+}

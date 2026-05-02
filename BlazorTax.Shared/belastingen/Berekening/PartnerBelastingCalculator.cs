@@ -209,9 +209,12 @@ public static class PartnerBelastingCalculator
                     r.Afzonderlijk33Pct * TaxConstants2026.Tarief33Procent));
         }
 
-        // ── 5. Netto belastbaar inkomen (Deel 1 + Deel 2 gezamenlijk) ─
+        // ── 5. Netto belastbaar inkomen (Onroerend + Deel 1 + Deel 2 gezamenlijk) ─
+        r.BrutoOnroerendInkomen = inkomen.BrutoOnroerendInkomen;
         r.BrutoTotaal = inkomen.BrutoTotaal;
-        r.NettoBelastbaarInkomen = nettoDeel1 + nettoDeel2;
+        if (r.BrutoOnroerendInkomen > 0)
+            r.DetailRegels.Add(new("Onroerend inkomen (KI)", r.BrutoOnroerendInkomen));
+        r.NettoBelastbaarInkomen = nettoDeel1 + nettoDeel2 + r.BrutoOnroerendInkomen;
         r.NettoBelastbaarNaHQ = r.NettoBelastbaarInkomen;
         r.DetailRegels.Add(new("Netto belastbaar", r.NettoBelastbaarInkomen, true));
 
