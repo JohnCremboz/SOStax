@@ -31,7 +31,9 @@
       "WebFetch(domain:www.axxi.be)",
       "Bash(git config *)",
       "Bash(git stash *)",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\sostax\" -Recurse -Directory | Select-Object -First 20 | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\sostax\" -Recurse -Directory | Select-Object -First 20 | ForEach-Object { $_.FullName })",
+      "Bash(grep -v \"\\\\.map$\")",
+      "Bash(git merge *)"
     ]
   }
 }
