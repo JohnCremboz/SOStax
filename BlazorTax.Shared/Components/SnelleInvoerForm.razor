@@ -2,6 +2,8 @@
 @inject IJSRuntime JS
 @using System.Reflection
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text
 
 <div class="snelle-invoer-container">
     <div class="vak2-title">SNELLE INVOERING</div>
@@ -34,6 +36,36 @@
         <button type="button" class="btn btn-primary" @onclick="Valideren">VALIDEREN VAN DE GEGEVENS</button>
     </div>
 
+    <div class="mt-3 d-flex align-items-center gap-2">
+        <label class="snelle-invoer-label mb-0">CSV importeren:</label>
+        <InputFile OnChange="ImporteerCsvAsync" accept=".csv,.txt" class="form-control" style="max-width:300px;" />
+        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="DownloadTemplateAsync"
+                title="Download een vooringevuld sjabloon met alle beschikbare rubrieken">
+            Template downloaden
+        </button>
+    </div>
+    <div class="text-muted small mt-1">
+        Formaat: <code>rubriek;bedrag</code> — één rubriek per lijn. Regels die beginnen met <code>#</code> worden genegeerd.
+        Download het sjabloon, vul de bedragen in die op u van toepassing zijn, en importeer het bestand.
+    </div>
+
+    @if (_importFouten.Count > 0)
+    {
+        <div class="alert alert-danger mt-2">
+            <strong>Import mislukt — corrigeer de volgende fouten:</strong>
+            <ul class="mb-0 mt-1">
+                @foreach (var fout in _importFouten)
+                {
+                    <li>@fout</li>
+                }
+            </ul>
+        </div>
+    }
+    @if (_importSucces)
+    {
+        <div class="alert alert-success mt-2">Import geslaagd.</div>
+    }
+
     @if (_entries.Count > 0)
     {
         <table class="table table-sm table-hover mt-3">
@@ -42,15 +74,20 @@
                     <th>Code</th>
                     <th>Omschrijving</th>
                     <th>Waarde</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in _entries)
+                @foreach (var entry in _entries.ToList())
                 {
                     <tr>
                         <td><code>@entry.Code</code></td>
                         <td>@entry.Omschrijving</td>
                         <td>@entry.Waarde</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    @onclick="() => Verwijderen(entry)">✕</button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -67,6 +104,8 @@
     private string _foutmelding = string.Empty;
     private Dictionary<string, string> _codeOmschrijvingen = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<SnelleInvoerEntry> _entries = [];
+    private readonly List<string> _importFouten = [];
+    private bool _importSucces;
 
     private static readonly string[] CsvBestanden =
     [
@@ -163,27 +202,7 @@
             return;
         }
 
-        // Zoek de volledige code met controlecijfer op in de dictionary
-        var gevondenCode = code;
-        var omschrijving = string.Empty;
-        if (_codeOmschrijvingen.TryGetValue(code, out var desc))
-        {
-            omschrijving = desc;
-        }
-        else
-        {
-            // Probeer met controlecijfer (key bevat '-')
-            var numericPart = code.Contains('-') ? code.Split('-')[0] : code;
-            var match = _codeOmschrijvingen.FirstOrDefault(kv =>
-                kv.Key.StartsWith(numericPart + "-", StringComparison.OrdinalIgnoreCase));
-            if (!string.IsNullOrEmpty(match.Key))
-            {
-                gevondenCode = match.Key;
-                omschrijving = match.Value;
-            }
-        }
-
-        _entries.Add(new SnelleInvoerEntry(gevondenCode, omschrijving, waarde));
+        _entries.Add(new SnelleInvoerEntry(code, ZoekOmschrijving(code), waarde));
         _code = string.Empty;
         _waarde = string.Empty;
         await _codeInput.FocusAsync();
@@ -208,6 +227,199 @@
                 _entries[i] = _entries[i] with { Omschrijving = omschrijving };
             }
         }
+    }
+
+    private void Verwijderen(SnelleInvoerEntry entry)
+    {
+        TryClearWaarde(entry.Code);
+        _entries.Remove(entry);
+    }
+
+    private void TryClearWaarde(string code)
+    {
+        var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
+
+        if ((numericCode == "1250" || numericCode == "2250") && State.VakIV is not null)
+        {
+            RemoveFromFicheList(numericCode == "1250", State.VakIV.Fiches1250, State.VakIV.Fiches2250);
+            return;
+        }
+        if ((numericCode == "1286" || numericCode == "2286") && State.VakIV is not null)
+        {
+            RemoveFromFicheList(numericCode == "1286", State.VakIV.Fiches1286, State.VakIV.Fiches2286);
+            return;
+        }
+        if ((numericCode == "1225" || numericCode == "2225") && State.VakV is not null)
+        {
+            RemoveFromFicheList(numericCode == "1225", State.VakV.Fiches1225, State.VakV.Fiches2225);
+            return;
+        }
+
+        var propNaam = "Code" + numericCode;
+        foreach (var staatsProp in typeof(AangifteState).GetProperties())
+        {
+            var vakData = staatsProp.GetValue(State);
+            if (vakData is null) continue;
+
+            var veldProp = vakData.GetType().GetProperty(propNaam);
+            if (veldProp is null || !veldProp.CanWrite) continue;
+
+            // Nullable types → null; bool → false; overige value types → default
+            var doelType = veldProp.PropertyType;
+            if (Nullable.GetUnderlyingType(doelType) is not null)
+                veldProp.SetValue(vakData, null);
+            else if (doelType == typeof(bool))
+                veldProp.SetValue(vakData, false);
+            else
+                veldProp.SetValue(vakData, Activator.CreateInstance(doelType));
+            return;
+        }
+    }
+
+    private static void RemoveFromFicheList(bool isPrimary, List<decimal?> primaryList, List<decimal?> partnerList)
+    {
+        var list = isPrimary ? primaryList : partnerList;
+        var otherList = isPrimary ? partnerList : primaryList;
+
+        // Verwijder de laatste ingevulde waarde
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i].HasValue)
+            {
+                list[i] = null;
+                // Als beide lijsten op deze positie null zijn en het niet de eerste rij is, rij verwijderen
+                if (i > 0 && !otherList[i].HasValue)
+                {
+                    list.RemoveAt(i);
+                    otherList.RemoveAt(i);
+                }
+                return;
+            }
+        }
+    }
+
+    private async Task ImporteerCsvAsync(InputFileChangeEventArgs e)
+    {
+        _importFouten.Clear();
+        _importSucces = false;
+
+        using var stream = e.File.OpenReadStream(maxAllowedSize: 1024 * 1024);
+        using var reader = new StreamReader(stream);
+        var inhoud = await reader.ReadToEndAsync();
+
+        // ── Fase 1: parse en valideer alle regels ──────────────────────────
+        var geldigeRegels = new List<(string Code, string Waarde)>();
+        int lijnnummer = 0;
+
+        foreach (var lijn in inhoud.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n'))
+        {
+            lijnnummer++;
+            if (string.IsNullOrWhiteSpace(lijn)) continue;
+            if (lijn.TrimStart().StartsWith('#')) continue; // commentaarregel
+
+            var delen = lijn.Split(';', 3); // max 3 delen; derde kolom (omschrijving) wordt genegeerd
+            if (delen.Length < 2)
+            {
+                _importFouten.Add($"Lijn {lijnnummer}: verwacht formaat 'rubriek;bedrag', gevonden '{lijn}'.");
+                continue;
+            }
+
+            var code = delen[0].Trim();
+            var waarde = delen[1].Trim();
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                _importFouten.Add($"Lijn {lijnnummer}: lege code.");
+                continue;
+            }
+
+            var fout = ValideerCodeEnWaarde(code, waarde);
+            if (fout is not null)
+                _importFouten.Add($"Lijn {lijnnummer} ({code}): {fout}");
+            else
+                geldigeRegels.Add((code, waarde));
+        }
+
+        if (_importFouten.Count > 0) return;
+
+        // ── Fase 2: alles geldig → toepassen ───────────────────────────────
+        foreach (var (code, waarde) in geldigeRegels)
+        {
+            TrySetWaarde(code, waarde);
+            _entries.Add(new SnelleInvoerEntry(code, ZoekOmschrijving(code), waarde));
+        }
+
+        _importSucces = true;
+    }
+
+    private async Task DownloadTemplateAsync()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("# SOStax – aangifte template");
+        sb.AppendLine("# Formaat: rubriek;bedrag;omschrijving (derde kolom wordt genegeerd bij import)");
+        sb.AppendLine("# Vul de bedragen in die op u van toepassing zijn.");
+        sb.AppendLine("# Verwijder of laat leeg wat niet van toepassing is.");
+        sb.AppendLine("# Regels die beginnen met # worden genegeerd.");
+        sb.AppendLine("#");
+
+        var gesorteerd = _codeOmschrijvingen
+            .OrderBy(kv =>
+            {
+                var numStr = kv.Key.Contains('-') ? kv.Key.Split('-')[0] : kv.Key;
+                return int.TryParse(numStr, out int n) ? n : int.MaxValue;
+            })
+            .ThenBy(kv => kv.Key);
+
+        foreach (var (code, omschrijving) in gesorteerd)
+            sb.AppendLine($"{code};;{omschrijving}");
+
+        await JS.InvokeVoidAsync("downloadTextFile", "aangifte-template.csv", sb.ToString());
+    }
+
+    private string? ValideerCodeEnWaarde(string code, string waarde)
+    {
+        var doelType = ZoekDoelType(code);
+        if (doelType is null)
+            return "code niet gevonden in de aangifte.";
+
+        if (doelType == typeof(bool))
+            return null; // bool aanvaardt altijd een waarde
+
+        var geconverteerd = GetConvertedValue(doelType, waarde);
+        if (geconverteerd is null)
+            return $"waarde '{waarde}' is geen geldig getal.";
+
+        return null;
+    }
+
+    private Type? ZoekDoelType(string code)
+    {
+        var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
+
+        if (numericCode is "1250" or "2250" or "1286" or "2286" or "1225" or "2225")
+            return typeof(decimal);
+
+        var propNaam = "Code" + numericCode;
+        foreach (var staatsProp in typeof(AangifteState).GetProperties())
+        {
+            var vakData = staatsProp.GetValue(State);
+            if (vakData is null) continue;
+            var veldProp = vakData.GetType().GetProperty(propNaam);
+            if (veldProp is null || !veldProp.CanWrite) continue;
+            return Nullable.GetUnderlyingType(veldProp.PropertyType) ?? veldProp.PropertyType;
+        }
+        return null;
+    }
+
+    private string ZoekOmschrijving(string code)
+    {
+        if (_codeOmschrijvingen.TryGetValue(code, out var desc))
+            return desc;
+
+        var numericPart = code.Contains('-') ? code.Split('-')[0] : code;
+        var match = _codeOmschrijvingen.FirstOrDefault(kv =>
+            kv.Key.StartsWith(numericPart + "-", StringComparison.OrdinalIgnoreCase));
+        return match.Value ?? string.Empty;
     }
 
     private async Task HandleKeyDown(KeyboardEventArgs e)
