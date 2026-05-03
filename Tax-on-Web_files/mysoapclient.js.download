@@ -1,0 +1,35 @@
+/*****************************************************************************\
+
+ Javascript "SOAP Client" 
+ 
+ @version: 1.0 - 2009/03/24
+ @author: Denis Toussaint - http://www.centran.be/
+ 
+\*****************************************************************************/
+
+function SOAPClient() {}
+
+SOAPClient.invoke = function(url, method, ns, callback)
+{
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("POST", url, true);
+	xmlhttp.onreadystatechange=function() {
+	 if (xmlhttp.readyState == 4) {
+	  callback(xmlhttp.responseXML);
+	 }
+	}
+	xmlhttp.setRequestHeader("SOAPAction", url + "/" + method);
+	xmlhttp.setRequestHeader("Content-Type", "text/xml");
+	var xml = 
+				"<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+				"<soap:Envelope " +
+				"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+				"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+				"xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+				"<soap:Body>" +
+					"<" + method + " xmlns=\"" + ns + "\">" +
+					"</" + method + ">"+
+					"</soap:Body></soap:Envelope>";
+	xmlhttp.send(xml);
+}
+

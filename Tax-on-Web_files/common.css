@@ -1,0 +1,1686 @@
+.error {
+    font-weight: bold;
+    color: red;
+    background-color: #EEE0E5
+}
+
+.errorUnderline {
+    color: red;
+    text-decoration: underline
+}
+
+.errorFrame {
+    border-collapse: collapse;
+    border: 2px solid red;
+}
+
+.groupError {
+    background-color: #EEE0E5
+}
+
+.groupErrorWithPadding {
+	background-color: #EEE0E5;
+	padding-left: 70px;
+}
+
+.ccError {
+    background-color: #FFEC8B
+}
+
+.fieldError {
+    border-collapse: collapse;
+    border: 1px solid #7FFF00;
+    background-color: #FFFF99
+}
+
+.grey {
+    background-color: #999999;
+    width: 1px;
+}
+
+.borderTop {
+    border-style: solid solid none solid;
+    border-color: #999999;
+}
+
+.borderBottom {
+    border-style: none solid solid solid;
+    border-color: #999999;
+}
+
+.borderSide {
+    border-style: none solid none solid;
+    border-color: #999999;
+}
+
+a .bubbleInfo {
+    display: none
+}
+
+a:hover .bubbleInfo, a:focus .bubbleInfo {
+    display: block;
+    position: absolute;
+    border: 2px solid #5a7cc8;
+    border-radius: 20px;
+    padding: 5px;
+    background-color: #D7DEEC;
+    width: 325px;
+    text-align: center;
+    z-index: 2;
+}
+
+.bubbleInfo p {
+    font-family: verdana, Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+    counter-reset: hippo-section-0;
+}
+
+.hippo-section-0 {
+    counter-reset: hippo-section-1;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.hippo-section-0:first-letter {
+    text-transform: capitalize;
+}
+
+.hippo-section-0:before {
+    counter-increment: hippo-section-0;
+    content: counter(hippo-section-0, upper-alpha) ". ";
+}
+
+.hippo-section-1 {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.hippo-section-1:first-letter {
+    text-transform: capitalize;
+}
+
+.hippo-section-2 {
+    font-weight: bold;
+}
+
+.hippo-section-2:first-letter {
+    text-transform: capitalize;
+}
+
+@supports (-moz-appearance:meterbar) and (background-blend-mode:difference,normal) {
+	.AdminCode{
+		font-weight: bold;
+		width: 95% !important;
+		margin-left: 6.67% !important;
+	}
+
+	.Ligne3{
+		width: 95% !important;
+	}
+
+	.Ligne3_TI{
+		width: 16.67% !important;
+	}
+
+	.Ligne3_TP{
+		text-align: right;
+		font-weight: bold;
+		width: 16.66% !important;
+
+	}
+
+	.Ligne3_I{
+		width: 16.67% !important;
+	}
+
+	.Ligne3_P{
+		text-align: right;
+		font-weight: bold;
+		width: 16.66% !important;
+
+	}
+
+ 	.TR .Empty{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.TR .LabelText{
+ 		width: 94.44% !important;
+ 	}
+
+ 	.DL .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DL .LabelText{
+ 		width: 93.33% !important;
+ 	}
+
+ 	.DC .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DC .LabelText{
+ 		width: 43.33% !important;
+ 	}
+
+ 	.DC .Val1{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC .Val1Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC .Ipcode1{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC .Val2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC .Val2Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC .Ipcode2{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.UNKNOWN .LabelText{
+ 		width: 20.55% !important;
+ 	}
+
+ 	.UNKNOWN .Inf1{
+ 		width: 8.89% !important;
+ 	}
+
+ 	.UNKNOWN .Op1{
+ 		width: 2.22% !important;
+ 	}
+
+ 	.UNKNOWN .Inf2{
+ 		width: 8.89% !important;
+ 	}
+
+ 	.UNKNOWN .Op2{
+ 		width: 2.22% !important;
+ 	}
+
+ 	.UNKNOWN .Inf3{
+ 		width: 8.89% !important;
+ 	}
+
+ 	.UNKNOWN .Op3{
+ 		width: 2.22% !important;
+ 	}
+
+ 	.UNKNOWN .Val1{
+ 		width: 11.67% !important;
+ 	}
+
+ 	.UNKNOWN .Val1Sign{
+ 		width: 1.11% !important;
+ 	}
+
+ 	.UNKNOWN .Ipcode1{
+ 		width: 3.89% !important;
+ 	}
+
+ 	.UNKNOWN .MutVal{
+ 		width: 11.67% !important;
+ 	}
+
+ 	.UNKNOWN .MutValSign{
+ 		width: 1.11% !important;
+ 	}
+
+ 	.UNKNOWN .Val2{
+ 		width: 11.67% !important;
+ 	}
+
+ 	.UNKNOWN .Val2Sign{
+ 		width: 1.11% !important;
+ 	}
+
+ 	.UNKNOWN .Ipcode2{
+ 		width: 3.89% !important;
+ 	}
+
+ 	.DCG .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DCG .LabelText{
+ 		width: 43.33% !important;
+ 	}
+
+ 	.DCG .Val1{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DCG .Val1Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DCG .Ipcode1{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DCG .Val2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DCG .Val2Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DCG .Ipcode2{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC1 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DC1 .LabelText{
+ 		width: 8.33% !important;
+ 	}
+
+ 	.DC1 .Inf1{
+ 		width: 13.33% !important;
+ 	}
+
+ 	.DC1 .Op1{
+ 		width: 3.33% !important;
+ 	}
+
+ 	.DC1 .Inf2{
+ 		width: 7.22% !important;
+ 	}
+
+ 	.DC1 .Op2{
+ 		width: 3.33% !important;
+ 	}
+
+ 	.DC1 .Empty2{
+ 		width: 7.79% !important;
+ 	}
+
+ 	.DC1 .Val1{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC1 .Val1Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC1 .Ipcode1{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC1 .Val2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC1 .Val2Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC1 .Ipcode2{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC2 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DC2 .LabelText{
+ 		width: 19.44% !important;
+ 	}
+
+ 	.DC2 .Inf2{
+ 		width: 10.56% !important;
+ 	}
+
+ 	.DC2 .Op2{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DC2 .Inf3{
+ 		width: 7.77% !important;
+ 	}
+
+ 	.DC2 .Op3{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DC2 .Val1{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC2 .Val1Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC2 .Ipcode1{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC2 .Val2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC2 .Val2Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC2 .Ipcode2{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC3 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DC3 .LabelText{
+ 		width: 32.22% !important;
+ 	}
+
+ 	.DC3 .Inf3{
+ 		width: 8.33% !important;
+ 	}
+
+ 	.DC3 .Op3{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DC3 .Val1{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC3 .Val1Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC3 .Ipcode1{
+ 		width: 5.56% !important;
+ 	}
+
+ 	.DC3 .Val2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DC3 .Val2Sign{
+ 		width: 1.66% !important;
+ 	}
+
+ 	.DC3 .Ipcode2{
+ 		width: 5.56% !important;
+ 	}
+
+    .DD{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+ 	.DD .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DD .LabelText{
+ 		width: 53.32% !important;
+ 	}
+
+ 	.DD .MutVal{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DD .MutValSign{
+ 		width: 1.67% !important;
+ 	}
+
+    .DD1{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+ 	.DD1 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DD1 .LabelText{
+ 		width: 8.33% !important;
+ 	}
+
+ 	.DD1 .Inf1{
+ 		width: 13.33% !important;
+ 	}
+
+ 	.DD1 .Op1{
+ 		width: 3.33% !important;
+ 	}
+
+ 	.DD1 .Inf2{
+ 		width: 7.22% !important;
+ 	}
+
+ 	.DD1 .Op2{
+ 		width: 3.33% !important;
+ 	}
+
+ 	.DD1 .Empty2{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DD1 .MutVal{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DD1 .MutValSign{
+ 		width: 1.67% !important;
+ 	}
+
+    .DD2{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+ 	.DD2 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DD2 .LabelText{
+ 		width: 19.44% !important;
+ 	}
+
+ 	.DD2 .Inf2{
+ 		width: 10.56% !important;
+ 	}
+
+ 	.DD2 .Op2{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DD2 .Inf3{
+ 		width: 7.77% !important;
+ 	}
+
+ 	.DD2 .Op3{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DD2 .Empty2{
+ 		width: 9.99% !important;
+ 	}
+
+ 	.DD2 .MutVal{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DD2 .MutValSign{
+ 		width: 1.67% !important;
+ 	}
+
+    .DD3{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+ 	.DD3 .Empty{
+ 		width: 6.67% !important;
+ 	}
+
+ 	.DD3 .LabelText{
+ 		width: 32.22% !important;
+ 	}
+
+ 	.DD3 .Inf3{
+ 		width: 8.33% !important;
+ 	}
+
+ 	.DD3 .Op3{
+ 		width: 2.78% !important;
+ 	}
+
+ 	.DD3 .Empty2{
+ 		width: 9.99% !important;
+ 	}
+
+ 	.DD3 .MutVal{
+ 		width: 17.78% !important;
+ 	}
+
+ 	.DD3 .MutValSign{
+ 		width: 1.67% !important;
+ 	}
+
+    .SS{
+        font-size: 16;
+        font-weight: bold;
+        padding-right: 15%;
+    }
+
+ 	.SS .LabelText{
+ 		width: 60% !important;
+ 	}
+
+ 	.SS .MutVal{
+ 		width: 25% !important;
+ 	}
+ }
+
+ _:-ms-fullscreen, :root .AdminCode{
+		font-weight: bold;
+		width: 95%;
+		margin-left: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .Ligne3 {
+		width: 95%;
+ }
+
+ _:-ms-fullscreen, :root .Ligne3_TI{
+		width: 16.67% !important;
+ }
+
+ _:-ms-fullscreen, :root .Ligne3_TP {
+		text-align: right;
+		font-weight: bold;
+		width: 16.66%;
+ }
+
+ _:-ms-fullscreen, :root .Ligne3_I {
+		width: 16.67%
+ }
+
+ _:-ms-fullscreen, :root .Ligne3_P {
+		text-align: right;
+		font-weight: bold;
+		width: 16.66%;
+ }
+
+ _:-ms-fullscreen, :root .TR .Empty{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .TR .LabelText{
+ 		width: 94.44%;
+ }
+
+ _:-ms-fullscreen, :root .DL .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DL .LabelText{
+ 		width: 93.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DC .LabelText{
+ 		width: 43.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Val1{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Val1Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Ipcode1{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Val2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Val2Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC .Ipcode2{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .LabelText{
+ 		width: 20.55%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Inf1{
+ 		width: 8.89%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Op1{
+ 		width: 2.22%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Inf2{
+ 		width: 8.89%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Op2{
+ 		width: 2.22%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Inf3{
+ 		width: 8.89%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Op3{
+ 		width: 2.22%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Val1{
+ 		width: 11.67%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Val1Sign{
+ 		width: 1.11%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Ipcode1{
+ 		width: 3.89%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .MutVal{
+ 		width: 11.67%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .MutValSign{
+ 		width: 1.11%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Val2{
+ 		width: 11.67%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Val2Sign{
+ 		width: 1.11%;
+ }
+
+ _:-ms-fullscreen, :root .UNKNOWN .Ipcode2{
+ 		width: 3.89%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .LabelText{
+ 		width: 43.33%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Val1{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Val1Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Ipcode1{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Val2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Val2Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DCG .Ipcode2{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .LabelText{
+ 		width: 8.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Inf1{
+ 		width: 13.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Op1{
+ 		width: 3.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Inf2{
+ 		width: 7.22%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Op2{
+ 		width: 3.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Empty2{
+ 		width: 7.79%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Val1{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Val1Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Ipcode1{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Val2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Val2Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC1 .Ipcode2{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .LabelText{
+ 		width: 19.44%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Inf2{
+ 		width: 10.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Op2{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Inf3{
+ 		width: 7.77%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Op3{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Val1{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Val1Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Ipcode1{
+ 		width: 5.56%);
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Val2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Val2Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC2 .Ipcode2{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .LabelText{
+ 		width: 32.22%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Inf3{
+ 		width: 8.33%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Op3{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Val1{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Val1Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Ipcode1{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Val2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Val2Sign{
+ 		width: 1.66%;
+ }
+
+ _:-ms-fullscreen, :root .DC3 .Ipcode2{
+ 		width: 5.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD{
+ 		font-size: 10;
+ 		padding-right: 20.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD .LabelText{
+ 		width: 53.32%;
+ }
+
+ _:-ms-fullscreen, :root .DD .MutVal{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD .MutValSign{
+ 		width: 1.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD1{
+ 		font-size: 10;
+ 		padding-right: 20.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .LabelText{
+ 		width: 8.33%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Inf1{
+ 		width: 13.33%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Op1{
+ 		width: 3.33%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Inf2{
+ 		width: 7.22%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Op2{
+ 		width: 3.33%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .Empty2{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .MutVal{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD1 .MutValSign{
+ 		width: 1.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD2{
+ 		font-size: 10;
+ 		padding-right: 20.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .LabelText{
+ 		width: 19.44%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Inf2{
+ 		width: 10.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Op2{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Inf3{
+ 		width: 7.77%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Op3{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .Empty2{
+ 		width: 9.99%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .MutVal{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD2 .MutValSign{
+ 		width: 1.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD3{
+ 		font-size: 10;
+ 		padding-right: 20.56%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .Empty{
+ 		width: 6.67%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .LabelText{
+ 		width: 32.22%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .Inf3{
+ 		width: 8.33%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .Op3{
+ 		width: 2.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .Empty2{
+ 		width: 9.99%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .MutVal{
+ 		width: 17.78%;
+ }
+
+ _:-ms-fullscreen, :root .DD3 .MutValSign{
+ 		width: 1.67%;
+ }
+
+ _:-ms-fullscreen, :root .SS{
+        font-size: 16;
+        font-weight: bold;
+ 		padding-right: 15%;
+ }
+
+ _:-ms-fullscreen, :root .SS .LabelText{
+ 		width: 60%;
+ }
+
+ _:-ms-fullscreen, :root .SS .MutVal{
+ 		width: 25%;
+ }
+
+.AdminCode{
+    font-weight: bold;
+	width: 95%;
+    margin-left: calc(120%/18);
+}
+
+.Ligne3{
+	width: 95%;
+}
+
+.Ligne3_TI{
+	width: calc(100%/6);
+}
+
+.Ligne3_TP{
+	text-align: right;
+	font-weight: bold;
+	width: calc(100%/6);
+
+}
+
+.Ligne3_I{
+	width: calc(100%/6);
+}
+
+.Ligne3_P{
+	text-align: right;
+	font-weight: bold;
+	width: calc(100%/6);
+
+}
+
+.HH{
+    width: 100%;
+    font-size: 14;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #d9d9d9;
+}
+
+.HC{
+    width: 100%;
+    font-size: 14;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.FC{
+    width: 100%;
+    font-size: 8;
+}
+
+.TR{
+    font-size: 14;
+}
+
+.TR .Empty{
+	width: calc(100%/18);
+}
+
+.TR .LabelText{
+	width: calc(1700%/18);
+	font-weight: bold;
+}
+
+.DL{
+    font-size: 10;
+}
+
+.DL .Empty{
+    width: calc(120%/18);
+}
+
+.DL .LabelText{
+    width: calc(1680%/18);
+}
+
+.DC{
+    font-size: 10;
+}
+
+.DC .Empty{
+	width: calc(120%/18);
+}
+
+.DC .LabelText{
+    width: calc(780%/18);
+}
+
+.DC .Val1{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC .Val1Sign{
+    width: calc(30%/18);
+}
+
+.DC .Ipcode1{
+	width: calc(100%/18);
+	font-weight: bold;
+}
+
+.DC .Val2{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC .Val2Sign{
+    width: calc(30%/18);
+}
+
+.DC .Ipcode2{
+    width: calc(100%/18);
+	font-weight: bold;
+}
+
+.UNKNOWN{
+    font-size: 10;
+}
+
+.UNKNOWN .LabelText{
+    width: calc(370%/18);
+}
+
+.UNKNOWN .Inf1{
+    width: calc(160%/18);
+    text-align: right;
+}
+
+.UNKNOWN .Op1{
+    width: calc(40%/18);
+}
+
+.UNKNOWN .Inf2{
+    width: calc(160%/18);
+    text-align: right;
+}
+
+.UNKNOWN .Op2{
+    width: calc(40%/18);
+}
+
+.UNKNOWN .Inf3{
+    width: calc(160%/18);
+    text-align: right;
+}
+
+.UNKNOWN .Op3{
+    width: calc(40%/18);
+}
+
+.UNKNOWN .Val1{
+    width: calc(210%/18);
+    text-align: right;
+}
+
+.UNKNOWN .Val1Sign{
+    width: calc(20%/18);
+}
+
+.UNKNOWN .Ipcode1{
+    width: calc(70%/18);
+}
+
+.UNKNOWN .MutVal{
+    width: calc(210%/18);
+    text-align: right;
+}
+
+.UNKNOWN .MutValSign{
+    width: calc(20%/18);
+}
+
+.UNKNOWN .Val2{
+    width: calc(210%/18);
+    text-align: right;
+}
+
+.UNKNOWN .Val2Sign{
+    width: calc(20%/18);
+}
+
+.UNKNOWN .Ipcode2{
+    width: calc(70%/18);
+}
+
+.DCG{
+    font-size: 10;
+	font-weight: bold;
+}
+
+.DCG .Empty{
+    width: calc(120%/18);
+}
+
+.DCG .LabelText{
+    width: calc(780%/18);
+}
+
+.DCG .Val1{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DCG .Val1Sign{
+    width: calc(30%/18);
+}
+
+.DCG .Ipcode1{
+    width: calc(100%/18);
+}
+
+.DCG .Val2{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DCG .Val2Sign{
+    width: calc(30%/18);
+}
+
+.DCG .Ipcode2{
+    width: calc(100%/18);
+}
+
+.DC1{
+    font-size: 10;
+}
+
+.DC1 .Empty{
+    width: calc(120%/18);
+}
+
+.DC1 .LabelText{
+    width: calc(240%/18);
+}
+
+.DC1 .Inf1{
+    width: calc(240%/18);
+    text-align: right;
+}
+
+.DC1 .Op1{
+    width: calc(60%/18);
+}
+
+.DC1 .Inf2{
+    width: calc(130%/18);
+    text-align: right;
+}
+
+.DC1 .Op2{
+    width: calc(60%/18);
+}
+
+.DC1 .Val1{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC1 .Val1Sign{
+    width: calc(30%/18);
+}
+
+.DC1 .Ipcode1{
+    width: calc(100%/18);
+	font-weight: bold;
+}
+
+.DC1 .Val2{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC1 .Val2Sign{
+    width: calc(30%/18);
+}
+
+.DC1 .Ipcode2{
+    width: calc(100%/18);
+	font-weight: bold;
+}
+
+.DC2{
+    font-size: 10;
+}
+
+.DC2 .Empty{
+    width: calc(120%/18);
+}
+
+.DC2 .LabelText{
+    width: calc(350%/18);
+}
+
+.DC2 .Inf2{
+    width: calc(190%/18);
+    text-align: right;
+}
+
+.DC2 .Op2{
+    width: calc(50%/18);
+}
+
+.DC2 .Inf3{
+    width: calc(140%/18);
+    text-align: right;
+}
+
+.DC2 .Op3{
+    width: calc(50%/18);
+}
+
+.DC2 .Val1{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC2 .Val1Sign{
+    width: calc(30%/18);
+}
+
+.DC2 .Ipcode1{
+    width: calc(100%/18);
+	font-weight: bold;
+}
+
+.DC2 .Val2{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC2 .Val2Sign{
+    width: calc(30%/18);
+}
+
+.DC2 .Ipcode2{
+    width: calc(100%/18);
+	font-weight: bold;
+}
+
+.DC3{
+    font-size: 10;
+}
+
+.DC3 .Empty{
+    width: calc(120%/18);
+}
+
+.DC3 .LabelText{
+    width: calc(580%/18);
+}
+
+.DC3 .Inf3{
+    width: calc(150%/18);
+    text-align: right;
+}
+
+.DC3 .Op3{
+    width: calc(50%/18);
+}
+
+.DC3 .Val1{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC3 .Val1Sign{
+    width: calc(30%/18);
+}
+
+.DC3 .Ipcode1{
+    width: calc(100%/18);
+}
+
+.DC3 .Val2{
+    width: calc(320%/18);
+    text-align: right;
+}
+
+.DC3 .Val2Sign{
+    width: calc(30%/18);
+}
+
+.DC3 .Ipcode2{
+    width: calc(100%/18);
+}
+
+.DD{
+    font-size: 10;
+    padding-right: calc(370%/18);
+}
+
+.DD .Empty{
+	width: calc(120%/18);
+}
+
+.DD .LabelText{
+	width: calc(960%/18);
+}
+
+.DD .MutVal{
+	width: calc(320%/18);
+    text-align: right;
+}
+
+.DD .MutValSign{
+	width: calc(30%/18);
+}
+
+.DD1{
+    font-size: 10;
+    padding-right: calc(370%/18);
+}
+
+.DD1 .Empty{
+	width: calc(120%/18);
+}
+
+.DD1 .LabelText{
+	width: calc(150%/18);
+}
+
+.DD1 .Inf1{
+	width: calc(240%/18);
+    text-align: right;
+}
+
+.DD1 .Op1{
+	width: calc(60%/18);
+}
+
+.DD1 .Inf2{
+	width: calc(130%/18);
+    text-align: right;
+}
+
+.DD1 .Op2{
+	width: calc(60%/18);
+}
+
+.DD1 .Empty2{
+	width: calc(320%/18);
+}
+
+.DD1 .MutVal{
+	width: calc(320%/18);
+    text-align: right;
+}
+
+.DD1 .MutValSign{
+	width: calc(30%/18);
+}
+
+.DD2{
+    font-size: 10;
+    padding-right: calc(370%/18);
+}
+
+.DD2 .Empty{
+	width: calc(120%/18);
+}
+
+.DD2 .LabelText{
+	width: calc(350%/18);
+}
+
+.DD2 .Inf2{
+	width: calc(190%/18);
+    text-align: right;
+}
+
+.DD2 .Op2{
+	width: calc(50%/18);
+}
+
+.DD2 .Inf3{
+	width: calc(140%/18);
+    text-align: right;
+}
+
+.DD2 .Op3{
+	width: calc(50%/18);
+}
+
+.DD2 .Empty2{
+	width: calc(180%/18);
+}
+
+.DD2 .MutVal{
+	width: calc(320%/18);
+    text-align: right;
+}
+
+.DD2 .MutValSign{
+	width: calc(30%/18);
+}
+
+.DD3{
+    font-size: 10;
+    padding-right: calc(370%/18);
+}
+
+.DD3 .Empty{
+	width: calc(120%/18);
+}
+
+.DD3 .LabelText{
+	width: calc(580%/18);
+}
+
+.DD3 .Inf3{
+	width: calc(150%/18);
+    text-align: right;
+}
+
+.DD3 .Op3{
+	width: calc(50%/18);
+}
+
+.DD3 .Empty2{
+	width: calc(180%/18);
+}
+
+.DD3 .MutVal{
+	width: calc(320%/18);
+    text-align: right;
+}
+
+.DD3 .MutValSign{
+	width: calc(30%/18);
+}
+
+.SS{
+    font-size: 16;
+	font-weight: bold;
+	padding-right: calc(270%/18);
+}
+
+.SS .LabelText{
+    width: calc(1080%/18);
+}
+
+.SS .MutVal{
+	width: calc(450%/18);
+	background-color: #d9d9d9;
+    text-align: center;
+}
+
+.L1{
+    font-size: 10;
+}
+
+.UD hr{
+	height: none;
+	border: none;
+	border-top: 1px dashed grey;
+}
+
+.UD2 hr{
+	height: none;
+	border: none;
+	border-top: 1px dashed grey;
+}
+
+.UDM hr{
+	height: none;
+	border: none;
+	border-top: 1px dashed grey;
+}
+.underlinedLink {
+	text-decoration: underline;
+}
+
+#skiplink:focus {
+	position: static;
+	left: auto;
+	float: left;
+	font-size: 14px;
+	text-decoration: none;
+	padding: 4px 7px 6px 7px;
+	border-radius: 5px;
+}
+
+.offscreen {
+	position: absolute;
+	left: -999em;
+}
+.PopupTooltip {
+	position: relative;
+	z-index:20;
+}
+
+.PopupTooltip span { display:none;
+	width: 400px;
+	padding: 3px 8px;
+	color: inherit;
+	text-align: left;
+	background-color: inherit;
+	border-radius: 4px;
+	position:absolute;
+}
+
+.PopupTooltip button :hover { z-index: 21; }
+.PopupTooltip :hover { z-index: 21; }
+.PopupTooltip:hover span { display: inline-block; }
+
+.PopupTooltip:hover span ul li:before {
+	content: "\f105";
+	font-family: FontAwesome;
+	color: black;
+	margin-right: 10px;
+	margin-left: -15px !important;
+}
+
+.PopupTooltip:hover span ul li{
+	color: #fff;
+}
+
+
+.OnIcon:hover {
+	filter: brightness(120%);
+}
+
+.OnIconDarker:hover > img {
+	filter: brightness(0%);
+}
+
+.alignToValidateButton {
+	padding:15px;
+	padding-bottom:20px;
+}
+
+.validateButton {
+	width:40px;
+}
+
+.alignRight {
+	width: 100%;
+	margin-right: 0px;
+	margin-left: auto;
+}
+
+.cadre {
+	border: 3px solid black;
+	padding: 5px;
+	border-collapse: separate;
+}

@@ -1,0 +1,595 @@
+@media print {
+    @page {
+        margin: 1cm;
+    }
+    BODY {
+        COLOR: #000000; FONT-FAMILY: verdana, Arial, Helvetica, sans-serif; BACKGROUND: #FFFFFF
+    }
+
+    P, TD {
+        COLOR: #000000; FONT-FAMILY: verdana, Arial, Helvetica, sans-serif
+    }
+
+    .unit{
+        FONT-FAMILY : Menlo, Monaco, Consolas, "Courier New", monospace
+    }
+
+    .title {
+        FONT-WEIGHT: bold; TEXT-TRANSFORM: uppercase
+    }
+
+    .subtitle {
+        FONT-WEIGHT: bold
+    }
+
+    .thirdtitle {
+        FONT-WEIGHT: bold; COLOR: #777777; TEXT-TRANSFORM: uppercase; LINE-HEIGHT: 25px
+    }
+
+    .caption {
+        FONT-WEIGHT: normal; COLOR: #a0a0a0; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; FONT-STYLE: italic
+    }
+
+    li {
+        LIST-STYLE: square; color: red
+    }
+    #be-header {
+        display: none;
+    }
+    .fin-logo {
+        display: none;
+    }
+    .login {
+        display: none;
+    }
+    .njr {
+        display: none;
+    }
+    footer {
+        display: none;
+    }
+    a {
+        color: #4b5155;
+    }
+    pre {
+        display: block;
+        font-family: monospace;
+        white-space: pre;
+        margin: 1em 0;
+    }
+    .fa-arrow-up {
+        display: none;
+    }
+
+    #NEXT_CADRE {
+        display: none;
+    }
+
+    #CONFIRM_SEND{
+        display: none;
+    }
+
+    #personalInfo {
+        display: none;
+    }
+
+    .image-bg-fluid-height div {
+        padding: 0 0 !important;
+    }
+
+    a[href]:after {
+        content: none !important;
+    }
+
+    .bgd_blue {
+        border: solid 1px #f1f1f1;
+    }
+
+    img {
+        display: none;
+    }
+
+    .forPrint {
+        display: block !important;
+    }
+
+    .box {
+        display: inline;
+    }
+
+    .container {
+        line-height: 1.5;
+    }
+
+    ul.list-unstyled {
+        padding-left: 0;
+        list-style: none;
+    }
+
+    #ConfirmContainer > table > tbody > tr > td > div > button {
+        display: none;
+    }
+
+    .col-md-3 > [name="prefillSubmitBouton"] {
+        display: none;
+    }
+
+    .tableWidthAlign {
+        width: 100% !important;
+    }
+
+    .li-red {
+        COLOR: red !important
+    }
+
+    .font-red {
+        color: #C60C08 !important;
+    }
+
+    .input-value {
+        COLOR: #000000; FONT-FAMILY: verdana, Arial, Helvetica, sans-serif;
+        width: 150px !important;
+    }
+}
+
+@media print and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .AdminCode{
+        font-weight: bold;
+        width: 95% !important;
+        margin-left: 6.67%;
+    }
+ 
+    .Ligne3 {
+        width: 95% !important;
+    }
+
+    .Ligne3_TI{
+        width: 16.67% !important;
+    }
+
+    .Ligne3_TP {
+        text-align: right;
+        font-weight: bold;
+        width: 16.66% !important;
+    }
+
+    .Ligne3_I {
+        width: 16.67%
+    }
+
+    .Ligne3_P {
+        text-align: right;
+        font-weight: bold;
+        width: 16.66% !important;
+    }
+    
+    .TR .Empty{
+        width: 5.56% !important;
+    }
+
+    .TR .LabelText{
+        width: 94.44% !important;
+    }
+
+    .DL .Empty{
+        width: 6.67% !important;
+    }
+
+    .DL .LabelText{
+        width: 93.33% !important;
+    }
+
+    .DC .Empty{
+        width: 6.67% !important;
+    }
+
+    .DC .LabelText{
+        width: 43.33% !important;
+    }
+
+    .DC .Val1{
+        width: 17.78% !important;
+    }
+
+    .DC .Val1Sign{
+        width: 1.66% !important;
+    }
+
+    .DC .Ipcode1{
+        width: 5.56% !important;
+    }
+
+    .DC .Val2{
+        width: 17.78% !important;
+    }
+
+    .DC .Val2Sign{
+        width: 1.66% !important;
+    }
+
+    .DC .Ipcode2{
+        width: 5.56% !important;
+    }
+
+    .UNKNOWN .LabelText{
+        width: 20.55% !important;
+    }
+
+    .UNKNOWN .Inf1{
+        width: 8.89% !important;
+    }
+
+    .UNKNOWN .Op1{
+        width: 2.22% !important;
+    }
+
+    .UNKNOWN .Inf2{
+        width: 8.89% !important;
+    }
+
+    .UNKNOWN .Op2{
+        width: 2.22% !important;
+    }
+
+    .UNKNOWN .Inf3{
+        width: 8.89% !important;
+    }
+
+    .UNKNOWN .Op3{
+        width: 2.22% !important;
+    }
+
+    .UNKNOWN .Val1{
+        width: 11.67% !important;
+    }
+
+    .UNKNOWN .Val1Sign{
+        width: 1.11% !important;
+    }
+
+    .UNKNOWN .Ipcode1{
+        width: 3.89% !important;
+    }
+
+    .UNKNOWN .MutVal{
+        width: 11.67% !important;
+    }
+
+    .UNKNOWN .MutValSign{
+        width: 1.11% !important;
+    }
+
+    .UNKNOWN .Val2{
+        width: 11.67% !important;
+    }
+
+    .UNKNOWN .Val2Sign{
+        width: 1.11% !important;
+    }
+
+    .UNKNOWN .Ipcode2{
+        width: 3.89% !important;
+    }
+
+    .DCG .Empty{
+        width: 6.67% !important;
+    }
+
+    .DCG .LabelText{
+        width: 43.33% !important;
+    }
+
+    .DCG .Val1{
+        width: 17.78% !important;
+    }
+
+    .DCG .Val1Sign{
+        width: 1.66% !important;
+    }
+
+    .DCG .Ipcode1{
+        width: 5.56% !important;
+    }
+
+    .DCG .Val2{
+        width: 17.78% !important;
+    }
+
+    .DCG .Val2Sign{
+        width: 1.66% !important;
+    }
+
+    .DCG .Ipcode2{
+        width: 5.56% !important;
+    }
+
+    .DC1 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DC1 .LabelText{
+        width: 8.33% !important;
+    }
+
+    .DC1 .Inf1{
+        width: 13.33% !important;
+    }
+
+    .DC1 .Op1{
+        width: 3.33% !important;
+    }
+
+    .DC1 .Inf2{
+        width: 7.22% !important;
+    }
+
+    .DC1 .Op2{
+        width: 3.33% !important;
+    }
+
+    .DC1 .Empty2{
+        width: 7.79% !important;
+    }
+
+    .DC1 .Val1{
+        width: 17.78% !important;
+    }
+
+    .DC1 .Val1Sign{
+        width: 1.66% !important;
+    }
+
+    .DC1 .Ipcode1{
+        width: 5.56% !important;
+    }
+
+    .DC1 .Val2{
+        width: 17.78% !important;
+    }
+
+    .DC1 .Val2Sign{
+        width: 1.66% !important;
+    }
+
+    .DC1 .Ipcode2{
+        width: 5.56% !important;
+    }
+
+    .DC2 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DC2 .LabelText{
+        width: 19.44% !important;
+    }
+
+    .DC2 .Inf2{
+        width: 10.56% !important;
+    }
+
+    .DC2 .Op2{
+        width: 2.78% !important;
+    }
+
+    .DC2 .Inf3{
+        width: 7.77% !important;
+    }
+
+    .DC2 .Op3{
+        width: 2.78% !important;
+    }
+
+    .DC2 .Val1{
+        width: 17.78% !important;
+    }
+
+    .DC2 .Val1Sign{
+        width: 1.66% !important;
+    }
+
+    .DC2 .Ipcode1{
+        width: 5.56%);
+    }
+
+    .DC2 .Val2{
+        width: 17.78% !important;
+    }
+
+    .DC2 .Val2Sign{
+        width: 1.66% !important;
+    }
+
+    .DC2 .Ipcode2{
+        width: 5.56% !important;
+    }
+
+    .DC3 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DC3 .LabelText{
+        width: 32.22% !important;
+    }
+
+    .DC3 .Inf3{
+        width: 8.33% !important;
+    }
+
+    .DC3 .Op3{
+        width: 2.78% !important;
+    }
+
+    .DC3 .Val1{
+        width: 17.78% !important;
+    }
+
+    .DC3 .Val1Sign{
+        width: 1.66% !important;
+    }
+
+    .DC3 .Ipcode1{
+        width: 5.56% !important;
+    }
+
+    .DC3 .Val2{
+        width: 17.78% !important;
+    }
+
+    .DC3 .Val2Sign{
+        width: 1.66% !important;
+    }
+
+    .DC3 .Ipcode2{
+        width: 5.56% !important;
+    }
+
+    .DD{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+    .DD .Empty{
+        width: 6.67% !important;
+    }
+
+    .DD .LabelText{
+        width: 53.32% !important;
+    }
+
+    .DD .MutVal{
+        width: 17.78% !important;
+    }
+
+    .DD .MutValSign{
+        width: 1.67% !important;
+    }
+
+    .DD1{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+    .DD1 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DD1 .LabelText{
+        width: 8.33% !important;
+    }
+
+    .DD1 .Inf1{
+        width: 13.33% !important;
+    }
+
+    .DD1 .Op1{
+        width: 3.33% !important;
+    }
+
+    .DD1 .Inf2{
+        width: 7.22% !important;
+    }
+
+    .DD1 .Op2{
+        width: 3.33% !important;
+    }
+
+    .DD1 .Empty2{
+        width: 17.78% !important;
+    }
+
+    .DD1 .MutVal{
+        width: 17.78% !important;
+    }
+
+    .DD1 .MutValSign{
+        width: 1.67% !important;
+    }
+
+    .DD2{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+    .DD2 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DD2 .LabelText{
+        width: 19.44% !important;
+    }
+
+    .DD2 .Inf2{
+        width: 10.56% !important;
+    }
+
+    .DD2 .Op2{
+        width: 2.78% !important;
+    }
+
+    .DD2 .Inf3{
+        width: 7.77% !important;
+    }
+
+    .DD2 .Op3{
+        width: 2.78% !important;
+    }
+
+    .DD2 .Empty2{
+        width: 9.99% !important;
+    }
+
+    .DD2 .MutVal{
+        width: 17.78% !important;
+    }
+
+    .DD2 .MutValSign{
+        width: 1.67% !important;
+    }
+
+    .DD3{
+        font-size: 10;
+        padding-right: 20.56%;
+    }
+
+    .DD3 .Empty{
+        width: 6.67% !important;
+    }
+
+    .DD3 .LabelText{
+        width: 32.22% !important;
+    }
+
+    .DD3 .Inf3{
+        width: 8.33% !important;
+    }
+
+    .DD3 .Op3{
+        width: 2.78% !important;
+    }
+
+    .DD3 .Empty2{
+        width: 9.99% !important;
+    }
+
+    .DD3 .MutVal{
+        width: 17.78% !important;
+    }
+
+    .DD3 .MutValSign{
+        width: 1.67% !important;
+    }
+
+    .SS{
+    font-size: 16;
+    font-weight: bold;
+    padding-right: 15%;
+    }
+
+    .SS .LabelText{
+        width: 60% !important;
+    }
+
+    .SS .MutVal{
+        width: 25% !important;
+    }
+}
