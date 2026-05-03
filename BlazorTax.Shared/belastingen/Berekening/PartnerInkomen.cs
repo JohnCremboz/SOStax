@@ -176,7 +176,6 @@ public class PartnerInkomen
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
         VakXXIData? vakXXI = null, VakIXData? vakIX = null,
-<<<<<<< HEAD
         VakXIIData? vakXII = null, VakIIIData? vakIII = null,
         VakVIData? vakVI = null)
     {
@@ -321,7 +320,6 @@ public class PartnerInkomen
         VakXVIIData? vakXVII = null, VakXVIIIData? vakXVIII = null,
         VakXIXData? vakXIX = null, VakXXData? vakXX = null,
         VakXXIData? vakXXI = null, VakIXData? vakIX = null,
-<<<<<<< HEAD
         VakXIIData? vakXII = null, VakIIIData? vakIII = null,
         VakVIData? vakVI = null)
     {

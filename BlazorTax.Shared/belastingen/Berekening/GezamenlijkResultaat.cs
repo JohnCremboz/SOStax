@@ -19,9 +19,6 @@ public class PartnerResultaat
     public decimal BrutoMeewerkend { get; set; }
     public decimal BrutoDiverseGezamenlijk { get; set; }
 
-    // Onroerend inkomen
-    public decimal BrutoOnroerendInkomen { get; set; }
-
     // Onderhoudsgeld (Vak VI)
     public decimal BrutoOnderhoudsgeld { get; set; }
 

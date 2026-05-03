@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BlazorTax.Wpf</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationTitle>SOStax</ApplicationTitle>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="10.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorTax.Shared\BlazorTax.Shared.csproj" />
+  </ItemGroup>
+
+  <!-- Bootstrap en andere statische web-libs linken vanuit MAUI wwwroot (geen duplicatie) -->
+  <ItemGroup>
+    <Content Include="..\BlazorTax.Maui\wwwroot\lib\**\*">
+      <Link>wwwroot\lib\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- CSV-bestanden voor SnelleInvoer (via IAssetReader) -->
+    <Content Include="..\BlazorTax.Maui\Resources\Raw\belastingen\*">
+      <Link>belastingen\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
