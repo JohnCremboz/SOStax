@@ -1,12 +1,13 @@
 # SOStax
 
-**Blazor WebAssembly-toepassing voor de Belgische personenbelasting AJ2026**  
-(Inkomstenjaar 2025 · Vlaams Gewest · FOD Financiën)
+**Belgische personenbelasting AJ2026 — desktop-app op basis van Blazor Hybrid**  
+(Inkomstenjaar 2025 · Vlaams/Waals/Brussels Gewest · FOD Financiën)
 
-SOStax is een volledig client-side webtoepassing die:
+SOStax is een volledig lokale desktoptoepassing die:
 - alle **22 vakken** van de aangifte personenbelasting bevat met invoervelden,
 - een **belastingberekening** uitvoert conform de regels voor AJ2026,
-- de resultaten vergelijkt met de officiële **Tax-Calc-tool** van FOD Financiën.
+- de resultaten vergelijkt met de officiële **Tax-Calc-tool** van FOD Financiën,
+- draait als **WPF-app** (Windows) en als **MAUI-app** (Windows, macOS, Android, iOS).
 
 ---
 
@@ -18,17 +19,25 @@ SOStax is een volledig client-side webtoepassing die:
 - [Berekening-pipeline](#berekening-pipeline)
 - [Een nieuw vak toevoegen](#een-nieuw-vak-toevoegen)
 - [Verificatie met TestCalc](#verificatie-met-testcalc)
+- [Technologie](#technologie)
+- [Licentie](#licentie)
 
 ---
 
 ## Snel starten
 
-```bash
-# Vereiste: .NET 10 SDK
-dotnet run --project BlazorTax
-```
+Vereiste: **.NET 10 SDK**
 
-De app is daarna beschikbaar op `https://localhost:5001` (of de poort in `launchSettings.json`).
+```bash
+# WPF-versie (Windows)
+dotnet run --project BlazorTax.Wpf
+
+# MAUI-versie (Windows)
+dotnet run --project BlazorTax.Maui -f net10.0-windows10.0.19041.0
+
+# Console-verificatie
+dotnet run --project TestCalc
+```
 
 ---
 
@@ -36,48 +45,71 @@ De app is daarna beschikbaar op `https://localhost:5001` (of de poort in `launch
 
 ```
 SOStax/
-├── BlazorTax/                         # Blazor WASM-hoofdproject
-│   ├── Program.cs                     # App-bootstrapping
-│   ├── App.razor                      # Root-component
-│   │
+├── BlazorTax.Shared/                  # Razor Class Library — alle gedeelde logica
 │   ├── belastingen/                   # Domeinlaag
 │   │   ├── AangifteState.cs           # Centrale state: alle 22 vakken + instellingen
 │   │   ├── Vak*Data.cs                # Datamodellen per vak (één bestand per vak)
-│   │   ├── Vak*.csv / VAKI*.csv       # Velddefinities geladen via HTTP bij opstart
-│   │   ├── structuur.md               # Markdown met de tab-structuur van de app
+│   │   ├── BurgerlijkeStaatCodes.cs   # Enum-waarden burgerlijke staat
+│   │   ├── Vak*.csv                   # Velddefinities per vak
+│   │   ├── APB_2008_2026.csv          # Algemeen Pensioenbijdragenbestand
+│   │   ├── structuur.md               # Tab-structuur van de app
 │   │   ├── VakStructuurParser.cs      # Parseert structuur.md → VakSection-lijst
 │   │   ├── VakIiFormParser.cs         # Parseert CSV-bestanden → formuliervelden
 │   │   │
-│   │   └── Berekening/                # Belastingberekeningsengine
-│   │       ├── TaxConstants2026.cs    # Alle geïndexeerde bedragen en tarieven AJ2026
-│   │       ├── BerekeningResultaat.cs # Uitvoermodel + Gewest-enum
-│   │       ├── PersonenbelastingCalculator.cs      # Berekening voor één persoon
-│   │       ├── GezamenlijkeBerekeningCalculator.cs # Twee-kolomsberekening (gehuwden)
-│   │       ├── PartnerBelastingCalculator.cs       # Belasting per partner
-│   │       ├── PartnerInkomen.cs                   # Inkomensextractie per partner
-│   │       ├── BelastingschijvenCalculator.cs      # Progressieve tarieven (art. 130 WIB92)
-│   │       ├── BelastingvrijeSomCalculator.cs      # Belastingvrije som + gezinslasten
-│   │       ├── ForfaitaireBeroepskostenCalculator.cs # Forfait vs werkelijke kosten
-│   │       ├── HuwelijksquotientCalculator.cs      # Huwelijksquotiënt (30 %-regel)
-│   │       ├── VervangingsInkomstenCalculator.cs   # Vermindering op vervangingsinkomsten
-│   │       ├── GewestelijkeVerminderingenCalculator.cs # Vlaamse/Waalse/Brusselse korting
-│   │       ├── GemeentelijkeOpcentiemenCalculator.cs   # Gemeentebelasting
-│   │       ├── GezamenlijkResultaat.cs             # Uitvoermodel gemeenschappelijke aanslag
-│   │       └── BerekeningInput.cs (via AangifteState) # Invoermodel voor de engine
+│   │   ├── Berekening/                # Belastingberekeningsengine
+│   │   │   ├── TaxConstants2026.cs    # Alle geïndexeerde bedragen en tarieven AJ2026
+│   │   │   ├── BerekeningResultaat.cs # Uitvoermodel + Gewest-enum
+│   │   │   ├── PersonenbelastingCalculator.cs
+│   │   │   ├── GezamenlijkeBerekeningCalculator.cs
+│   │   │   ├── PartnerBelastingCalculator.cs
+│   │   │   ├── PartnerInkomen.cs
+│   │   │   ├── BelastingschijvenCalculator.cs
+│   │   │   ├── BelastingvrijeSomCalculator.cs
+│   │   │   ├── ForfaitaireBeroepskostenCalculator.cs
+│   │   │   ├── HuwelijksquotientCalculator.cs
+│   │   │   ├── VervangingsInkomstenCalculator.cs
+│   │   │   ├── GewestelijkeVerminderingenCalculator.cs
+│   │   │   ├── GemeentelijkeOpcentiemenCalculator.cs
+│   │   │   └── GezamenlijkResultaat.cs
+│   │   │
+│   │   └── Validatie/
+│   │       └── AangifteStateValidator.cs  # FluentValidation-regels
 │   │
 │   ├── Components/                    # Razor-formuliercomponenten
-│   │   ├── VakIForm.razor … VakXXIIForm.razor  # Eén component per vak
-│   │   └── SnelleInvoerForm.razor     # Vereenvoudigd invoerscherm
+│   │   ├── VakIForm.razor … VakXXIIForm.razor
+│   │   ├── BerekeningPaneel.razor     # Weergave berekeningsresultaten
+│   │   └── SnelleInvoerForm.razor
 │   │
 │   ├── Pages/
 │   │   ├── Belastingen.razor          # Hoofdpagina: tabs + routing per vak
-│   │   └── Home.razor                 # Welkomstpagina
+│   │   ├── SnelleInvoer.razor         # Vereenvoudigd invoerscherm
+│   │   ├── Home.razor
+│   │   └── NotFound.razor
+│   │
+│   ├── Services/
+│   │   ├── IAssetReader.cs            # Abstractie voor lezen van statische bestanden
+│   │   ├── AangifteStateService.cs    # Validatie + berekeningsorchestrator
+│   │   ├── IGemeenteAanslagvoetService.cs
+│   │   ├── GemeenteAanslagvoetService.cs
+│   │   └── GemeenteAanslagvoetData.cs
 │   │
 │   └── Layout/                        # Shell: navigatie + lay-out
 │
+├── BlazorTax.Wpf/                     # WPF-hostproject (Windows desktop)
+│   ├── App.xaml.cs                    # DI-setup + service registratie
+│   ├── MainWindow.xaml(.cs)           # BlazorWebView-venster
+│   ├── WpfAssetReader.cs              # IAssetReader via bestandssysteem
+│   └── Components/Routes.razor
+│
+├── BlazorTax.Maui/                    # MAUI-hostproject (cross-platform)
+│   ├── MauiProgram.cs                 # DI-setup + service registratie
+│   ├── MainPage.xaml(.cs)             # BlazorWebView-pagina
+│   ├── MauiAssetReader.cs             # IAssetReader via FileSystem API
+│   ├── Platforms/                     # Android / iOS / macOS / Windows
+│   └── Components/Routes.razor
+│
 ├── TestCalc/                          # Console-verificatieproject
-│   ├── Program.cs                     # Scenario's + vergelijking met FOD Tax-Calc
-│   └── TestCalc.csproj
+│   └── Program.cs                     # Scenario's + vergelijking met FOD Tax-Calc
 │
 ├── test_taxcalc.py                    # Python-script: scraping FOD Tax-Calc AJ2025
 └── BlazorTax.sln
@@ -87,12 +119,19 @@ SOStax/
 
 ## Architectuur
 
+De applicatie gebruikt het **Blazor Hybrid**-model: alle UI en bedrijfslogica zit in de gedeelde Razor Class Library `BlazorTax.Shared`. De platformprojecten (`BlazorTax.Wpf`, `BlazorTax.Maui`) zijn dunne hosts die enkel een `BlazorWebView` starten en platformspecifieke services registreren.
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Browser (WASM)                          │
+│              BlazorTax.Wpf  /  BlazorTax.Maui               │
+│  (BlazorWebView + DI-setup + platformspecifieke services)    │
+└───────────────────────┬─────────────────────────────────────┘
+                        │ ProjectReference
+┌───────────────────────▼─────────────────────────────────────┐
+│                    BlazorTax.Shared                          │
 │                                                             │
 │  Pages/Belastingen.razor                                    │
-│    └─ laadt structuur.md + CSV-bestanden via HttpClient     │
+│    └─ laadt structuur.md + CSV-bestanden via IAssetReader   │
 │    └─ rendert VakXForm-componenten per actieve tab          │
 │                                                             │
 │  AangifteState  ←──────────────────────────────────────┐   │
@@ -100,22 +139,36 @@ SOStax/
 │                                                        │   │
 │  VakXForm.razor ──→ bindt aan VakXData-properties ─────┘   │
 │                                                             │
-│  PersonenbelastingCalculator / GezamenlijkeBerekeningCalc   │
-│    └─ leest AangifteState → geeft BerekeningResultaat       │
+│  AangifteStateService                                       │
+│    ├─ AangifteStateValidator (FluentValidation)             │
+│    └─ GezamenlijkeBerekeningCalculator                      │
+│         └─ geeft GezamenlijkResultaat / BerekeningResultaat │
 └─────────────────────────────────────────────────────────────┘
+```
 
-Gegevensstroming:
-  CSV/MD-bestanden (wwwroot/belastingen/)
-      ↓  HTTP GET bij opstart
-  VakStructuurParser / VakIiFormParser
-      ↓
-  Razor-formulieren (twee-weg binding)
-      ↓
-  AangifteState
-      ↓
-  Berekeningsengine (Berekening/)
-      ↓
-  BerekeningResultaat (weergegeven in de UI)
+**`IAssetReader`-abstractie** ontkoppelt het lezen van CSV- en MD-bestanden van het platform:
+
+| Platform | Implementatie | Bron |
+|----------|---------------|------|
+| WPF | `WpfAssetReader` | Bestandssysteem naast de exe |
+| MAUI | `MauiAssetReader` | `FileSystem.OpenAppPackageFileAsync` |
+
+**Gegevensstroming:**
+
+```
+CSV/MD-bestanden (belastingen/)
+    ↓  via IAssetReader bij opstart
+VakStructuurParser / VakIiFormParser
+    ↓
+Razor-formulieren (twee-weg binding)
+    ↓
+AangifteState
+    ↓
+AangifteStateService → AangifteStateValidator (FluentValidation)
+    ↓
+GezamenlijkeBerekeningCalculator (Berekening/)
+    ↓
+GezamenlijkResultaat (weergegeven in BerekeningPaneel)
 ```
 
 ---
@@ -128,7 +181,7 @@ De berekening verloopt in vaste stappen, uitgevoerd door `GezamenlijkeBerekening
 |------|--------|-----|
 | 1 | `PartnerInkomen` | Inkomen extraheren per partner uit de vakken |
 | 2 | `ForfaitaireBeroepskostenCalculator` | Forfait of werkelijke beroepskosten |
-| 3 | `HuwelijksquotientCalculator` | Herverdelng tot 30 % bij gehuwden |
+| 3 | `HuwelijksquotientCalculator` | Herverdeling tot 30 % bij gehuwden |
 | 4 | `BelastingschijvenCalculator` | Progressieve tarieven (25 %–50 %) |
 | 5 | `BelastingvrijeSomCalculator` | Basis + verhogingen (kinderen, handicap …) |
 | 6 | `VervangingsInkomstenCalculator` | Vermindering op uitkeringen/pensioenen |
@@ -143,7 +196,7 @@ Alle tarieven en drempelwaarden staan gecentraliseerd in **`TaxConstants2026.cs`
 
 Elk vak volgt dit vaste patroon. Volg de stappen in volgorde:
 
-### 1. Datamodel (`belastingen/VakXXXData.cs`)
+### 1. Datamodel (`BlazorTax.Shared/belastingen/VakXXXData.cs`)
 
 ```csharp
 namespace BlazorTax.Belastingen;
@@ -161,14 +214,14 @@ public class VakXXXData
 public VakXXXData VakXXX { get; set; } = new();
 ```
 
-### 3. CSV-velddefinitie (`belastingen/VAKXXX.csv`)
+### 3. CSV-velddefinitie (`BlazorTax.Shared/belastingen/VAKXXX.csv`)
 
 ```
 Code;Omschrijving;Type
 1234;Omschrijving van het veld;number
 ```
 
-### 4. Razor-component (`Components/VakXXXForm.razor`)
+### 4. Razor-component (`BlazorTax.Shared/Components/VakXXXForm.razor`)
 
 ```razor
 @using BlazorTax.Belastingen
@@ -177,11 +230,11 @@ Code;Omschrijving;Type
 @* Gebruik dezelfde opmaak als bestaande Vak*Form.razor-bestanden *@
 ```
 
-### 5. Tab registreren (`belastingen/structuur.md`)
+### 5. Tab registreren (`BlazorTax.Shared/belastingen/structuur.md`)
 
 Voeg een `## VAK XXX — Titel`-sectie toe op de juiste positie in `structuur.md`.
 
-### 6. Component koppelen (`Pages/Belastingen.razor`)
+### 6. Component koppelen (`BlazorTax.Shared/Pages/Belastingen.razor`)
 
 ```csharp
 else if (string.Equals(activeSection.Code, "VAK XXX", StringComparison.OrdinalIgnoreCase))
@@ -195,7 +248,7 @@ else if (string.Equals(activeSection.Code, "VAK XXX", StringComparison.OrdinalIg
 ## Verificatie met TestCalc
 
 Het project `TestCalc/` bevat scenario's die de berekeningsengine vergelijken met de
-officiële **Tax-Calc AJ2025** van FOD Financiën:
+officiële **Tax-Calc AJ2026** van FOD Financiën:
 
 ```bash
 dotnet run --project TestCalc
@@ -213,10 +266,13 @@ via de webinterface van Tax-Calc (cookies + POST-formulieren).
 
 | Component | Keuze |
 |-----------|-------|
-| UI-framework | Blazor WebAssembly (.NET 10) |
+| UI-framework | Blazor Hybrid (.NET 10) |
 | Taal | C# 13 |
-| Hosting | Volledig client-side (geen server vereist) |
+| Desktop (Windows) | WPF + BlazorWebView (`Microsoft.AspNetCore.Components.WebView.Wpf`) |
+| Desktop + mobiel | .NET MAUI + BlazorWebView (`Microsoft.AspNetCore.Components.WebView.Maui`) |
+| Validatie | FluentValidation 11 |
 | CSV/MD-parsing | Eigen parsers (`VakStructuurParser`, `VakIiFormParser`) |
+| Asset-abstractie | `IAssetReader` (platformspecifieke implementaties) |
 | Testen | Console-scenario's (`TestCalc`) + Python-scraping |
 
 ---
