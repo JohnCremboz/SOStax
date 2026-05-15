@@ -239,6 +239,12 @@
     {
         var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
 
+        if (numericCode is "1001" or "1002" or "1010")
+        {
+            State.VakII.BurgerlijkeStaat = string.Empty;
+            return;
+        }
+
         if ((numericCode == "1250" || numericCode == "2250") && State.VakIV is not null)
         {
             RemoveFromFicheList(numericCode == "1250", State.VakIV.Fiches1250, State.VakIV.Fiches2250);
@@ -399,6 +405,9 @@
         if (numericCode is "1250" or "2250" or "1286" or "2286" or "1225" or "2225")
             return typeof(decimal);
 
+        if (numericCode is "1001" or "1002" or "1010")
+            return typeof(bool);
+
         var propNaam = "Code" + numericCode;
         foreach (var staatsProp in typeof(AangifteState).GetProperties())
         {
@@ -435,6 +444,15 @@
         // Ondersteuning voor formaat "1250-11" of "1250" → zoekt property "Code1250"
         var numericCode = code.Contains('-') ? code.Split('-')[0] : code;
         var propNaam = "Code" + numericCode;
+
+        // Burgerlijke staat: codes 1001/1002/1010 met waarde "1" zetten BurgerlijkeStaat
+        if (numericCode is "1001" or "1002" or "1010")
+        {
+            var isTruthy = waarde.Trim().ToLowerInvariant() is "1" or "true" or "ja" or "x";
+            if (isTruthy)
+                State.VakII.BurgerlijkeStaat = numericCode;
+            return isTruthy;
+        }
 
         // Speciale behandeling voor fiche codes
         // Code 250 = fiches 281.10 (wedden/lonen)
