@@ -35,8 +35,8 @@ public class VakIIData
     public bool Code1028 { get; set; }   // belastingplichtige
     public bool Code2028 { get; set; }   // partner
 
-    // ── Vraag 5: Andere persoon in het gezin ─────────────────────────────────
-    public bool Code1101 { get; set; }
+    // ── Toeslag alleenstaande ouder met kinderen ten laste ───────────────────
+    public bool Code1101 { get; set; }   // alleenstaande met kinderen → +€1.980
 
     // ── Vraag 6: Aantal maanden rijksinwoner ─────────────────────────────────
     public int? Code1199 { get; set; }

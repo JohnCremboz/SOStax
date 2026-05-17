@@ -105,6 +105,7 @@ public sealed class AangifteStateValidator : AbstractValidator<AangifteState>
         {
             context.AddFailure("VakII", "Codes 1023 en 1024 kunnen niet tegelijk aangevinkt zijn.");
         }
+
     }
 
     /// <summary>

@@ -30,11 +30,7 @@ public static class BelastingvrijeSomCalculator
         som += (gezinsData.Code1032 ?? 0) * TaxConstants2026.VerhogingAnderePersonenTenLaste;
         som += (gezinsData.Code1033 ?? 0) * TaxConstants2026.VerhogingHandicapBelastingplichtige;
 
-        // Alleenstaande met kinderen
-        bool isAlleenstaand = gezinsData.BurgerlijkeStaat == "1001";
-        int kinderen = gezinsData.Code1030 ?? 0;
-        int kinderenCoOuder = gezinsData.Code1036 ?? 0;
-        if (isAlleenstaand && (kinderen > 0 || kinderenCoOuder > 0))
+        if (gezinsData.Code1101)
             som += TaxConstants2026.VerhogingAlleenstaandeMetKinderen;
 
         // In het jaar van huwelijk / wettelijke samenwoning kan code 1004
@@ -92,19 +88,25 @@ public static class BelastingvrijeSomCalculator
         som += (gezinsData.Code1038 ?? 0) * TaxConstants2026.ToeslagKindJongerDan3;
         som += (gezinsData.Code1039 ?? 0) * TaxConstants2026.ToeslagKindJongerDan3;
 
-        // Co-ouderschap: helft van de verhoging
+        // Co-ouderschap jij fiscale last (1034/1035): helft verhoging
+        int kinderenGedeeld = gezinsData.Code1034 ?? 0;
+        int kinderenGedeeldHandicap = gezinsData.Code1035 ?? 0;
+        int effectiefGedeeld = kinderenGedeeld + kinderenGedeeldHandicap;
+        som += BerekenVerhogingKinderen(effectiefGedeeld) / 2m;
+
+        // Kinderen <3 jaar co-ouderschap jij fiscale last (1054/1055): helft toeslag
+        int j3Gedeeld = (gezinsData.Code1054 ?? 0) + (gezinsData.Code1055 ?? 0);
+        som += j3Gedeeld * TaxConstants2026.ToeslagKindJongerDan3 / 2m;
+
+        // Co-ouderschap andere ouder heeft fiscale last (1036/1037): helft verhoging
         int kinderenCoOuder = gezinsData.Code1036 ?? 0;
         int kinderenCoOuderHandicap = gezinsData.Code1037 ?? 0;
         int effectiefCoOuder = kinderenCoOuder + kinderenCoOuderHandicap;
         som += BerekenVerhogingKinderen(effectiefCoOuder) / 2m;
 
-        som += (gezinsData.Code1058 ?? 0) * TaxConstants2026.ToeslagKindJongerDan3 / 2m;
-
-        // Gelijkmatig verdeelde huisvesting (helft weg)
-        int kinderenGedeeld = gezinsData.Code1034 ?? 0;
-        int kinderenGedeeldHandicap = gezinsData.Code1035 ?? 0;
-        int effectiefGedeeld = kinderenGedeeld + kinderenGedeeldHandicap;
-        som -= BerekenVerhogingKinderen(effectiefGedeeld) / 2m;
+        // Kinderen <3 jaar andere ouder fiscale last (1058/1059): helft toeslag
+        int j3AndereOuder = (gezinsData.Code1058 ?? 0) + (gezinsData.Code1059 ?? 0);
+        som += j3AndereOuder * TaxConstants2026.ToeslagKindJongerDan3 / 2m;
 
         return som;
     }
@@ -117,7 +119,8 @@ public static class BelastingvrijeSomCalculator
     public static decimal BerekenMaxKindKrediet(VakIIData gezinsData)
     {
         int effectiefVolledig = (gezinsData.Code1030 ?? 0) + (gezinsData.Code1031 ?? 0);
-        int effectiefCoOuder  = (gezinsData.Code1036 ?? 0) + (gezinsData.Code1037 ?? 0);
+        int effectiefCoOuder  = (gezinsData.Code1034 ?? 0) + (gezinsData.Code1035 ?? 0)
+                              + (gezinsData.Code1036 ?? 0) + (gezinsData.Code1037 ?? 0);
         return effectiefVolledig * TaxConstants2026.MaxBelastingkredietKinderen
              + effectiefCoOuder  * TaxConstants2026.MaxBelastingkredietCoOuderschap;
     }
@@ -173,10 +176,7 @@ public static class BelastingvrijeSomCalculator
 
         regels.AddRange(BerekenKinderenComponenten(gezinsData));
 
-        bool isAlleenstaand = gezinsData.BurgerlijkeStaat == "1001";
-        int kinderen = gezinsData.Code1030 ?? 0;
-        int kinderenCoOuder = gezinsData.Code1036 ?? 0;
-        if (isAlleenstaand && (kinderen > 0 || kinderenCoOuder > 0))
+        if (gezinsData.Code1101)
             regels.Add(new("  Toeslag alleenstaande ouder", TaxConstants2026.VerhogingAlleenstaandeMetKinderen, IsDetail: true));
 
         return regels;
@@ -203,10 +203,25 @@ public static class BelastingvrijeSomCalculator
             regels.Add(new($"  Toeslag <3 jaar ({j3}×{TaxConstants2026.ToeslagKindJongerDan3:N0} €)",
                 j3 * TaxConstants2026.ToeslagKindJongerDan3, IsDetail: true));
 
+        int gedeeld = (gezinsData.Code1034 ?? 0) + (gezinsData.Code1035 ?? 0);
+        if (gedeeld > 0)
+            regels.Add(new($"  Co-ouderschap jij fiscale last ({gedeeld}×½)",
+                BerekenVerhogingKinderen(gedeeld) / 2m, IsDetail: true));
+
+        int j3Gedeeld = (gezinsData.Code1054 ?? 0) + (gezinsData.Code1055 ?? 0);
+        if (j3Gedeeld > 0)
+            regels.Add(new($"  Toeslag <3 jaar co-ouderschap jij ({j3Gedeeld}×½)",
+                j3Gedeeld * TaxConstants2026.ToeslagKindJongerDan3 / 2m, IsDetail: true));
+
         int coOuder = (gezinsData.Code1036 ?? 0) + (gezinsData.Code1037 ?? 0);
         if (coOuder > 0)
-            regels.Add(new($"  Co-ouderschap ({coOuder}×½)",
+            regels.Add(new($"  Co-ouderschap andere ouder fiscale last ({coOuder}×½)",
                 BerekenVerhogingKinderen(coOuder) / 2m, IsDetail: true));
+
+        int j3AndereOuder = (gezinsData.Code1058 ?? 0) + (gezinsData.Code1059 ?? 0);
+        if (j3AndereOuder > 0)
+            regels.Add(new($"  Toeslag <3 jaar co-ouderschap andere ouder ({j3AndereOuder}×½)",
+                j3AndereOuder * TaxConstants2026.ToeslagKindJongerDan3 / 2m, IsDetail: true));
 
         int asc = gezinsData.Code1027 ?? 0;
         if (asc > 0)
