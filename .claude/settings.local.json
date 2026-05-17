@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "PowerShell(Test-Path *)",
-      "WebFetch(domain:fin.belgium.be)"
+      "WebFetch(domain:fin.belgium.be)",
+      "Bash(grep -E \"\\\\.\\(cs|csproj\\)$\")",
+      "Bash(grep -E \"\\\\.\\(cs|razor\\)$\")",
+      "Bash(dotnet run *)",
+      "Bash(dotnet build *)"
     ]
   }
 }

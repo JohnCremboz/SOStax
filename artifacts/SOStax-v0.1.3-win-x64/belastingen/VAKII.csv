@@ -1,0 +1,24 @@
+code,omschrijving
+1001-66,ongehuwd en niet wettelijk samenwonend
+1002-65,gehuwd of wettelijk samenwonend
+1003-64,u bent in 2025 gehuwd of verklaring wettelijke samenwoning afgelegd
+1004-63,nettobestaansmiddelen partner ≤ 4100 euro
+1018-49,feitelijk gescheiden op 1.1.2026
+1019-48,feitelijke scheiding vond plaats in 2025
+1010-57,weduwnaar/weduwe of gelijkgesteld
+1011-56,partner overleden in 2025
+1012-55,kiest voor één gemeenschappelijke aanslag
+1013-54,kiest voor twee afzonderlijke aanslagen
+1022-45,aangifte over een belastingplichtige die in 2025 overleden is
+1023-44,overledene was gehuwd of wettelijk samenwonend
+1024-43,overledene was eerder in 2025 weduwnaar/weduwe geworden
+1025-42,kiest voor één gemeenschappelijke aanslag (overledene)
+1026-41,kiest voor twee afzonderlijke aanslagen (overledene)
+1062-05,ambtenaar met vrijgestelde beroepsinkomsten (Ja)
+2062-72,partner ambtenaar met vrijgestelde beroepsinkomsten (Ja)
+1020-47,inkomsten > 13.460 euro (Ja)
+1021-46,gehuwd met ambtenaar met vrijgestelde inkomsten > 13.460 euro
+1028-39,zware handicap
+2028-09,zware handicap (partner)
+1101-63,andere persoon maakte deel uit van uw gezin (Neen)
+1199-62,aantal maanden onderworpen aan personenbelasting
