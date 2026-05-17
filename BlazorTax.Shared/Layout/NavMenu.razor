@@ -1,4 +1,6 @@
-﻿
+﻿@inject AangifteStateService StateService
+@inject NavigationManager Nav
+
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">
@@ -28,11 +30,36 @@
                 <span class="material-icons nav-icon">flash_on</span> Snelle Invoer
             </NavLink>
         </div>
+
+        <hr class="nav-divider" />
+
+        <div class="nav-item px-3">
+            <button class="nav-link btn btn-link w-100 text-start" @onclick="OpslaanAsync" disabled="@_bezig">
+                <span class="material-icons nav-icon">save</span> Opslaan
+            </button>
+        </div>
+        <div class="nav-item px-3">
+            <button class="nav-link btn btn-link w-100 text-start" @onclick="OpenAsync" disabled="@_bezig">
+                <span class="material-icons nav-icon">folder_open</span> Openen
+            </button>
+        </div>
+        <div class="nav-item px-3">
+            <button class="nav-link btn btn-link w-100 text-start" @onclick="NieuweAangifteAsync" disabled="@_bezig">
+                <span class="material-icons nav-icon">add</span> Nieuwe aangifte
+            </button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(_melding))
+        {
+            <div class="nav-melding px-3 mt-1">@_melding</div>
+        }
     </nav>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
+    private bool _bezig;
+    private string _melding = string.Empty;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -41,4 +68,52 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
+    private async Task OpslaanAsync()
+    {
+        _bezig = true;
+        _melding = string.Empty;
+        try
+        {
+            await StateService.OpslaanAsync();
+            _melding = "Opgeslagen.";
+        }
+        catch (Exception ex)
+        {
+            _melding = $"Fout: {ex.Message}";
+        }
+        finally
+        {
+            _bezig = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenAsync()
+    {
+        _bezig = true;
+        _melding = string.Empty;
+        try
+        {
+            bool geladen = await StateService.OpenAsync();
+            _melding = geladen ? "Aangifte geladen." : string.Empty;
+            if (geladen)
+                Nav.NavigateTo("belastingen");
+        }
+        catch (Exception ex)
+        {
+            _melding = $"Fout: {ex.Message}";
+        }
+        finally
+        {
+            _bezig = false;
+            StateHasChanged();
+        }
+    }
+
+    private Task NieuweAangifteAsync()
+    {
+        StateService.NieuweAangifte();
+        Nav.NavigateTo("belastingen");
+        return Task.CompletedTask;
+    }
 }

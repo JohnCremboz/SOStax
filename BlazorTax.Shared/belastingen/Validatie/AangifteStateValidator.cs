@@ -1,6 +1,7 @@
 namespace BlazorTax.Belastingen.Validatie;
 
 using System.Collections;
+using BlazorTax.Belastingen.Berekening;
 using FluentValidation;
 
 public sealed class AangifteStateValidator : AbstractValidator<AangifteState>
@@ -10,8 +11,11 @@ public sealed class AangifteStateValidator : AbstractValidator<AangifteState>
         RuleFor(state => state).Custom((state, context) =>
         {
             ValidateNumericValues(state, context);
+            ValidateBurgerlijkeStaat(state.VakII, context);
             ValidateVakIiCombinaties(state.VakII, context);
             ValidateVakIIIVerdeling(state.VakII, state.VakIII, context);
+            ValidateGiften(state.VakX, context);
+            ValidateWoonbonus(state.VakIX, state.Gewest, context);
         });
     }
 
@@ -72,6 +76,50 @@ public sealed class AangifteStateValidator : AbstractValidator<AangifteState>
             {
                 context.AddFailure($"{vakName}.{fieldName}[{index}]", "Negatieve bedragen zijn niet toegestaan.");
             }
+        }
+    }
+
+    private static void ValidateBurgerlijkeStaat(VakIIData vakII, ValidationContext<AangifteState> context)
+    {
+        if (string.IsNullOrWhiteSpace(vakII.BurgerlijkeStaat))
+        {
+            context.AddFailure("VakII.BurgerlijkeStaat", "Burgerlijke staat is vereist.");
+        }
+    }
+
+    private static void ValidateGiften(VakXData vakX, ValidationContext<AangifteState> context)
+    {
+        // Minimumgift per erkende instelling is €40 (art. 145/33 WIB92)
+        decimal giften = vakX.Code1394 ?? 0m;
+        if (giften > 0m && giften < 40m)
+        {
+            context.AddFailure("VakX.Code1394",
+                $"Giften (code 1394) bedragen {giften:N2} €. Het minimumbedrag per erkende instelling is €40. Controleer of het bedrag correct is.");
+        }
+    }
+
+    private static void ValidateWoonbonus(VakIXData vakIX, Gewest gewest, ValidationContext<AangifteState> context)
+    {
+        // Geïntegreerde woonbonus (codes 3334/3335) is uitsluitend Vlaams (leningen 2016–2019)
+        bool heeftGeintegreerdeWoonbonus = (vakIX.Code3334 ?? 0m) > 0m || (vakIX.Code3335 ?? 0m) > 0m
+                                        || (vakIX.Code4334 ?? 0m) > 0m || (vakIX.Code4335 ?? 0m) > 0m;
+        if (heeftGeintegreerdeWoonbonus && gewest != Gewest.Vlaanderen)
+        {
+            context.AddFailure("VakIX",
+                "De geïntegreerde woonbonus (codes 3334/3335) is uitsluitend van toepassing in het Vlaamse Gewest. "
+                + "Controleer uw gewest of de ingevoerde codes.");
+        }
+
+        // Gewestelijke woonbonus (codes 3360/3361/3370/3371) is uitsluitend Vlaams (leningen 2005–2015)
+        bool heeftGewestelijkeWoonbonus = (vakIX.Code3360 ?? 0m) > 0m || (vakIX.Code3361 ?? 0m) > 0m
+                                       || (vakIX.Code3370 ?? 0m) > 0m || (vakIX.Code3371 ?? 0m) > 0m
+                                       || (vakIX.Code4360 ?? 0m) > 0m || (vakIX.Code4361 ?? 0m) > 0m
+                                       || (vakIX.Code4370 ?? 0m) > 0m || (vakIX.Code4371 ?? 0m) > 0m;
+        if (heeftGewestelijkeWoonbonus && gewest != Gewest.Vlaanderen)
+        {
+            context.AddFailure("VakIX",
+                "De gewestelijke woonbonus (codes 3360/3361/3370/3371) is uitsluitend van toepassing in het Vlaamse Gewest. "
+                + "Controleer uw gewest of de ingevoerde codes.");
         }
     }
 

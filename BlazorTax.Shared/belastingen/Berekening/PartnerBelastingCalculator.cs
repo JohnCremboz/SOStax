@@ -298,7 +298,8 @@ public static class PartnerBelastingCalculator
         PartnerInkomen inkomen,
         decimal belastingvrijeSom,
         Gewest gewest,
-        IReadOnlyList<BerekeningRegel>? bvsComponenten = null)
+        IReadOnlyList<BerekeningRegel>? bvsComponenten = null,
+        decimal? gemiddeldeAanslagvoetVorigJaar = null)
     {
         // ── 4. Basisbelasting (progressief) ─────────────────────────────
         r.Basisbelasting = BelastingschijvenCalculator.BerekenBelasting(r.NettoBelastbaarNaHQ);
@@ -323,7 +324,8 @@ public static class PartnerBelastingCalculator
                 r.NettoBelastbaarInkomen,
                 inkomen.BrutoPensioeninkomen,
                 inkomen.Werkloosheid + inkomen.AndereVervangings,
-                inkomen.ZiekteInvaliditeit + inkomen.Beroepsziekte);
+                inkomen.ZiekteInvaliditeit + inkomen.Beroepsziekte,
+                r.OmTeSlane);
 
             // Vermindering begrensd op om te slane
             r.VerminderingVervangingsinkomen = Math.Min(r.VerminderingVervangingsinkomen, r.OmTeSlane);
@@ -336,18 +338,43 @@ public static class PartnerBelastingCalculator
         // ── 6b. Afzonderlijk belastbaar aan gemiddeld tarief (art. 171 WIB92) ─────────
         // De gemiddelde aanslagvoet = Hoofdsom_gezamenlijk / (netto_gezamenlijk + netto_afzonderlijk)
         // Afgerond op 1 decimaal in % (conform werkwijze FOD Financën).
+        // Achterstallen ziekte/invaliditeit (Code1268) worden belast aan het tarief van het vorig jaar
+        // (Code1288 = gemiddeldeAanslagvoetVorigJaar) als dat meegegeven wordt.
         if (r.AfzonderlijkGemiddeldNetto > 0)
         {
-            decimal basisVoorGemiddeld = r.NettoBelastbaarNaHQ + r.AfzonderlijkGemiddeldNetto;
-            decimal gemiddeldTarief = basisVoorGemiddeld > 0
-                ? Math.Round(r.Hoofdsom / basisVoorGemiddeld * 100m, 1) / 100m
-                : 0m;
-            r.GemiddeldTariefAfzonderlijk = gemiddeldTarief;
-            r.BelastingAfzonderlijkGemiddeld = Math.Round(r.AfzonderlijkGemiddeldNetto * gemiddeldTarief, 2);
-            r.Hoofdsom += r.BelastingAfzonderlijkGemiddeld;
-            r.DetailRegels.Add(new(
-                $"Afz. bel. gemidd. tarief ({gemiddeldTarief:P1})",
-                r.BelastingAfzonderlijkGemiddeld));
+            decimal overigAfzonderlijk = r.AfzonderlijkGemiddeldNetto - inkomen.ZiekteAchterstallen;
+
+            // Achterstallen ziekte (Code1268): vorig jaar tarief indien bekend, anders huidig tarief
+            if (inkomen.ZiekteAchterstallen > 0 && gemiddeldeAanslagvoetVorigJaar.HasValue)
+            {
+                decimal tariefVorigJaar = gemiddeldeAanslagvoetVorigJaar.Value / 100m;
+                decimal belastingAchterstallen = Math.Round(inkomen.ZiekteAchterstallen * tariefVorigJaar, 2);
+                r.BelastingAfzonderlijkGemiddeld += belastingAchterstallen;
+                r.Hoofdsom += belastingAchterstallen;
+                r.DetailRegels.Add(new(
+                    $"Afz. bel. achterstallen ziekte ({tariefVorigJaar:P1})",
+                    belastingAchterstallen));
+            }
+            else if (inkomen.ZiekteAchterstallen > 0)
+            {
+                overigAfzonderlijk = r.AfzonderlijkGemiddeldNetto; // alles via huidig tarief
+            }
+
+            // Overige afzonderlijk gemiddeld tarief (opzeggingsvergoedingen, etc.)
+            if (overigAfzonderlijk > 0)
+            {
+                decimal basisVoorGemiddeld = r.NettoBelastbaarNaHQ + r.AfzonderlijkGemiddeldNetto;
+                decimal gemiddeldTarief = basisVoorGemiddeld > 0
+                    ? Math.Round(r.Hoofdsom / basisVoorGemiddeld * 100m, 1) / 100m
+                    : 0m;
+                r.GemiddeldTariefAfzonderlijk = gemiddeldTarief;
+                decimal belastingOverig = Math.Round(overigAfzonderlijk * gemiddeldTarief, 2);
+                r.BelastingAfzonderlijkGemiddeld += belastingOverig;
+                r.Hoofdsom += belastingOverig;
+                r.DetailRegels.Add(new(
+                    $"Afz. bel. gemidd. tarief ({gemiddeldTarief:P1})",
+                    belastingOverig));
+            }
         }
 
         // ── 7. Federaal / gewestelijk split ─────────────────────────────

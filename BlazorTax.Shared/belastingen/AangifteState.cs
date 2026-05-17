@@ -36,4 +36,7 @@ public class AangifteState
     public TypeBeroep TypeBeroep { get; set; } = TypeBeroep.Werknemer;
     public TypeBeroep TypeBeroepPartner { get; set; } = TypeBeroep.Werknemer;
     public decimal NettoInkomenPartner { get; set; }
+
+    /// <summary>Code1288: gemiddelde aanslagvoet vorig jaar (in %), voor achterstallen ziekte Code1268.</summary>
+    public decimal? GemiddeldeAanslagvoetVorigJaar { get; set; }
 }

@@ -326,4 +326,11 @@ public class BerekeningInput
 
     /// <summary>Netto beroepsinkomen partner (voor huwelijksquotiënt).</summary>
     public decimal NettoInkomenPartner { get; init; }
+
+    /// <summary>
+    /// Gemiddelde aanslagvoet vorig jaar (Code1288, in %).
+    /// Gebruikt voor achterstallen ziekte/invaliditeit (Code1268): afzonderlijk belastbaar
+    /// aan het tarief van het jaar waarop de achterstallen betrekking hebben (art. 171 WIB92).
+    /// </summary>
+    public decimal? GemiddeldeAanslagvoetVorigJaar { get; init; }
 }

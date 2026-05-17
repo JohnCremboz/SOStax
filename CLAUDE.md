@@ -76,7 +76,7 @@ All domain logic, UI components, and services live here. Platform hosts are thin
 
 ### Test Project: `TestCalc/`
 
-Console app that runs 8 reference tax scenarios and compares results against FOD Tax-Calc official reference values. `test_taxcalc.py` is a Python scraper that pulls reference data from the official Belgian tax calculator.
+Console app that runs 9 reference tax scenarios and compares results against FOD Tax-Calc / Tax-on-Web official reference values. `test_taxcalc.py` is a Python scraper that pulls reference data from the official Belgian tax calculator.
 
 ## Key Conventions
 

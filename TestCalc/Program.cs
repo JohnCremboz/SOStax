@@ -4,8 +4,13 @@ using BlazorTax.Belastingen.Berekening;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 // ══════════════════════════════════════════════════════════════════════
-// 4 scenario's: zelfde data als Tax-Calc AJ2025, door onze AJ2026 engine
-// Vergelijk structureel (niet op bedrag, want indexatie verschilt)
+// Scenario's 1–4: AJ2025 referentiedata → AJ2026 engine
+//   Deltas zijn verwacht (indexatie), geen rekenfouten.
+// Scenario 7: AJ2024 referentiedata, zelfde opmerking.
+// Scenario 8–9: AJ2026 echte aangiften — moeten exact kloppen (delta ≈ 0).
+// Scenario 9: alleenstaande met co-ouderschap + ziekte-achterstallen.
+//   Bekende delta op Hoofdsom/GereduceerdeStaat/Opcentiemen: ons gemiddeld
+//   tarief voor Code1268 = huidig jaar, Tax-on-Web = vorig jaar (6,7%).
 // ══════════════════════════════════════════════════════════════════════
 
 var scenarios = new (string Naam, BerekeningInput Input, TaxCalcRef Ref)[]
@@ -18,6 +23,7 @@ var scenarios = new (string Naam, BerekeningInput Input, TaxCalcRef Ref)[]
     Scenario6_WerknemerWoonbonus(),
     Scenario7_PensionarisMenen_1txt(),
     Scenario8_TaxOnWeb_AJ2026_Echt(),
+    Scenario9_AlleenstaandeCoOuderschap_AJ2026(),
 };
 
 foreach (var (naam, input, taxCalcRef) in scenarios)
@@ -38,9 +44,10 @@ foreach (var (naam, input, taxCalcRef) in scenarios)
 
     Console.WriteLine();
 
-    // ── Vergelijking met Tax-Calc AJ2025 ──
-    Console.WriteLine("  VERGELIJKING (onze AJ2026 vs Tax-Calc AJ2025):");
-    Console.WriteLine("  " + "Stap".PadRight(40) + "AJ2026".PadLeft(12) + " " + "AJ2025".PadLeft(12) + " " + "Delta".PadLeft(10));
+    // ── Vergelijking met referentie ──
+    string refLabel = taxCalcRef.ReferentieJaar;
+    Console.WriteLine($"  VERGELIJKING (onze AJ2026 vs Tax-Calc {refLabel}):");
+    Console.WriteLine("  " + "Stap".PadRight(40) + "AJ2026".PadLeft(12) + " " + refLabel.PadLeft(12) + " " + "Delta".PadLeft(10));
     Console.WriteLine("  " + new string('─', 76));
 
     var r1 = result.Belastingplichtige;
@@ -306,7 +313,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario5_BedrijfsleiderBrussel()
     // Winst: bruto 15k - SB 3.2k = 11.8k basis → forfait 30% = 3540 (max 5930) → netto = 8.260
     // Netto totaal = 53.835 + 8.260 = 62.095
     // Afzonderlijk 16,5%: 5000 × 0.165 = 825
-    var taxCalc = new TaxCalcRef();
+    var taxCalc = new TaxCalcRef { ReferentieJaar = "geen ref" };
 
     return ("5: Bedrijfsleider Brussel (€60k bezold + €15k winst + €5k meerwaarde 16,5%)", input, taxCalc);
 }
@@ -354,7 +361,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario6_WerknemerWoonbonus()
     // BBSZ: 123,95 + (34.070 - 21.070,96) × 1,3% = 292,94
     // Totale belasting: 6.225,75 + 1.263,26 + 524,23 + 292,94 = 8.306,18
     // BV: 10.000 → Eindresultaat = 8.306,18 - 10.000 = -1.693,82
-    var taxCalc = new TaxCalcRef();
+    var taxCalc = new TaxCalcRef { ReferentieJaar = "geen ref" };
 
     return ("6: Werknemer Vlaanderen + geïntegreerde woonbonus (lening 2018)", input, taxCalc);
 }
@@ -392,6 +399,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario7_PensionarisMenen_1txt()
     // Referentiewaarden uit 1.txt (AJ2024 — indexatie verschilt van AJ2026):
     var taxCalc = new TaxCalcRef
     {
+        ReferentieJaar    = "AJ2024",
         NettoBP           = 24_989.38m,   // netto vóór HQ (= bruto, geen kosten)
         NettoPartner      =  5_352.39m,   // netto vóór HQ partner
         BasisbelastingBP  =  6_215.70m,   // AJ2024-schijven op 21.239,24 na HQ
@@ -462,6 +470,7 @@ static (string, BerekeningInput, TaxCalcRef) Scenario8_TaxOnWeb_AJ2026_Echt()
     // Officiële Tax-on-Web referentiewaarden (AJ2026, IPP_EX_2026 V_1.7.0):
     var taxCalc = new TaxCalcRef
     {
+        ReferentieJaar    = "AJ2026",
         NettoBP           = 35_309.03m,  // 41.236,23 - 5.930 forfait + 2,80 KI
         NettoPartner      = 18_085.74m,  // 24.012,94 - 5.930 forfait + 2,80 KI
         BasisbelastingBP  = 12_001.06m,
@@ -483,8 +492,75 @@ static (string, BerekeningInput, TaxCalcRef) Scenario8_TaxOnWeb_AJ2026_Echt()
     return ("8: Tax-on-Web AJ2026 echt (gehuwd, 3k, Vlaanderen 8%)", input, taxCalc);
 }
 
+static (string, BerekeningInput, TaxCalcRef) Scenario9_AlleenstaandeCoOuderschap_AJ2026()
+{
+    // Tax-on-Web officiële berekening dd. 17/05/2026 (IPP_EX_2026 V_1.7.0)
+    // Alleenstaande, 3 kinderen co-ouderschap, Vlaanderen 6,8%
+    // Ziekte-invaliditeit (1266) + achterstallen (1268, afzonderlijk 6,7%) + aanv. ziekte (1269)
+    // Officieel resultaat: 2.414,76 terug
+    //
+    // Verwachte delta op Hoofdsom/GereduceerdeStaat/Opcentiemen:
+    //   Code1268 achterstallen belast aan vorig jaar gemiddeld tarief (6,7% = Code1288).
+    //   Ons engine berekent huidig jaar gemiddeld tarief (~3,7%) → lagere belasting op achterstallen.
+    var input = new BerekeningInput
+    {
+        VakII = new VakIIData
+        {
+            BurgerlijkeStaat = "1001",
+            Code1034 = 3,        // 3 kinderen gelijkmatig verdeelde huisvesting
+            Code1101 = true,     // alleenstaande met kinderen ten laste
+        },
+        VakIII = new VakIIIData(),
+        VakIV = new VakIVData
+        {
+            Fiches1250 = [14_786.12m],
+            Code1254 = 764.02m,
+            Code1255 = 490.00m,
+            Code1266 = 13_961.76m,   // ziekte/invaliditeit
+            Code1268 = 1_252.39m,    // achterstallen ziekte, afzonderlijk aan gemiddeld tarief
+            Code1269 = 340.63m,      // aanvullende ziekteuitkering
+            Code1284 = 405.27m,      // werkbonus RSZ 33,14%
+            Fiches1286 = [3_201.24m],
+            Code1287 = 1.75m,
+            Code1360 = 55.15m,       // werkbonus RSZ 52,54%
+        },
+        VakV = new VakVData(),
+        VakVIII = new VakVIIIData(),
+        VakIX = new VakIXData(),
+        VakX = new VakXData
+        {
+            Code1361 = 990.00m,
+            Code1384 = 29.00m,
+        },
+        VakXII = new VakXIIData(),
+        Gewest = Gewest.Vlaanderen,
+        GemeentebelastingPercentage = 6.8m,
+        TypeBeroep = TypeBeroep.Werknemer,
+        GemiddeldeAanslagvoetVorigJaar = 6.7m,  // Code1288: vorig jaar tarief voor achterstallen Code1268
+    };
+
+    var taxCalc = new TaxCalcRef
+    {
+        ReferentieJaar    = "AJ2026",
+        NettoBP           = 24_844.49m,  // 10.542,10 (loon) + 13.961,76 (ziekte) + 340,63 (vervang.)
+        BasisbelastingBP  =  7_489.80m,
+        VermVrijeSomBP    =  5_239.00m,  // BVS = 10.910 + 11.440 (3k co-oud.) + 1.980 (alleenst.) - 5.720
+        OmTeSlaneBP       =  2_250.80m,
+        VermVervangingBP  =  1_295.73m,  // 1.264,87 (ziekte) + 28,34 (vervang.) + 2,52 (aanv.)
+        HoofdsomBP        =  1_038.98m,  // 955,07 + 83,91 (1.252,39 × 6,7% vorig jaar)
+        GereduceerdeBP    =    779.68m,  // × 75,043%
+        OpcentiemenBP     =    259.30m,  // × 33,257%
+        Gemeentebelasting =     49.57m,  // 728,93 × 6,8%
+        BBSZVerschuldigd  =    173.01m,  // op 24.844,49
+        Eindresultaat     = -2_414.76m,  // terug
+    };
+
+    return ("9: Alleenstaande co-ouderschap Vlaanderen 6,8% (Tax-on-Web AJ2026 echt)", input, taxCalc);
+}
+
 class TaxCalcRef
 {
+    public string ReferentieJaar { get; set; } = "AJ2025";
     public decimal NettoBP { get; set; }
     public decimal NettoPartner { get; set; }
     public decimal BasisbelastingBP { get; set; }

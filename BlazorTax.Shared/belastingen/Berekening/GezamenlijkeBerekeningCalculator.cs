@@ -92,7 +92,8 @@ public class GezamenlijkeBerekeningCalculator
             ? BelastingvrijeSomCalculator.BerekenComponentenPartner(input.VakII, true, kinderenBijPartner1)
             : BelastingvrijeSomCalculator.BerekenComponentenAlleenstaand(input.VakII);
 
-        PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest, bvsComp1);
+        PartnerBelastingCalculator.BerekenBelasting(r1, inkomen1, vrijeSom1, input.Gewest, bvsComp1,
+            input.GemiddeldeAanslagvoetVorigJaar);
 
         if (isGehuwd && inkomen2.HeeftInkomen)
         {

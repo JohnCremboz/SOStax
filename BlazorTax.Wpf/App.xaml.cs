@@ -17,6 +17,7 @@ public partial class App : Application
         services.AddWpfBlazorWebView();
         services.AddSingleton<IAssetReader, WpfAssetReader>();
         services.AddSingleton<IGemeenteAanslagvoetService, GemeenteAanslagvoetService>();
+        services.AddSingleton<IAangiftePersistenceService, WpfPersistenceService>();
         services.AddScoped<IValidator<AangifteState>, AangifteStateValidator>();
         services.AddScoped<AangifteStateService>();
 

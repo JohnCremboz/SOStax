@@ -8,10 +8,12 @@ public class AangifteStateService
 {
     private readonly IValidator<AangifteState> _validator;
     private readonly GezamenlijkeBerekeningCalculator _calculator = new();
+    private readonly IAangiftePersistenceService _persistence;
 
-    public AangifteStateService(IValidator<AangifteState> validator)
+    public AangifteStateService(IValidator<AangifteState> validator, IAangiftePersistenceService persistence)
     {
         _validator = validator;
+        _persistence = persistence;
     }
 
     public AangifteState State { get; private set; } = new();
@@ -57,9 +59,11 @@ public class AangifteStateService
             TypeBeroep = State.TypeBeroep,
             TypeBeroepPartner = State.TypeBeroepPartner,
             NettoInkomenPartner = State.NettoInkomenPartner,
+            GemiddeldeAanslagvoetVorigJaar = State.GemiddeldeAanslagvoetVorigJaar,
         };
 
         LaatsteResultaat = _calculator.Bereken(input);
+        _ = _persistence.AutoOpslaanAsync(State);
         return true;
     }
 
@@ -68,5 +72,29 @@ public class AangifteStateService
         State = new AangifteState();
         LaatsteResultaat = null;
         ValidatieFouten = [];
+    }
+
+    public Task OpslaanAsync() => _persistence.OpslaanAsync(State);
+
+    public async Task<bool> OpenAsync()
+    {
+        var geladen = await _persistence.OpenAsync();
+        if (geladen is null)
+            return false;
+        State = geladen;
+        LaatsteResultaat = null;
+        ValidatieFouten = [];
+        return true;
+    }
+
+    public async Task AutoOpslaanAsync() => await _persistence.AutoOpslaanAsync(State);
+
+    public async Task<bool> AutoOpenAsync()
+    {
+        var geladen = await _persistence.AutoOpenAsync();
+        if (geladen is null)
+            return false;
+        State = geladen;
+        return true;
     }
 }

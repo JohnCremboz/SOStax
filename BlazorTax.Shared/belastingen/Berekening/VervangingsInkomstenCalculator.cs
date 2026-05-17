@@ -9,40 +9,43 @@ public static class VervangingsInkomstenCalculator
 {
     /// <summary>
     /// Berekent de totale belastingvermindering voor vervangingsinkomsten.
+    /// Per art. 150-154 WIB92 is de vermindering per type begrensd op
+    /// min(vastBedrag, omTeSlane) × aandeel — niet het vastBedrag alleen.
     /// </summary>
     public static decimal Bereken(
         decimal nettoBelastbaarInkomen,
         decimal pensioenInkomen,
         decimal werkloosheidsInkomen,
-        decimal ziekteInvaliditeitInkomen)
+        decimal ziekteInvaliditeitInkomen,
+        decimal omTeSlane = decimal.MaxValue)
     {
         decimal totaal = 0;
 
         if (ziekteInvaliditeitInkomen > 0)
-            totaal += BerekenVerminderingZiekte(nettoBelastbaarInkomen, ziekteInvaliditeitInkomen);
+            totaal += BerekenVerminderingZiekte(nettoBelastbaarInkomen, ziekteInvaliditeitInkomen, omTeSlane);
 
         if (pensioenInkomen > 0)
-            totaal += BerekenVerminderingPensioen(nettoBelastbaarInkomen, pensioenInkomen);
+            totaal += BerekenVerminderingPensioen(nettoBelastbaarInkomen, pensioenInkomen, omTeSlane);
 
         if (werkloosheidsInkomen > 0)
-            totaal += BerekenVerminderingWerkloosheid(nettoBelastbaarInkomen, werkloosheidsInkomen);
+            totaal += BerekenVerminderingWerkloosheid(nettoBelastbaarInkomen, werkloosheidsInkomen, omTeSlane);
 
         return totaal;
     }
 
-    private static decimal BerekenVerminderingZiekte(decimal nettoInkomen, decimal ziekteInkomen)
+    private static decimal BerekenVerminderingZiekte(decimal nettoInkomen, decimal ziekteInkomen, decimal omTeSlane)
     {
-        // Basisvermindering, proportioneel aan aandeel ziekte-inkomen
         decimal aandeel = nettoInkomen > 0 ? ziekteInkomen / nettoInkomen : 0;
-        return TaxConstants2026.VerminderingZiekteInvaliditeit * aandeel;
+        decimal cap = Math.Min(TaxConstants2026.VerminderingZiekteInvaliditeit, omTeSlane);
+        return cap * aandeel;
     }
 
-    private static decimal BerekenVerminderingPensioen(decimal nettoInkomen, decimal pensioenInkomen)
+    private static decimal BerekenVerminderingPensioen(decimal nettoInkomen, decimal pensioenInkomen, decimal omTeSlane)
     {
         decimal aandeel = nettoInkomen > 0 ? pensioenInkomen / nettoInkomen : 0;
+        decimal capBasis = Math.Min(TaxConstants2026.VerminderingPensioenBasis, omTeSlane);
 
-        // Basisvermindering (geen afbouw op inkomensbasis)
-        decimal vermindering = TaxConstants2026.VerminderingPensioenBasis * aandeel;
+        decimal vermindering = capBasis * aandeel;
 
         // Aanvullende vermindering (alleen voor kleine pensioenen)
         if (nettoInkomen <= TaxConstants2026.MaxInkomenBijkomendeVerminderingPensioen)
@@ -51,7 +54,6 @@ public static class VervangingsInkomstenCalculator
         }
         else if (nettoInkomen <= TaxConstants2026.GrensPensioenVerminderingVolledig)
         {
-            // Gedeeltelijke aanvullende vermindering (lineaire afbouw)
             decimal overschrijding = nettoInkomen - TaxConstants2026.MaxInkomenBijkomendeVerminderingPensioen;
             decimal breedte = TaxConstants2026.GrensPensioenVerminderingVolledig
                             - TaxConstants2026.MaxInkomenBijkomendeVerminderingPensioen;
@@ -63,12 +65,12 @@ public static class VervangingsInkomstenCalculator
         return Math.Max(vermindering, 0);
     }
 
-    private static decimal BerekenVerminderingWerkloosheid(decimal nettoInkomen, decimal werkloosheidInkomen)
+    private static decimal BerekenVerminderingWerkloosheid(decimal nettoInkomen, decimal werkloosheidInkomen, decimal omTeSlane)
     {
         decimal aandeel = nettoInkomen > 0 ? werkloosheidInkomen / nettoInkomen : 0;
+        decimal capBasis = Math.Min(TaxConstants2026.VerminderingWerkloosheidBasis, omTeSlane);
 
-        // Basisvermindering (geen afbouw op inkomensbasis)
-        decimal vermindering = TaxConstants2026.VerminderingWerkloosheidBasis * aandeel;
+        decimal vermindering = capBasis * aandeel;
 
         // Aanvullende vermindering (met afbouwpercentage, alleen voor lage inkomens)
         if (nettoInkomen <= TaxConstants2026.MaxInkomenBijkomendeVerminderingWerkloosheid)
